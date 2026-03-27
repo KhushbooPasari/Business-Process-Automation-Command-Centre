@@ -3643,6 +3643,7 @@ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--
     <button class="eq-btn" data-prompt="Draft a stakeholder communication announcing the start of this automation project." onclick="eqClick(this)">Comms draft</button>
     <button class="eq-btn" data-prompt="Analyse all risks with early warning indicators and contingency triggers." onclick="eqClick(this)">Risks</button>
     <button class="eq-btn" onclick="eqOther()">Other &#9998;</button>
+    <button class="eq-btn" style="background:#e6f1fb;color:#185fa5;border-color:rgba(24,95,165,.3)" onclick="emShowReportMenu()">&#128196; Reports</button>
   </div>
   <div class="emma-msgs" id="emma-msgs"></div>
   <div class="emma-disc">Emma surfaces options &amp; analysis &#183; Khushboo decides</div>
@@ -3656,7 +3657,6 @@ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--
 </div>
 
 <script>
-
 // Tab switching
 function switchTab(n) {
   document.getElementById('tab0').classList.toggle('on', n===0);
@@ -3729,187 +3729,206 @@ function selPlan(id) {
 
 
 // ── EMMA: AI PM ASSISTANT ─────────────────────────────────────────
+
 // EMMA AI PM ASSISTANT
 var EMPROC = JSON.parse('{"0":{"name":"Lead qualification \u0026 scoring","fn":"Sales \u0026 Order Management","type":"s","roi":"h","complexity":"Low","pct":30,"tpct":90,"effort":"6-8 weeks","budget":"15k-25k","teamSize":"3-4","category":"Quick win","summary":"Replace rep-led manual scoring and CRM data entry with an AI-powered lead scoring engine and automated nurture sequences. High volume, low complexity, immediate pipeline velocity impact.","tools":["Salesforce Einstein / HubSpot AI","Clearbit (enrichment)","Outreach / Salesloft (sequences)","Looker / Salesforce reports (measurement)"],"prereqs":["Clean CRM with 6+ months of lead history","Defined ICP and MQL criteria","Marketing automation platform in place (HubSpot / Marketo)"],"kpis":[{"m":"Time to first contact","b":"4-6 hrs","t":"< 15 min"},{"m":"Lead-to-MQL conversion","b":"12%","t":"20%+"},{"m":"Rep scoring time saved","b":"45 min/day","t":"< 5 min/day"},{"m":"Nurture email open rate","b":"18%","t":"30%+"}],"risks":[{"l":"High","d":"Poor CRM data quality undermines scoring model accuracy","mit":"Run data cleanse sprint before model training; set data quality KPI as Gate 1 exit criterion"},{"l":"Med","d":"Rep resistance to AI-assigned scores","mit":"Involve top reps in score definition; show back-tested model vs. rep outcomes before rollout"},{"l":"Low","d":"GDPR compliance for automated profiling","mit":"Legal review of scoring attributes; add consent check to opt-in flows"}],"stakeholders":[{"role":"VP Sales / CRO","resp":"Executive sponsor, success criteria sign-off"},{"role":"Revenue Operations","resp":"Lead system owner, CRM configuration"},{"role":"Marketing Ops","resp":"Nurture content, campaign integration"},{"role":"IT / CRM Admin","resp":"Integration support, data governance"}],"phases":[{"label":"Ph1","name":"Discovery \u0026 baseline","dur":"Wk 1-2","tasks":["Audit current lead sources and CRM data quality","Map all manual touchpoints in lead triage process","Interview sales reps on scoring criteria and pain points","Document current avg. time-to-first-contact and conversion rates"]},{"label":"Ph2","name":"Design","dur":"Wk 2-3","tasks":["Define scoring model attributes (firmographic, behavioural, intent)","Design automated nurture sequence logic and cadences","Specify CRM field mapping for auto-population","Define SLA rules for score-based routing to reps"]},{"label":"Ph3","name":"Build \u0026 configure","dur":"Wk 3-5","tasks":["Configure Salesforce Einstein or HubSpot AI scoring","Connect Clearbit for company data enrichment","Build automated email nurture sequences (5-7 touch)","Set up CRM auto-population from form submissions, emails, LinkedIn"]},{"label":"Ph4","name":"Test \u0026 validate","dur":"Wk 5-6","tasks":["Run scoring model against 3-month historical lead set","Compare AI scores vs. rep outcomes to validate accuracy","A/B test nurture sequence open/click rates","UAT with 2-3 sales reps before full rollout"]},{"label":"Ph5","name":"Deploy","dur":"Wk 7","tasks":["Go-live with new scoring model for all inbound leads","Enable automated nurture for MQL segment","Train sales team on new score thresholds and dashboard","Disable manual scoring spreadsheets"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly model recalibration using won/lost data","Tune nurture sequence content based on engagement data","Expand to new lead sources (events, paid, referral)","Report on rep time saved and pipeline conversion lift"]}],"saving":45,"cost":20},"1":{"name":"Quote generation \u0026 approval","fn":"Sales \u0026 Order Management","type":"s","roi":"h","complexity":"Medium","pct":45,"tpct":92,"effort":"8-12 weeks","budget":"30k-50k","teamSize":"4-5","category":"Quick win","summary":"Replace manual pricing lookups and email approval chains with a CPQ engine that auto-generates branded proposals and routes approvals via defined business rules.","tools":["Salesforce CPQ","DocuSign","Slack (approval notifications)","ERP integration (SAP/NetSuite)"],"prereqs":["Salesforce CRM as the system of record","Defined product catalogue and pricing tiers","Finance-approved discount policy and authority matrix"],"kpis":[{"m":"Quote turnaround time","b":"3-5 days","t":"< 4 hours"},{"m":"Approval cycle time","b":"2-3 days","t":"< 2 hours"},{"m":"Quote error rate","b":"8%","t":"< 1%"},{"m":"Quote-to-order conversion","b":"28%","t":"38%+"}],"risks":[{"l":"High","d":"Product catalogue complexity causes CPQ configuration delays","mit":"Scope Phase 1 to top 80% of products by revenue; long-tail products handled manually until Phase 2"},{"l":"High","d":"Pricing rule conflicts cause incorrect quotes","mit":"Dedicated pricing UAT sprint; Finance sign-off required before go-live"},{"l":"Med","d":"Rep adoption resistance to new tool","mit":"Involve champion reps in design; show time-saving demo before training"}],"stakeholders":[{"role":"CRO / VP Sales","resp":"Business sponsor, approval matrix sign-off"},{"role":"CFO / Finance","resp":"Pricing governance, discount policy"},{"role":"Sales Operations","resp":"CPQ system owner"},{"role":"IT","resp":"ERP and CRM integration"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Map all product/service configurations and pricing rules","Audit current approval bottlenecks and average cycle time","Identify exception scenarios requiring manual override","Gather sample quotes for template design"]},{"label":"Ph2","name":"Design","dur":"Wk 2-4","tasks":["Design product catalogue and pricing rule architecture","Define approval routing matrix (by deal size, discount, product)","Create quote template and output document design","Specify DocuSign e-signature integration flow"]},{"label":"Ph3","name":"Build","dur":"Wk 4-8","tasks":["Configure Salesforce CPQ product catalogue and price books","Build approval workflow rules and escalation paths","Integrate DocuSign for electronic signature","Set up quote-to-order conversion trigger in ERP"]},{"label":"Ph4","name":"Test","dur":"Wk 8-10","tasks":["Test all pricing configurations against historical orders","Simulate approval workflows across deal-size tiers","End-to-end UAT with Sales and Finance teams","Contract edge case testing (multi-currency, bundled deals)"]},{"label":"Ph5","name":"Deploy","dur":"Wk 11","tasks":["Migrate product catalogue data to CPQ","Train all AEs and Sales Managers","Deprecate legacy quoting spreadsheets","Go-live with phased rollout by region"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monitor quote-to-close cycle time monthly","Review discount approval threshold calibration quarterly","Add AI-suggested cross-sell/upsell in quote builder","Expand CPQ to partner and channel quoting"]}],"saving":60,"cost":40},"2":{"name":"Order entry \u0026 validation","fn":"Sales \u0026 Order Management","type":"m","roi":"h","complexity":"Low","pct":10,"tpct":95,"effort":"6-10 weeks","budget":"20k-35k","teamSize":"3-4","category":"Quick win","summary":"Eliminate manual re-keying of purchase orders into ERP by deploying OCR and RPA to extract, validate, and post order data automatically. Exception-only human review reduces data entry by over 85%.","tools":["ABBYY FlexiCapture / AWS Textract (OCR)","UiPath / Power Automate (RPA)","SAP / NetSuite (ERP)","Make.com (orchestration)"],"prereqs":["ERP with API or RPA access layer","Defined and documented validation rules","Sample library of 500+ historical POs"],"kpis":[{"m":"Straight-through processing rate","b":"10%","t":"85%+"},{"m":"Order entry time per order","b":"12 min","t":"< 1 min"},{"m":"Order entry error rate","b":"4%","t":"< 0.5%"},{"m":"Orders processed per FTE/day","b":"40","t":"200+"}],"risks":[{"l":"High","d":"Diverse PO formats from customers reduce OCR accuracy","mit":"Prioritise top 10 customers by volume; request EDI or standard format for high-volume accounts"},{"l":"Med","d":"ERP API limitations slow posting speed","mit":"Early API capacity assessment; consider batch posting for non-urgent orders"},{"l":"Low","d":"Staff redundancy concerns","mit":"Redeploy order team to exception handling, customer query resolution, and EDI relationship management"}],"stakeholders":[{"role":"Order Management Manager","resp":"Process owner, UAT lead"},{"role":"IT / ERP Team","resp":"ERP integration, bot infrastructure"},{"role":"Finance","resp":"Validation rules, credit limit logic"},{"role":"Customer Success","resp":"Customer communication on order confirms"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Audit all PO formats received (PDF, EDI, portal, email)","Document ERP field mapping requirements","Measure current error rate and order processing time","Map validation rules (inventory, pricing, customer credit)"]},{"label":"Ph2","name":"Design","dur":"Wk 2-3","tasks":["Design OCR extraction template library for common PO formats","Define validation rule logic and exception routing","Design exception queue UI for human review","Specify ERP posting and confirmation workflow"]},{"label":"Ph3","name":"Build","dur":"Wk 3-7","tasks":["Configure ABBYY FlexiCapture or similar OCR for PO extraction","Build RPA bot for ERP field population","Implement validation engine (inventory, price, contract check)","Build exception queue with approve/correct/reject actions"]},{"label":"Ph4","name":"Test","dur":"Wk 7-9","tasks":["Process 200 historical POs through OCR to validate accuracy","Test all validation rule scenarios","Parallel-run: bot posts, human verifies before go-live","Measure straight-through processing (STP) rate"]},{"label":"Ph5","name":"Deploy","dur":"Wk 9-10","tasks":["Go-live for top 5 customer PO formats (80% of volume)","Run exception queue for remaining formats","Train order management team on exception handling","Set STP rate target and monitoring dashboard"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Expand OCR templates to additional PO formats monthly","Tune validation rules based on exception analysis","Target EDI with key suppliers to eliminate OCR entirely","Monthly STP rate review and bot performance report"]}],"saving":80,"cost":27},"3":{"name":"Order status communication","fn":"Sales \u0026 Order Management","type":"m","roi":"h","complexity":"Low","pct":15,"tpct":95,"effort":"3-5 weeks","budget":"5k-12k","teamSize":"2","category":"Quick win","summary":"Connect ERP order status events to an automated notification engine that proactively keeps customers and reps informed via email and SMS, eliminating inbound WISMO queries.","tools":["ERP webhooks (SAP/NetSuite)","Twilio (SMS)","SendGrid / Postmark (email)","Make.com / Zapier (orchestration)"],"prereqs":["ERP with status event capability (webhook or polling)","Twilio or SMS provider account","Email delivery service (SendGrid, Postmark)"],"kpis":[{"m":"WISMO inbound tickets","b":"~200/wk","t":"< 30/wk"},{"m":"Customer satisfaction on delivery","b":"72%","t":"85%+"},{"m":"Notification open rate","b":"N/A","t":"> 60%"},{"m":"Manual status email hours saved","b":"8 hrs/wk","t":"0"}],"risks":[{"l":"Med","d":"ERP does not emit real-time webhooks for all status events","mit":"Use polling connector (every 5 min) as fallback; plan ERP upgrade if critical"},{"l":"Med","d":"SMS cost at scale exceeds budget","mit":"Default to email; SMS only for high-value or time-sensitive orders"},{"l":"Low","d":"Customers disable notifications then complain of no updates","mit":"Build preference centre with granular control; log opt-out status in CRM"}],"stakeholders":[{"role":"Order Management Manager","resp":"Process owner"},{"role":"Customer Success","resp":"Customer experience, template content"},{"role":"IT","resp":"ERP webhook configuration"},{"role":"Legal / Compliance","resp":"GDPR review of outbound comms"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1","tasks":["Map all ERP order status events (confirmed, allocated, shipped, delivered)","Audit current inbound WISMO query volume","Collect customer communication preferences","Review brand/legal requirements for outbound messages"]},{"label":"Ph2","name":"Design","dur":"Wk 1-2","tasks":["Design notification triggers per status event","Write templated email/SMS content for each trigger","Define rep notification logic (exceptions, high-value orders)","Specify opt-out and preference management flow"]},{"label":"Ph3","name":"Build","dur":"Wk 2-3","tasks":["Configure ERP webhooks for status change events","Set up Twilio SMS and email (SendGrid/Postmark)","Build notification templates in orchestration layer","Implement unsubscribe and preference centre"]},{"label":"Ph4","name":"Test \u0026 deploy","dur":"Wk 3-4","tasks":["End-to-end test all status triggers with sample orders","Test opt-out flows for GDPR compliance","Pilot with 1 customer account","Full rollout and monitor for 2 weeks"]},{"label":"Ph5","name":"Deploy","dur":"Wk 5","tasks":["Enable for all active orders","Brief customer success team on new system","Update customer-facing documentation","Remove manual status email process from SOP"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly review of notification open rates","Reduce WISMO tickets by tracking inbound query volume","Add carrier tracking link integration","Expand to proactive delay alerts"]}],"saving":25,"cost":8},"4":{"name":"Supplier onboarding","fn":"Supply Chain \u0026 Procurement","type":"m","roi":"h","complexity":"Medium","pct":20,"tpct":85,"effort":"10-14 weeks","budget":"35k-60k","teamSize":"4-5","category":"Strategic","summary":"Replace paper-based supplier registration and manual compliance checks with a self-service supplier portal backed by automated verification workflows. Reduce onboarding from weeks to days.","tools":["Coupa / Zip (supplier portal)","DocuSign (T\u0026C e-sign)","D\u0026B Direct / Refinitiv (compliance screening)","SAP / Oracle (ERP vendor master)"],"prereqs":["Defined supplier classification and risk framework","Legal-approved supplier terms and data processing agreements","ERP vendor master access and field mapping"],"kpis":[{"m":"Supplier onboarding cycle time","b":"3-4 weeks","t":"< 5 days"},{"m":"Manual compliance check time","b":"4 hrs/supplier","t":"< 15 min"},{"m":"Compliance check pass rate","b":"N/A","t":"> 95% auto-resolved"},{"m":"Supplier data completeness","b":"72%","t":"> 98%"}],"risks":[{"l":"High","d":"Supplier reluctance to use new portal, especially SMEs","mit":"Provide guided walkthrough and dedicated email support; track non-response and follow up via phone"},{"l":"High","d":"Compliance screening API downtime blocks onboarding","mit":"Manual fallback queue for urgent onboarding; SLA agreement with screening provider"},{"l":"Med","d":"ERP vendor master data model does not match portal output","mit":"Data mapping workshop between IT and procurement before build phase"}],"stakeholders":[{"role":"CPO / Head of Procurement","resp":"Executive sponsor, policy sign-off"},{"role":"Legal / Compliance","resp":"Regulatory requirements, sanctions policy"},{"role":"Finance / AP","resp":"Vendor master, payment terms"},{"role":"IT","resp":"Portal hosting, ERP integration"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Map all supplier data and document requirements","Audit current onboarding timeline and bottlenecks","Identify regulatory requirements (tax ID, certifications, sanctions)","Gather supplier feedback on pain points in current process"]},{"label":"Ph2","name":"Design","dur":"Wk 2-4","tasks":["Design supplier portal UX and registration workflow","Define automated compliance check integrations (sanctions lists)","Design internal approval workflow by supplier tier/risk","Specify ERP vendor master data integration"]},{"label":"Ph3","name":"Build","dur":"Wk 4-9","tasks":["Configure Coupa or Zip supplier portal","Integrate automated tax ID and sanctions screening","Build conditional approval routing (low/med/high risk)","Connect to ERP vendor master for approved supplier creation"]},{"label":"Ph4","name":"Test","dur":"Wk 9-12","tasks":["Test with 10 suppliers across risk tiers","Validate all compliance check integrations","UAT with procurement, finance, and legal teams","Test ERP vendor master record creation end-to-end"]},{"label":"Ph5","name":"Deploy","dur":"Wk 12-13","tasks":["Go-live for all new supplier onboarding requests","Migrate priority pending suppliers through new portal","Train procurement team on exception handling","Communicate new portal to supplier base via email"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly review of onboarding cycle time and exception rates","Add supplier self-service document refresh (cert renewals)","Expand compliance checks as regulations evolve","Annual supplier portal satisfaction survey"]}],"saving":70,"cost":47},"5":{"name":"Purchase order approval","fn":"Supply Chain \u0026 Procurement","type":"s","roi":"h","complexity":"Low","pct":40,"tpct":92,"effort":"6-8 weeks","budget":"12k-20k","teamSize":"3","category":"Quick win","summary":"Replace email-based approval chains and manual GL coding with a rules-driven approval workflow. Auto-approve routine orders; escalate exceptions only.","tools":["Coupa / SAP Ariba (procurement)","Slack approval bots / Teams Adaptive Cards","Custom AI GL classifier","SAP / Oracle (ERP posting)"],"prereqs":["Finance-signed approval authority matrix","Clean historical PO dataset (2+ years) for GL model training","Slack/Teams integration with procurement system"],"kpis":[{"m":"PO approval cycle time","b":"3-4 days","t":"< 4 hours"},{"m":"Auto-approval rate","b":"0%","t":"70%+"},{"m":"GL coding accuracy","b":"88%","t":"98%+"},{"m":"Approval email volume","b":"~500/wk","t":"< 50/wk"}],"risks":[{"l":"High","d":"Auto-approval thresholds set too high, bypassing controls","mit":"Finance and Internal Audit must sign off thresholds; build quarterly review gate into governance"},{"l":"Med","d":"GL coding AI errors on new or unusual spend categories","mit":"Low-confidence predictions flagged for human review; model accuracy threshold set at 95%+"},{"l":"Low","d":"Approvers miss Slack notifications","mit":"Add email fallback after 4-hour non-response; phone escalation at 24 hours"}],"stakeholders":[{"role":"Head of Procurement","resp":"Process owner, policy decisions"},{"role":"CFO / Finance","resp":"Approval authority matrix, GL coding rules"},{"role":"IT","resp":"System configuration, integration"},{"role":"Budget Holders","resp":"UAT, training"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1","tasks":["Map current approval authority matrix by spend category and value","Audit average approval cycle time and bottleneck steps","Identify most common GL coding errors and patterns","Gather sample POs for AI GL classification training"]},{"label":"Ph2","name":"Design","dur":"Wk 1-2","tasks":["Design approval workflow rules (by value, category, supplier risk)","Specify auto-approval thresholds with Finance sign-off","Design GL coding AI classification model","Define escalation and reminder logic"]},{"label":"Ph3","name":"Build","dur":"Wk 2-5","tasks":["Configure Coupa or SAP Ariba approval workflows","Train AI GL coding model on historical PO data","Build Slack/Teams approval notification and one-click action","Set up auto-approval rule engine with audit log"]},{"label":"Ph4","name":"Test \u0026 deploy","dur":"Wk 5-7","tasks":["Test all approval tiers with sample POs","Validate GL coding AI accuracy vs. human coded sample","Finance UAT for audit trail requirements","Pilot with one procurement category before full rollout"]},{"label":"Ph5","name":"Deploy","dur":"Wk 7-8","tasks":["Go-live for all purchase requisitions","Disable email approval process","Train all budget holders and approvers","Set up daily exception digest report for Finance"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly review of auto-approval rate and override frequency","Retrain GL coding model quarterly with new data","Tune approval thresholds based on risk patterns","Audit trail report for Finance annually"]}],"saving":55,"cost":16},"6":{"name":"Goods receipt \u0026 3-way matching","fn":"Supply Chain \u0026 Procurement","type":"s","roi":"h","complexity":"Medium","pct":35,"tpct":90,"effort":"8-12 weeks","budget":"25k-45k","teamSize":"4","category":"Strategic","summary":"Automate the matching of purchase orders, goods receipts, and supplier invoices using RPA and AI extraction. Reduce AP processing time by 80% and eliminate duplicate payment risk.","tools":["Basware / Tipalti / Coupa Pay (AP automation)","UiPath / Power Automate (RPA)","AWS Textract / ABBYY (OCR)","SAP / Oracle (ERP)"],"prereqs":["ERP with AP posting API","OCR platform license","Clean supplier master data in ERP"],"kpis":[{"m":"Straight-through match rate","b":"35%","t":"85%+"},{"m":"Invoice processing time","b":"4 days","t":"< 4 hours"},{"m":"Duplicate payment incidents","b":"~2/month","t":"0"},{"m":"AP headcount per 1000 invoices","b":"1.2 FTE","t":"0.2 FTE"}],"risks":[{"l":"High","d":"Supplier invoice format variability causes OCR failures","mit":"Start with top 20 suppliers (80% of volume); negotiate standard format for high-volume accounts"},{"l":"Med","d":"Tolerance band settings cause over/under-payment","mit":"Finance sign-off on all tolerance rules before go-live; audit first 500 auto-posted invoices"},{"l":"Med","d":"ERP performance impact from increased posting volume","mit":"ERP load test before go-live; batch posting for non-urgent invoices"}],"stakeholders":[{"role":"AP Manager","resp":"Process owner, UAT lead"},{"role":"CFO / Finance","resp":"Tolerance thresholds, controls sign-off"},{"role":"IT","resp":"RPA infrastructure, ERP integration"},{"role":"Procurement","resp":"GR confirmation process, supplier comms"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Map current 3-way match process and exception categories","Audit invoice formats received (PDF, EDI, portal)","Measure current invoice processing time and exception rate","Identify ERP matching rules and tolerance thresholds"]},{"label":"Ph2","name":"Design","dur":"Wk 2-4","tasks":["Design invoice data extraction template library","Define matching rules and tolerance bands","Design exception queue workflow for mismatches","Specify ERP posting and payment release logic"]},{"label":"Ph3","name":"Build","dur":"Wk 4-8","tasks":["Configure Basware or AP automation platform","Train OCR model on supplier invoice formats","Build 3-way match engine in orchestration layer","Develop exception queue with resolution workflow"]},{"label":"Ph4","name":"Test","dur":"Wk 8-10","tasks":["Process 500 historical invoices through automated match","Measure straight-through match rate vs. exceptions","Test all exception resolution paths","Finance and AP team UAT"]},{"label":"Ph5","name":"Deploy","dur":"Wk 11","tasks":["Go-live for supplier invoices (phased by supplier)","Parallel run for 2 weeks: auto-post and human verify","Decommission manual matching spreadsheets","Brief AP team on exception queue workflow"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly straight-through rate review","Expand OCR templates for new suppliers","Negotiate EDI with top 20 suppliers to eliminate OCR","Annual duplicate payment audit"]}],"saving":90,"cost":35},"7":{"name":"Inventory reorder triggering","fn":"Supply Chain \u0026 Procurement","type":"m","roi":"h","complexity":"Low","pct":5,"tpct":95,"effort":"4-6 weeks","budget":"8k-18k","teamSize":"2-3","category":"Quick win","summary":"Replace manual stock monitoring and email-based reorder requests with automated reorder triggers that fire PO drafts or EDI orders when inventory falls below dynamic safety stock levels.","tools":["Netstock / Inventory Planner (demand planning)","SAP / NetSuite (ERP)","Zapier / Make.com (orchestration)","EDI (AS2 / SFTP for key suppliers)"],"prereqs":["Real-time inventory system (ERP or WMS)","Defined reorder points and safety stock levels per SKU","Supplier lead time data by SKU"],"kpis":[{"m":"Stockout incidents per month","b":"~8","t":"< 1"},{"m":"Reorder trigger-to-PO time","b":"2-3 days","t":"< 1 hour"},{"m":"Manual reorder requests","b":"~60/wk","t":"0"},{"m":"Carrying cost (overstock)","b":"Baseline","t":"-15%"}],"risks":[{"l":"Med","d":"Inaccurate inventory data causes false reorder triggers","mit":"Data quality audit before go-live; cycle count programme to maintain accuracy"},{"l":"Med","d":"Auto-POs bypass spend approval for high-value SKUs","mit":"Value threshold: POs above 5k require approval; EDI for pre-approved suppliers only"},{"l":"Low","d":"Supplier EDI compatibility issues","mit":"Start with email/portal fallback; EDI only for suppliers with confirmed capability"}],"stakeholders":[{"role":"Supply Chain Manager","resp":"Process owner, reorder policy"},{"role":"Warehouse / Ops","resp":"Inventory data accuracy"},{"role":"Finance","resp":"Auto-PO spend controls"},{"role":"IT","resp":"ERP and EDI integration"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1","tasks":["Audit current inventory monitoring process and tools","Map reorder points and safety stock levels per SKU","Identify lead times and demand variability per supplier","Document current reorder cycle time and stockout incidents"]},{"label":"Ph2","name":"Design","dur":"Wk 1-2","tasks":["Design dynamic reorder point calculation model","Define auto-PO vs. EDI vs. approval-required scenarios by value","Specify supplier notification template and EDI format","Design exception alerts for stockout risk"]},{"label":"Ph3","name":"Build","dur":"Wk 2-4","tasks":["Configure inventory management reorder rules (Netstock/SAP)","Build automated PO draft creation in ERP","Set up EDI connection with key suppliers","Create Slack/email alert for low-stock and auto-reorder events"]},{"label":"Ph4","name":"Test \u0026 deploy","dur":"Wk 4-5","tasks":["Test reorder triggers with simulated inventory draws","Validate PO values and quantities against rules","Procurement team UAT","Go-live with monitoring dashboard for first 30 days"]},{"label":"Ph5","name":"Deploy","dur":"Wk 5-6","tasks":["Enable for all SKUs in scope","Remove manual reorder request process","Brief warehouse team on new auto-reorder confirmations","Set up daily reorder activity digest for procurement"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly review of reorder point accuracy vs. stockouts","Tune safety stock levels seasonally","Expand EDI to additional suppliers","Add demand forecasting model to improve reorder precision"]}],"saving":40,"cost":13},"8":{"name":"Ticket triage \u0026 routing","fn":"Customer Support","type":"s","roi":"h","complexity":"Low","pct":30,"tpct":92,"effort":"5-8 weeks","budget":"10k-20k","teamSize":"3","category":"Quick win","summary":"Deploy an AI classification layer on the support platform to automatically categorise, prioritise, and route incoming tickets, eliminating manual reading and assignment by queue managers.","tools":["Zendesk / Intercom (support platform)","OpenAI / Claude API (classification)","Cohere or fine-tuned classifier","Looker / Zendesk Explore (measurement)"],"prereqs":["12+ months of labelled ticket history in support platform","Defined tier-1/tier-2/tier-3 team structure","Knowledge base with articles for self-service deflection"],"kpis":[{"m":"Time to first assignment","b":"45 min","t":"< 2 min"},{"m":"Misrouting rate","b":"18%","t":"< 5%"},{"m":"Queue manager hours on triage","b":"12 hrs/day","t":"< 1 hr/day"},{"m":"CSAT impact of faster routing","b":"74%","t":"82%+"}],"risks":[{"l":"High","d":"Low-quality historical training data skews classifier","mit":"Data labelling sprint before training; set minimum training set of 5,000 labelled tickets per category"},{"l":"Med","d":"New product launches create unknown ticket categories","mit":"Unknown-intent catch-all bucket routes to senior agent; retrain model within 2 weeks of launch"},{"l":"Low","d":"Agents override AI routing, creating noise in data","mit":"Log all overrides; use as classifier feedback signal; investigate high-override categories"}],"stakeholders":[{"role":"Head of Customer Support","resp":"Business owner, taxonomy sign-off"},{"role":"Support QA Lead","resp":"Classifier training data quality"},{"role":"IT / Platform","resp":"Zendesk integration, API management"},{"role":"Product Management","resp":"Product-area taxonomy input"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1","tasks":["Audit existing ticket categories and routing rules","Measure average time from ticket creation to first agent response","Analyse top 20 ticket types by volume","Identify misrouting rate and its downstream impact"]},{"label":"Ph2","name":"Design","dur":"Wk 1-2","tasks":["Define AI classification taxonomy (intent, product, urgency, sentiment)","Design routing matrix: AI category to team/agent","Define auto-resolve triggers for known self-service scenarios","Specify confidence threshold for auto-route vs. human review"]},{"label":"Ph3","name":"Build","dur":"Wk 2-5","tasks":["Train classifier on 12 months of labelled ticket history","Integrate classification API with Zendesk/Intercom","Build routing automation with fallback queue","Configure KB article suggestion for low-complexity tickets"]},{"label":"Ph4","name":"Test \u0026 deploy","dur":"Wk 5-7","tasks":["Test classifier accuracy on held-out ticket sample","Measure misclassification rate vs. target below 5%","Parallel run: AI routes and queue manager verifies for 2 weeks","Go-live and monitor for 4 weeks"]},{"label":"Ph5","name":"Deploy","dur":"Wk 7-8","tasks":["Enable AI triage for all inbound tickets","Redeploy queue managers to quality assurance and edge cases","Set up weekly classifier performance report","Create SLA breach alert based on AI urgency scores"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Weekly classifier retraining with mis-labelled tickets","Expand auto-resolve to additional ticket types","Add multilingual classification for global support","Quarterly model accuracy review with Support leadership"]}],"saving":65,"cost":15},"9":{"name":"First-response \u0026 FAQ resolution","fn":"Customer Support","type":"m","roi":"h","complexity":"Low","pct":0,"tpct":85,"effort":"6-9 weeks","budget":"15k-30k","teamSize":"3-4","category":"Quick win","summary":"Deploy an LLM-powered Tier-1 chatbot grounded in your knowledge base to resolve password resets, order status queries, and known issues automatically, with seamless human escalation fallback.","tools":["Claude API / OpenAI GPT-4 (LLM)","Pinecone / Weaviate (vector DB for RAG)","Intercom / Zendesk (support platform integration)","LangChain / custom RAG pipeline"],"prereqs":["Up-to-date, structured knowledge base (Confluence/Notion/Guru)","LLM API access (Claude/OpenAI)","Zendesk/Intercom messaging integration capability"],"kpis":[{"m":"Bot resolution rate (no escalation)","b":"0%","t":"60%+"},{"m":"First-response time","b":"4 hrs avg","t":"< 30 sec"},{"m":"Agent ticket deflection","b":"0%","t":"50%+"},{"m":"Bot CSAT","b":"N/A","t":"> 70%"}],"risks":[{"l":"High","d":"LLM hallucinations on product-specific queries damage customer trust","mit":"Ground all responses in KB via RAG; fallback to escalation if confidence below threshold; weekly hallucination audit"},{"l":"High","d":"KB out of date causes bot to give wrong answers","mit":"Weekly KB sync job; KB owner accountable for freshness; bot version-stamps all KB content used"},{"l":"Med","d":"VIP customers frustrated by bot instead of human","mit":"CRM customer tier lookup: Enterprise/VIP accounts bypass bot and route direct to senior agents"}],"stakeholders":[{"role":"Head of Customer Support","resp":"Business owner, resolution quality bar"},{"role":"Knowledge Base Manager","resp":"KB quality, content updates"},{"role":"IT / Engineering","resp":"LLM infrastructure, API integration"},{"role":"Legal / Compliance","resp":"Data handling, GDPR review"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Identify top 30 FAQ ticket types by volume","Audit knowledge base for completeness and accuracy","Map escalation criteria for bot-to-human handoff","Define GDPR/data handling requirements for bot conversations"]},{"label":"Ph2","name":"Design","dur":"Wk 2-3","tasks":["Design bot conversation flows for top 30 FAQs","Define escalation triggers (sentiment, complexity, VIP customer)","Design handoff protocol: full context passed to agent","Specify KB sync cadence to keep bot grounded in current info"]},{"label":"Ph3","name":"Build","dur":"Wk 3-6","tasks":["Build RAG pipeline over knowledge base (KB to embeddings to LLM)","Integrate bot into Intercom/Zendesk messaging widget","Build escalation flow with full conversation context handoff","Implement CSAT prompt after bot resolution"]},{"label":"Ph4","name":"Test","dur":"Wk 6-8","tasks":["Red-team test for hallucination and out-of-scope responses","Test escalation flows with live agents","Accuracy test against 200 FAQ samples","Soft launch to 10% of inbound traffic"]},{"label":"Ph5","name":"Deploy","dur":"Wk 8-9","tasks":["Full rollout to all inbound support channels","Train support team on context-rich escalations","Set up bot performance dashboard (resolution rate, escalation rate, CSAT)","Deprecate manual first-response queue"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Weekly review of unresolved/escalated conversations","Expand FAQ coverage monthly","KB gap analysis based on bot failures","Quarterly LLM model review for improvements"]}],"saving":120,"cost":22},"10":{"name":"SLA monitoring \u0026 escalation","fn":"Customer Support","type":"m","roi":"med","complexity":"Low","pct":10,"tpct":95,"effort":"3-5 weeks","budget":"5k-10k","teamSize":"2","category":"Quick win","summary":"Replace manual SLA checking with automated countdown timers, proactive customer notifications, and manager escalation alerts, preventing breaches before they happen.","tools":["Zendesk / Freshdesk (SLA engine)","PagerDuty / Slack (escalation alerts)","Postmark / SendGrid (customer notifications)"],"prereqs":["Support platform with SLA policy configuration (Zendesk/Freshdesk)","Slack workspace with support team","Defined SLA commitments per customer/product tier"],"kpis":[{"m":"SLA breach rate","b":"12%","t":"< 2%"},{"m":"Time from breach risk to escalation","b":"Manual / ad hoc","t":"< 5 min automated"},{"m":"Customer proactive update rate","b":"0%","t":"100% of at-risk tickets"},{"m":"Manual SLA monitoring hours","b":"6 hrs/wk","t":"0"}],"risks":[{"l":"Med","d":"Alert fatigue from too many Slack notifications","mit":"Tune alert thresholds; only escalate at 90%+ for low-tier tickets; immediate alert for Enterprise SLA"},{"l":"Low","d":"SLA policies misconfigured in platform","mit":"QA review of all SLA policy settings before go-live; monthly audit"}],"stakeholders":[{"role":"Head of Support","resp":"SLA policy owner"},{"role":"CCO / Customer Success","resp":"Customer impact, SLA definitions"},{"role":"IT","resp":"Platform configuration"}],"phases":[{"label":"Ph1","name":"Discovery \u0026 design","dur":"Wk 1","tasks":["Document all SLA tiers by customer/product/urgency","Map current SLA breach rate and root causes","Define escalation logic: who is alerted and when","Identify integration points with support platform and Slack"]},{"label":"Ph2","name":"Build","dur":"Wk 1-3","tasks":["Configure SLA policies in Zendesk/Freshdesk","Build Slack alert integration for SLA warnings (at 75%, 90%, 100%)","Create customer-facing proactive update trigger at 80% of SLA","Build SLA breach report for daily manager digest"]},{"label":"Ph3","name":"Test \u0026 deploy","dur":"Wk 3-4","tasks":["Test all SLA tiers and alert triggers with dummy tickets","Verify customer notification content and tone","Team UAT and Slack channel setup","Go-live with 2-week parallel monitoring period"]},{"label":"Ph4","name":"Optimise","dur":"Ongoing","tasks":["Weekly SLA breach rate review","Monthly calibration of alert thresholds","Quarterly SLA policy review with customer success","Add SLA trend analysis to executive dashboard"]}],"saving":30,"cost":7},"11":{"name":"CSAT survey \u0026 analysis","fn":"Customer Support","type":"s","roi":"med","complexity":"Low","pct":50,"tpct":90,"effort":"3-4 weeks","budget":"4k-8k","teamSize":"2","category":"Quick win","summary":"Automate post-interaction CSAT surveys and pipe results into a live dashboard with AI sentiment analysis, replacing manual survey distribution and spreadsheet collation.","tools":["Delighted / Medallia (survey)","OpenAI / Claude API (sentiment analysis)","Looker / Tableau (dashboard)","Zendesk integration (trigger)"],"prereqs":["Support platform with ticket-close trigger","Survey tool (Delighted/Medallia) or in-platform option","BI tool for dashboard (Looker/Tableau)"],"kpis":[{"m":"Survey response rate","b":"18%","t":"30%+"},{"m":"Time to CSAT insight","b":"1 week (manual)","t":"Real-time"},{"m":"Actionable insight reports per month","b":"1","t":"4+"}],"risks":[{"l":"Low","d":"Survey fatigue from too-frequent sends","mit":"Cap at one survey per customer per 7 days; exclude long-running account tickets"},{"l":"Low","d":"Sentiment model bias on industry-specific language","mit":"Fine-tune model on support conversation samples; human review of outlier scores"}],"stakeholders":[{"role":"Head of Support","resp":"CSAT programme owner"},{"role":"CX Analytics","resp":"Dashboard design, insight reporting"},{"role":"IT","resp":"Platform integration"}],"phases":[{"label":"Ph1","name":"Design \u0026 build","dur":"Wk 1-2","tasks":["Design survey trigger logic (resolution plus time delay)","Create survey template with CSAT and open-text questions","Build sentiment analysis pipeline over open-text responses","Configure Looker/Tableau dashboard for CSAT trends"]},{"label":"Ph2","name":"Test \u0026 deploy","dur":"Wk 2-3","tasks":["Test trigger logic across all ticket close scenarios","Validate sentiment scoring on historical responses","Go-live with automated survey dispatch","Disable manual survey process"]},{"label":"Ph3","name":"Optimise","dur":"Ongoing","tasks":["Weekly CSAT review with support leadership","Monthly survey question optimisation","Add agent-level CSAT tracking for coaching","Quarterly NPS correlation analysis"]}],"saving":20,"cost":6},"12":{"name":"Invoice processing","fn":"Finance \u0026 Billing","type":"m","roi":"h","complexity":"Medium","pct":0,"tpct":92,"effort":"10-14 weeks","budget":"40k-70k","teamSize":"4-5","category":"Strategic","summary":"Deploy an end-to-end AP automation platform to extract invoice data via OCR, auto-code GL lines using AI, perform 3-way matching, and post to ERP, with human review only for exceptions.","tools":["Tipalti / Basware / Coupa Pay (AP automation)","AWS Textract / ABBYY (OCR)","Custom GL coding AI (GPT-4 fine-tuned)","SAP / Oracle (ERP)"],"prereqs":["ERP with AP posting API","2+ years of labelled, coded invoices for GL model","Finance-approved matching tolerance rules"],"kpis":[{"m":"Cost per invoice processed","b":"8-12 GBP","t":"< 2 GBP"},{"m":"Invoice STP rate","b":"0%","t":"80%+"},{"m":"Invoice cycle time","b":"7-10 days","t":"< 1 day"},{"m":"Duplicate payment rate","b":"0.3%","t":"0%"}],"risks":[{"l":"High","d":"GL coding AI errors cause misallocation of spend","mit":"Confidence threshold: low-confidence codings flagged for review; Finance must set minimum accuracy bar"},{"l":"High","d":"ERP posting failures causing payment delays","mit":"Automated retry logic; manual escalation queue for posting failures; SLA with ERP team"},{"l":"Med","d":"Supplier invoice format changes break OCR templates","mit":"Monthly template audit; supplier-specific exception alerts if extraction accuracy drops"}],"stakeholders":[{"role":"CFO","resp":"Executive sponsor, controls sign-off"},{"role":"AP Manager","resp":"Process owner, UAT lead"},{"role":"Internal Audit","resp":"Controls framework, audit trail"},{"role":"IT","resp":"Platform integration, infrastructure"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Audit invoice volume, format diversity, and supplier concentration","Map all GL coding rules and chart of accounts","Document matching tolerance thresholds","Measure current invoice processing cost per invoice"]},{"label":"Ph2","name":"Design","dur":"Wk 2-4","tasks":["Design OCR extraction template library","Define GL coding AI training dataset","Specify matching rules and exception routing","Design AP manager exception queue UX"]},{"label":"Ph3","name":"Build","dur":"Wk 4-9","tasks":["Configure Tipalti or Basware AP automation platform","Train GL coding AI on 2 years of historical coded invoices","Build 3-way match engine (PO/GR/Invoice)","Integrate with ERP for automated posting"]},{"label":"Ph4","name":"Test","dur":"Wk 9-12","tasks":["Process 1,000 historical invoices through full automation stack","Measure STP rate, GL coding accuracy, match rate","Finance and Internal Audit UAT","Parallel run: auto-post and human verify for 3 weeks"]},{"label":"Ph5","name":"Deploy","dur":"Wk 12-13","tasks":["Phased go-live by supplier (top 20 first)","AP team redeployed to exception handling and vendor relations","Set up daily AP dashboard for CFO","Monthly cost-per-invoice tracking begins"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly STP and exception rate review","Retrain GL coding model quarterly","Drive EDI adoption with top 50 suppliers to eliminate OCR","Annual AP audit with Finance and Internal Audit"]}],"saving":150,"cost":55},"13":{"name":"Revenue recognition","fn":"Finance \u0026 Billing","type":"s","roi":"h","complexity":"High","pct":40,"tpct":88,"effort":"14-20 weeks","budget":"60k-100k","teamSize":"5-6","category":"Strategic","summary":"Implement a revenue recognition automation platform that applies IFRS 15 / ASC 606 rules to contract data flowing from CPQ, eliminating manual waterfall schedules and reducing close cycle time.","tools":["Zuora Revenue / Salesforce Revenue Cloud / NetSuite Advanced Rev Rec","Salesforce CPQ (source data)","SAP / Oracle (ERP journal posting)","Tableau / Looker (reporting)"],"prereqs":["CPQ with structured contract data output","External auditor engagement and sign-off","Technical Accounting team involved from Day 1"],"kpis":[{"m":"Month-end close time (rev-rec step)","b":"5 days","t":"< 1 day"},{"m":"Manual journal entries for rev-rec","b":"~200/month","t":"< 10"},{"m":"Rev-rec restatement risk","b":"Moderate","t":"Minimal"},{"m":"Audit preparation time","b":"3 weeks","t":"< 3 days"}],"risks":[{"l":"High","d":"Incorrect rule configuration causes revenue misstatement","mit":"External auditor involved in design phase; parallel run mandatory for 2 periods minimum"},{"l":"High","d":"Complex or non-standard contracts not handled by rule engine","mit":"Exception queue with Technical Accounting review; automated flagging of non-standard contract types"},{"l":"Med","d":"CPQ data quality issues flow through to rev-rec","mit":"Data validation gate between CPQ and rev-rec platform; Finance owns CPQ data quality KPI"}],"stakeholders":[{"role":"CFO","resp":"Executive sponsor, auditor liaison"},{"role":"Technical Accounting","resp":"IFRS 15 rule design, audit"},{"role":"Revenue Operations","resp":"CPQ/CRM data integration"},{"role":"Internal / External Audit","resp":"Controls review, sign-off"},{"role":"IT","resp":"Platform integration"}],"phases":[{"label":"Ph1","name":"Discovery \u0026 scoping","dur":"Wk 1-3","tasks":["Document all revenue stream types and recognition rules","Audit current manual rev-rec schedule process","Map data flow: CPQ to CRM to billing to GL","Engage external auditors on automation approach"]},{"label":"Ph2","name":"Design","dur":"Wk 3-6","tasks":["Design rev-rec rule engine per contract type","Specify data mapping from CPQ/CRM to rev-rec platform","Define journal entry templates and GL posting logic","Design audit trail and disclosure reporting"]},{"label":"Ph3","name":"Build","dur":"Wk 6-13","tasks":["Configure Zuora Revenue or Salesforce Revenue Cloud","Build CPQ-to-billing data integration","Implement automated journal posting to ERP","Develop period-close report package"]},{"label":"Ph4","name":"Test \u0026 audit","dur":"Wk 13-17","tasks":["Parallel run: automated vs. manual rev-rec for 2 periods","Auditor review of automated output","Restatement testing on 12 months of historical contracts","CFO and Technical Accounting sign-off"]},{"label":"Ph5","name":"Deploy","dur":"Wk 17-19","tasks":["Go-live for all new contracts","Parallel run retained for complex legacy contracts","Finance team training on exception review","First fully automated close period reported to board"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly reconciliation of automated vs. expected rev-rec","Expand to new contract structures as business evolves","Annual auditor review of automation controls","Quarterly close cycle time reduction target"]}],"saving":180,"cost":80},"14":{"name":"Expense report processing","fn":"Finance \u0026 Billing","type":"m","roi":"med","complexity":"Low","pct":10,"tpct":90,"effort":"4-6 weeks","budget":"8k-15k","teamSize":"2-3","category":"Quick win","summary":"Replace paper receipts and manual expense keying with mobile receipt capture, AI policy checking, and threshold-based auto-approval, reducing processing time from days to hours.","tools":["Expensify / Concur / Pleo (expense platform)","Slack (approval notifications)","Payroll integration (Workday / ADP)"],"prereqs":["Company expense policy documented and signed off","Finance-approved auto-approval thresholds","Mobile device management for app deployment"],"kpis":[{"m":"Expense reimbursement cycle time","b":"8-12 days","t":"< 3 days"},{"m":"Auto-approved expense reports","b":"0%","t":"65%+"},{"m":"Policy violation rate","b":"14%","t":"< 3%"},{"m":"Finance processing hours per report","b":"25 min","t":"< 3 min"}],"risks":[{"l":"Med","d":"Employees submit duplicate or fraudulent receipts","mit":"AI duplicate detection and OCR cross-check; manager review for outlier spend patterns"},{"l":"Low","d":"Poor mobile OCR quality for handwritten or faded receipts","mit":"Manual receipt upload fallback; clear photography guidance in app onboarding"}],"stakeholders":[{"role":"CFO / Finance","resp":"Policy rules, auto-approval thresholds"},{"role":"HR / People Ops","resp":"Policy communication, employee training"},{"role":"IT","resp":"Payroll integration, mobile MDM"}],"phases":[{"label":"Ph1","name":"Discovery \u0026 design","dur":"Wk 1-2","tasks":["Audit current expense policy and approval authority levels","Measure average reimbursement cycle time","Identify top policy violation types","Design auto-approval rule set with Finance"]},{"label":"Ph2","name":"Build \u0026 test","dur":"Wk 2-4","tasks":["Configure Expensify or Concur with company policy rules","Train receipt OCR on sample receipts","Build manager approval workflow with Slack integration","Test policy violation detection on historical expense sample"]},{"label":"Ph3","name":"Deploy","dur":"Wk 4-5","tasks":["Roll out mobile app to all employees","Brief managers on new approval flow","Integrate with payroll for reimbursement","Disable paper receipt process"]},{"label":"Ph4","name":"Optimise","dur":"Ongoing","tasks":["Monthly policy compliance report","Quarterly spend analytics by category and department","Annual expense policy review based on compliance data"]}],"saving":35,"cost":11},"15":{"name":"Month-end close tasks","fn":"Finance \u0026 Billing","type":"s","roi":"h","complexity":"High","pct":35,"tpct":85,"effort":"12-18 weeks","budget":"40k-80k","teamSize":"4-5","category":"Strategic","summary":"Automate the mechanical steps of month-end close: reconciliations, journal postings, sub-ledger uploads using a financial close platform, reducing close cycle from 10 days to 3 days.","tools":["BlackLine / Trintech (close management)","SAP / Oracle (ERP)","Workday / ADP (payroll sub-ledger)","Tableau / Looker (CFO dashboard)"],"prereqs":["ERP with structured sub-ledger data","Chart of accounts clean and well-maintained","Internal Audit engaged from project start"],"kpis":[{"m":"Days to close (D+X)","b":"D+10","t":"D+3"},{"m":"Automated reconciliations","b":"20%","t":"85%+"},{"m":"Manual journal entries","b":"~150/month","t":"< 20/month"},{"m":"Finance overtime during close","b":"~40 hrs/close","t":"< 5 hrs/close"}],"risks":[{"l":"High","d":"Sub-ledger data quality issues cause incorrect auto-postings","mit":"Data validation checks before posting; Finance sign-off on posting rules before go-live"},{"l":"High","d":"Audit trail insufficient for external auditors","mit":"Engage auditors in design phase; ensure all auto-postings have system-generated evidence"},{"l":"Med","d":"Risk of over-automating material accruals requiring judgement","mit":"Clear classification: automated for routine items only; CFO/Controller retain approval for material estimates"}],"stakeholders":[{"role":"CFO","resp":"Executive sponsor, close calendar owner"},{"role":"Controller / Head of Accounting","resp":"Process owner, rule design"},{"role":"Internal Audit","resp":"Controls framework sign-off"},{"role":"IT","resp":"ERP and platform integration"}],"phases":[{"label":"Ph1","name":"Discovery \u0026 mapping","dur":"Wk 1-3","tasks":["Map all month-end close tasks with owner, effort, and dependency","Classify tasks: automatable vs. judgement-required","Measure current close calendar (D+1 to D+10 breakdown)","Audit reconciliation templates and journal entry patterns"]},{"label":"Ph2","name":"Design","dur":"Wk 3-6","tasks":["Design automated reconciliation templates in BlackLine/Trintech","Define sub-ledger to GL auto-posting rules","Build close task dependency map and critical path","Specify exception alerting and escalation logic"]},{"label":"Ph3","name":"Build","dur":"Wk 6-12","tasks":["Configure BlackLine for reconciliations and close management","Build automated journal postings from sub-ledgers (AP, AR, payroll)","Integrate ERP for automated trial balance pulls","Set up real-time close dashboard for CFO"]},{"label":"Ph4","name":"Test \u0026 parallel run","dur":"Wk 12-15","tasks":["Parallel close: automated and manual for 2 periods","Reconcile outputs between manual and automated results","Internal Audit review of automated controls","Finance team sign-off on auto-posted journals"]},{"label":"Ph5","name":"Deploy","dur":"Wk 15-17","tasks":["First fully automated close cycle","Finance team redeployed from mechanical tasks to analysis","Real-time close status dashboard live for senior leadership","Close calendar updated to D+3 target"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly close time trend reporting","Quarterly automation rate improvement target","External audit efficiency gain tracking","Annual controls review with Internal Audit"]}],"saving":200,"cost":60},"16":{"name":"Employee onboarding","fn":"HR \u0026 Workforce","type":"m","roi":"med","complexity":"Medium","pct":10,"tpct":85,"effort":"8-12 weeks","budget":"20k-35k","teamSize":"3-4","category":"Strategic","summary":"Replace email-chain-driven onboarding with an automated workflow that triggers parallel workstreams: IT provisioning, badge access, payroll, L\u0026D enrolment, the moment an offer is accepted.","tools":["Workday / BambooHR (HRIS)","ServiceNow (workflow orchestration)","Okta / Azure AD (identity provisioning)","Slack (progress notifications)"],"prereqs":["HRIS as authoritative data source for all people data","IT provisioning system with API (Okta, Active Directory)","Payroll integration between HRIS and payroll provider"],"kpis":[{"m":"Day 1 readiness rate","b":"62%","t":"98%+"},{"m":"Onboarding task completion time","b":"3 weeks","t":"< 3 days pre-start"},{"m":"New hire NPS at 30 days","b":"22","t":"50+"},{"m":"HR coordination hours per hire","b":"8 hrs","t":"< 1 hr"}],"risks":[{"l":"High","d":"IT provisioning delays break automated flow: hardware not ready","mit":"Hardware order triggered 4 weeks pre-start; Facilities room booking 2 weeks pre-start; SLA with IT for provisioning"},{"l":"Med","d":"HRIS data errors cascade through all workstreams","mit":"HR data validation gate before workflow launch; named HR owner per new hire for data quality"},{"l":"Low","d":"International hire complexity not handled by automated flow","mit":"Flag international hires for manual routing to Global Mobility team; expand scope in Phase 2"}],"stakeholders":[{"role":"CHRO / Head of People","resp":"Executive sponsor, experience standards"},{"role":"IT / InfoSec","resp":"Provisioning, security policy"},{"role":"HR Operations","resp":"Process owner, workflow design"},{"role":"Finance / Payroll","resp":"Payroll setup integration"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Map all onboarding tasks across HR, IT, Facilities, Finance","Identify dependencies and current average completion time","Survey new hires and managers on pain points","Audit data handoff between offer letter and HRIS"]},{"label":"Ph2","name":"Design","dur":"Wk 2-4","tasks":["Design trigger: offer accepted starts parallel workflow launch","Assign owners for each workstream (IT, HR, Facilities, Payroll)","Design new hire self-service portal for document submission","Specify Day 1 checklist and 30/60/90 day touchpoints"]},{"label":"Ph3","name":"Build","dur":"Wk 4-9","tasks":["Configure Workday/ServiceNow onboarding workflow","Integrate with IT provisioning (Okta, M365, hardware request)","Build payroll setup automation from HRIS data","Create L\u0026D enrolment trigger (mandatory training auto-assigned)"]},{"label":"Ph4","name":"Test \u0026 deploy","dur":"Wk 9-11","tasks":["Test full workflow with 5 trial new hire scenarios","HR, IT, and Finance UAT","Go-live for next cohort of new hires","Monitor Day 1 readiness for first 4 weeks"]},{"label":"Ph5","name":"Deploy","dur":"Wk 11-12","tasks":["Full rollout: all new hires go through automated flow","HR redirected from coordination to experience design","Monthly Day 1 readiness score tracked","New hire survey launched at 30 and 90 days"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly onboarding NPS review","Quarterly workflow gap analysis from survey data","Expand to contractor and agency worker onboarding","Build offboarding mirror workflow"]}],"saving":45,"cost":27},"17":{"name":"Leave \u0026 absence management","fn":"HR \u0026 Workforce","type":"s","roi":"l","complexity":"Low","pct":60,"tpct":95,"effort":"3-5 weeks","budget":"5k-10k","teamSize":"2","category":"Quick win","summary":"Complete the automation of leave requests and approvals by connecting the self-service HR portal to payroll and team calendar updates, eliminating the remaining manual approval email loops.","tools":["Workday / HiBob / BambooHR","Slack leave bot","Payroll integration (ADP / Sage / Workday Payroll)"],"prereqs":["HRIS with self-service leave module","Payroll integration between HRIS and payroll","Slack/Teams integration for manager notifications"],"kpis":[{"m":"Leave approval cycle time","b":"2-3 days","t":"< 4 hours"},{"m":"Payroll error rate from leave","b":"3%","t":"< 0.2%"},{"m":"HR admin time on leave queries","b":"5 hrs/wk","t":"< 30 min/wk"}],"risks":[{"l":"Low","d":"Complex leave types (parental, sick) require manual HR intervention","mit":"Scope automation to annual, bank holiday, and TOIL leave only; complex types routed to HR Business Partner"},{"l":"Low","d":"Managers bulk-approve without reviewing","mit":"Dashboard flag for unusual leave patterns; HR quarterly audit of approval behaviours"}],"stakeholders":[{"role":"HR Operations","resp":"Process owner"},{"role":"Line Managers","resp":"Approval workflow UAT"},{"role":"Payroll","resp":"Payroll deduction integration"}],"phases":[{"label":"Ph1","name":"Design \u0026 build","dur":"Wk 1-2","tasks":["Audit remaining manual steps in leave process","Configure Workday/HiBob leave approval workflow","Build manager approval via Slack bot with one-click approve/deny","Automate payroll deduction trigger for unpaid leave"]},{"label":"Ph2","name":"Test \u0026 deploy","dur":"Wk 2-4","tasks":["Test all leave types and edge cases (overlapping requests, peak blackout periods)","Manager and HR UAT","Go-live and disable email-based approvals","Publish self-service guide for employees"]},{"label":"Ph3","name":"Optimise","dur":"Ongoing","tasks":["Monthly leave utilisation report","Annual absence trend analysis for workforce planning","Add absence prediction model for scheduling"]}],"saving":15,"cost":7},"18":{"name":"Performance review cycle","fn":"HR \u0026 Workforce","type":"s","roi":"med","complexity":"Medium","pct":40,"tpct":88,"effort":"6-10 weeks","budget":"15k-25k","teamSize":"3","category":"Strategic","summary":"Automate performance review administration: period triggers, form distribution, reminder sequences, and data aggregation, so HR can focus on coaching and insights rather than chasing submissions.","tools":["Lattice / Culture Amp / Workday HCM","Slack (reminder notifications)","Looker / custom dashboard (calibration reporting)"],"prereqs":["Performance management platform (Lattice/Culture Amp/Workday)","HR-owned review design and competency framework","HRIS integration for org structure and manager hierarchy"],"kpis":[{"m":"Review submission rate","b":"74%","t":"98%+"},{"m":"On-time submission rate","b":"55%","t":"90%+"},{"m":"HR admin time per review cycle","b":"40 hrs","t":"< 5 hrs"},{"m":"Calibration prep time for managers","b":"3 hrs","t":"< 45 min"}],"risks":[{"l":"Med","d":"Automated reminders perceived as impersonal or aggressive","mit":"Tone-test reminders with HR and manager focus group; allow HRBP to personalise for senior leaders"},{"l":"Low","d":"Platform downtime during peak review period","mit":"Browser-cached form option; manual CSV backup for calibration data"}],"stakeholders":[{"role":"CHRO","resp":"Business sponsor"},{"role":"HR Operations","resp":"Process owner, cycle design"},{"role":"People Managers","resp":"UAT, feedback on reminder UX"}],"phases":[{"label":"Ph1","name":"Discovery \u0026 design","dur":"Wk 1-2","tasks":["Map all review types and cadences (mid-year, annual, probation)","Audit current submission completion rate and average time","Design automated reminder sequence logic","Define calibration dashboard requirements for managers and HRBPs"]},{"label":"Ph2","name":"Build","dur":"Wk 2-6","tasks":["Configure Lattice/Culture Amp review cycle automation","Build reminder sequence (T-14, T-7, T-3, T-0 days)","Automate manager calibration data aggregation","Build executive dashboard: completion rates, score distributions, flagged outliers"]},{"label":"Ph3","name":"Test \u0026 deploy","dur":"Wk 6-9","tasks":["Pilot with one department","HR and manager UAT","Go-live for next review cycle","Monitor completion rate daily during active period"]},{"label":"Ph4","name":"Optimise","dur":"Ongoing","tasks":["Post-cycle HR retrospective","Tune reminder frequency based on completion rate data","Add AI-suggested talking points for managers","Annual review cycle design update"]}],"saving":40,"cost":20},"19":{"name":"IT access provisioning","fn":"IT \u0026 Systems Operations","type":"m","roi":"h","complexity":"Medium","pct":10,"tpct":92,"effort":"8-12 weeks","budget":"25k-45k","teamSize":"3-4","category":"Strategic","summary":"Replace helpdesk-ticket-driven access provisioning with automated role-based templates triggered by HRIS events, dramatically reducing security risk from access delays and manual errors.","tools":["Okta / Azure AD (identity and access management)","Workday / BambooHR (HRIS source of truth)","ServiceNow (exception ticket workflow)","Splunk / Microsoft Sentinel (SIEM integration)"],"prereqs":["Okta or Azure AD as central identity provider","HRIS with API event emission (Workday/BambooHR)","Complete and current job role library in HRIS"],"kpis":[{"m":"Provisioning time for new hire","b":"2-5 days","t":"< 30 min"},{"m":"Access errors / over-provisioning rate","b":"12%","t":"< 1%"},{"m":"Deprovisioning time after termination","b":"3-7 days","t":"< 1 hour"},{"m":"IT helpdesk access tickets","b":"~80/wk","t":"< 5/wk"}],"risks":[{"l":"High","d":"Incorrect RBAC templates give too-broad access (privilege creep)","mit":"InfoSec reviews all role templates before go-live; least-privilege principle enforced; quarterly review mandatory"},{"l":"High","d":"HRIS termination event delays leave accounts active","mit":"Real-time HRIS webhook to Okta; deprovisioning SLA of < 1 hour; daily active-but-termed account report"},{"l":"Med","d":"Role exceptions (contractors, interim roles) not covered by templates","mit":"Exception workflow routes to IT manager for manual approval; exception log tracked monthly"}],"stakeholders":[{"role":"CTO / IT Director","resp":"Executive sponsor"},{"role":"Information Security","resp":"RBAC design, controls sign-off"},{"role":"HR Operations","resp":"HRIS trigger events, role data"},{"role":"IT Helpdesk / SysAdmin","resp":"Provisioning implementation"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Audit all application roles and current provisioning process","Map HRIS job roles to application access templates","Measure average provisioning time and backlog","Identify most common access errors and over-provisioning patterns"]},{"label":"Ph2","name":"Design","dur":"Wk 2-4","tasks":["Design role-based access control (RBAC) matrix","Define provisioning triggers: new hire, role change, departure","Design deprovisioning workflow with zero-trust principles","Specify quarterly access review automation"]},{"label":"Ph3","name":"Build","dur":"Wk 4-9","tasks":["Configure Okta or Azure AD lifecycle management","Map HRIS job codes to Okta group memberships","Build deprovisioning workflow triggered by HRIS termination event","Implement automated quarterly access certification in Okta"]},{"label":"Ph4","name":"Test","dur":"Wk 9-11","tasks":["Test all role templates with IT, InfoSec, and HR","Security penetration test of RBAC boundaries","UAT: simulate hire, role change, and departure events","InfoSec sign-off on provisioning controls"]},{"label":"Ph5","name":"Deploy","dur":"Wk 11-12","tasks":["Go-live: all new hires provisioned via RBAC templates","Disable manual provisioning helpdesk tickets","Implement access anomaly alerting in SIEM","First automated quarterly access review launched"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly over-provisioning audit","Quarterly RBAC matrix review with InfoSec","Annual SOC 2 / ISO 27001 access control evidence collection","Expand to SaaS applications not yet covered"]}],"saving":80,"cost":35},"20":{"name":"Incident management \u0026 alerting","fn":"IT \u0026 Systems Operations","type":"s","roi":"h","complexity":"Medium","pct":50,"tpct":90,"effort":"8-10 weeks","budget":"20k-35k","teamSize":"3-4","category":"Strategic","summary":"Replace manual monitoring checks and email-based incident escalation with automated alerting, AI-powered severity classification, on-call paging, and runbook suggestions, reducing MTTR by 60%.","tools":["PagerDuty / Opsgenie (incident management)","Datadog / Dynatrace (monitoring)","Slack (war room automation)","Confluence / Notion (runbook store)"],"prereqs":["Centralised monitoring platform (Datadog/CloudWatch/Dynatrace)","PagerDuty or Opsgenie account","On-call schedule and team structure defined"],"kpis":[{"m":"Mean time to respond (MTTR)","b":"45 min","t":"< 10 min"},{"m":"P1 incidents escalated within SLA","b":"68%","t":"99%+"},{"m":"Alert noise (false positives)","b":"40%","t":"< 10%"},{"m":"On-call engineer time on manual monitoring","b":"3 hrs/shift","t":"< 15 min/shift"}],"risks":[{"l":"High","d":"Alert fatigue from too many low-quality alerts causes on-call burnout","mit":"Alert noise review sprint before go-live; only actionable alerts in PagerDuty; Datadog anomaly detection over threshold alerts"},{"l":"Med","d":"On-call coverage gaps during holidays","mit":"On-call schedule auto-published 4 weeks ahead; shadow on-call for all new engineers"},{"l":"Low","d":"Runbook suggestions irrelevant for novel incident types","mit":"Fallback to senior engineer escalation when no runbook match; new incident types added to runbook library post-incident"}],"stakeholders":[{"role":"CTO / VP Engineering","resp":"Executive sponsor"},{"role":"Engineering Managers","resp":"Runbook ownership, on-call policy"},{"role":"SRE / Platform Team","resp":"Monitoring stack, alert configuration"},{"role":"IT Operations","resp":"Infrastructure monitoring"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Audit all monitoring tools and alert sources","Map current incident classification and escalation process","Measure MTTR by severity and service","Identify most common incident types and runbook coverage"]},{"label":"Ph2","name":"Design","dur":"Wk 2-3","tasks":["Define incident severity taxonomy and SLA targets","Design alert routing rules per service/team/time","Specify automated runbook suggestion logic","Design on-call schedule and escalation policy"]},{"label":"Ph3","name":"Build","dur":"Wk 3-7","tasks":["Configure PagerDuty for alert routing and on-call management","Integrate Datadog/CloudWatch alerts with PagerDuty","Build AI severity classifier and runbook suggester","Create Slack war room auto-creation for P1/P2 incidents"]},{"label":"Ph4","name":"Test \u0026 deploy","dur":"Wk 7-9","tasks":["Simulate P1/P2/P3 incidents to validate routing","On-call team UAT and schedule verification","Go-live with 2-week parallel monitoring","Decommission email-based escalation process"]},{"label":"Ph5","name":"Deploy","dur":"Wk 9-10","tasks":["Full alerting live for all monitored services","Post-incident review process automated","Weekly incident digest report to Engineering leadership","Monthly MTTR trend report to CTO"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly alert noise reduction review","Runbook coverage gap analysis quarterly","Annual on-call load and burnout review","Expand monitoring coverage to new services at launch"]}],"saving":100,"cost":27},"21":{"name":"Software licence management","fn":"IT \u0026 Systems Operations","type":"m","roi":"med","complexity":"Low","pct":20,"tpct":88,"effort":"4-6 weeks","budget":"8k-15k","teamSize":"2","category":"Quick win","summary":"Deploy a SaaS management platform to track actual usage, identify unused licences, automate renewal alerts, and produce audit-ready licence inventory, replacing spreadsheet tracking.","tools":["Torii / Zylo / Snow Software (SaaS management)","Okta / Azure AD (SSO data source)","Slack (renewal alerts)"],"prereqs":["Okta / Azure AD as SSO provider","Finance system with vendor contract data","IT policy mandating SSO for all new SaaS"],"kpis":[{"m":"Unused licences identified","b":"Unknown","t":"Full visibility monthly"},{"m":"Licence spend saved p.a.","b":"0","t":"10-20% of SaaS spend"},{"m":"Renewal surprises (unbudgeted)","b":"~4/year","t":"0"},{"m":"Audit licence inventory time","b":"2 weeks/year","t":"< 1 hour"}],"risks":[{"l":"Med","d":"Shadow IT apps not connected to SSO are invisible to the tool","mit":"IT policy: all new SaaS must go through SSO; SSO integration audit quarterly"},{"l":"Low","d":"Usage data inaccurate for desktop apps not tracked via SSO","mit":"Agent-based tracking for desktop applications; annual desktop asset scan"}],"stakeholders":[{"role":"IT Operations","resp":"Process owner, tool admin"},{"role":"CFO / Finance","resp":"Spend visibility, renewal approvals"},{"role":"Information Security","resp":"Unauthorised SaaS controls"}],"phases":[{"label":"Ph1","name":"Discovery \u0026 build","dur":"Wk 1-3","tasks":["Connect SaaS management tool to identity provider (Okta/SSO)","Pull all active SaaS applications and user counts","Configure usage tracking per application","Set renewal alert triggers (90, 60, 30 days)"]},{"label":"Ph2","name":"Test \u0026 deploy","dur":"Wk 3-4","tasks":["Validate licence counts against vendor invoices","IT and Finance UAT on renewal alerts and reports","Go-live with automated weekly licence digest","Decommission spreadsheet tracking"]},{"label":"Ph3","name":"Optimise","dur":"Ongoing","tasks":["Monthly unused licence review and reclamation","Quarterly spend vs. usage analysis report for CFO","Annual vendor negotiation support using usage data","Expand to hardware asset management in Phase 2"]}],"saving":60,"cost":11},"22":{"name":"Partner deal registration","fn":"Partner \u0026 Channel Mgmt","type":"m","roi":"h","complexity":"Low","pct":10,"tpct":92,"effort":"6-8 weeks","budget":"15k-25k","teamSize":"3","category":"Quick win","summary":"Replace email-based deal registration with a self-service partner portal that auto-checks duplicates, routes for approval, and confirms registration, reducing cycle time from days to hours.","tools":["Salesforce PRM / Impartner (partner portal)","Salesforce (CRM duplicate detection)","Slack (approval notifications)","Postmark / SendGrid (partner confirmation emails)"],"prereqs":["Salesforce CRM as pipeline system of record","Active partner list with portal login credentials","Defined deal registration policy and approval authority matrix"],"kpis":[{"m":"Deal registration cycle time","b":"3-5 days","t":"< 4 hours"},{"m":"Duplicate conflict rate","b":"~15%","t":"< 3% (post-auto-check)"},{"m":"Partner portal adoption","b":"0%","t":"100% of active partners"},{"m":"Partner satisfaction (deal reg)","b":"62%","t":"85%+"}],"risks":[{"l":"Med","d":"Partners resist switching from email to portal","mit":"Partner enablement session; email-to-portal migration with 4-week grace period; partner success support"},{"l":"Med","d":"Duplicate detection false positives block legitimate deals","mit":"Fuzzy match threshold tuning; partner can flag for manual review; 48-hour SLA for manual resolution"},{"l":"Low","d":"Approval delays during leave periods","mit":"Backup approver assigned in portal for each primary; auto-escalation after 4 hours"}],"stakeholders":[{"role":"VP Channels / CRO","resp":"Business sponsor, policy owner"},{"role":"Partner Development Team","resp":"Process owner, partner comms"},{"role":"Revenue Operations","resp":"CRM integration, duplicate rules"},{"role":"IT","resp":"Portal hosting, CRM integration"}],"phases":[{"label":"Ph1","name":"Discovery \u0026 design","dur":"Wk 1-2","tasks":["Audit current deal registration volume and approval time","Map duplicate deal conflict scenarios and resolution policy","Define approval authority matrix for deal registration","Design partner portal UX and notification flow"]},{"label":"Ph2","name":"Build","dur":"Wk 2-5","tasks":["Configure Salesforce PRM or Impartner partner portal","Build duplicate detection against existing CRM pipeline","Implement approval workflow with Slack/email notification","Set up auto-confirmation email to partner on approval"]},{"label":"Ph3","name":"Test \u0026 deploy","dur":"Wk 5-7","tasks":["Test all registration scenarios (new, duplicate, conflicted)","Partner UAT with 5 pilot partners","Go-live with all active partners","Disable email registration process"]},{"label":"Ph4","name":"Optimise","dur":"Ongoing","tasks":["Monthly partner registration cycle time report","Quarterly partner portal satisfaction survey","Expand to MDF (co-op fund) request automation","Add deal stage progression notifications to partners"]}],"saving":50,"cost":20},"23":{"name":"Channel performance reporting","fn":"Partner \u0026 Channel Mgmt","type":"m","roi":"h","complexity":"Medium","pct":10,"tpct":90,"effort":"8-12 weeks","budget":"25k-40k","teamSize":"3-4","category":"Strategic","summary":"Replace manual data pulls and emailed spreadsheets with an automated data pipeline from PRM and CRM into a live Looker dashboard, delivering real-time channel performance visibility to all stakeholders.","tools":["Fivetran (ELT)","dbt (data transformation)","Snowflake / BigQuery (data warehouse)","Looker / Tableau (dashboards)"],"prereqs":["Salesforce PRM and CRM as source systems","Data warehouse (Snowflake/BigQuery/Redshift)","Fivetran or equivalent ELT tool"],"kpis":[{"m":"Report production time","b":"8 hrs/week","t":"0 (fully automated)"},{"m":"Report delivery frequency","b":"Weekly (T+3 days)","t":"Real-time"},{"m":"Data accuracy vs. source systems","b":"Manual / variable","t":"100% reconciled"},{"m":"Stakeholder self-serve rate","b":"0%","t":"80%+ accessing dashboard directly"}],"risks":[{"l":"High","d":"Source data quality in PRM is poor, producing unreliable metrics","mit":"Data quality remediation sprint before pipeline build; data quality KPIs tracked and owned by RevOps"},{"l":"Med","d":"CRO and finance disagree on metric definitions","mit":"Metric definition workshop in design phase; signed-off data dictionary before build"},{"l":"Low","d":"Fivetran sync latency causes stale dashboard data","mit":"Set sync frequency per source; display data freshness timestamp on dashboard"}],"stakeholders":[{"role":"CRO / VP Channels","resp":"Executive consumer, accuracy sign-off"},{"role":"Partner Development","resp":"Metric definitions, UAT"},{"role":"Finance","resp":"Revenue data integration, accuracy"},{"role":"IT / Data Engineering","resp":"Fivetran, data warehouse, Looker admin"}],"phases":[{"label":"Ph1","name":"Discovery","dur":"Wk 1-2","tasks":["Audit all channel performance data sources (PRM, CRM, finance)","Map current report recipients and frequency","Define key channel metrics and dimensions","Identify data quality issues in source systems"]},{"label":"Ph2","name":"Design","dur":"Wk 2-4","tasks":["Design data model: partner to deal to revenue to tier","Specify Fivetran/dbt transformation logic","Design Looker dashboard layout and access tiers","Define automated email report schedule and recipients"]},{"label":"Ph3","name":"Build","dur":"Wk 4-8","tasks":["Configure Fivetran connectors (Salesforce PRM, CRM, finance)","Build dbt transformation models for channel metrics","Develop Looker dashboards: executive summary, partner-level, channel manager view","Set up scheduled email delivery of report screenshots"]},{"label":"Ph4","name":"Test \u0026 deploy","dur":"Wk 8-11","tasks":["Validate dashboard figures vs. manually-produced reports for 2 periods","Stakeholder UAT (CRO, Partner Development, Finance)","Go-live and share dashboard links with channel team","Decommission weekly manual report process"]},{"label":"Ph5","name":"Deploy","dur":"Wk 11-12","tasks":["Full stakeholder access enabled","Training for channel managers on self-serve dashboard","Weekly auto-email live for CRO and regional leads","Channel analyst redeployed to insight generation"]},{"label":"Ph6","name":"Optimise","dur":"Ongoing","tasks":["Monthly data quality review","Add partner tier reclassification automation based on trailing metrics","Expand to channel ROI and MDF effectiveness reporting","Quarterly dashboard feature review with users"]}],"saving":40,"cost":32}}');
+// ══════════════════════════════════════════════════════
+// EMMA — AI PM ASSISTANT (clean rebuild)
+// ══════════════════════════════════════════════════════
 
-var emCtxId=-1, emMsgs=[], emOpen=false, emVoice=false, emRec=null, emIsRec=false;
+var emCtxId=-1, emMsgs=[], emOpen=false, emVoice=false;
+var emRec=null, emIsRec=false;
+var _emKey="";
 
-var EM_SYS = "You are Emma, an expert AI Programme Manager embedded in Khushboo Pasari's BPA dashboard.\n\nGOVERNANCE (NON-NEGOTIABLE): You are the EXECUTOR. Khushboo is the DECISION MAKER. Never make decisions. Every response with a recommendation MUST end with: 'Shall I proceed? Please confirm before I develop this further.'\n\nCAPABILITIES: Explain processes, suggest tooling (RPA/AI/no-code/CPQ), apply PMBOK7/PRINCE2/Lean Six Sigma, draft stakeholder comms (always label DRAFT), identify impact and success criteria, analyse risks. When asked for a chart respond with a ```chart JSON block: {\"type\":\"bar\",\"title\":\"...\",\"labels\":[],\"values\":[]}. Use markdown tables for data comparisons.\n\nFORMAT: **bold**, bullet lists, numbered steps, pipe tables. Be concise and practical.\n\nABOUT KHUSHBOO: Senior Programme Manager, Manchester. Lean Six Sigma Greenbelt, PMI member, MSc distinction (Rank #1). Expert in Amazon ops, UKAEA, cross-functional delivery.";
+// ── API Key Management ────────────────────────────────
+function emInitKey(){
+  try{ _emKey=localStorage.getItem("emma_api_key")||""; }catch(e){ _emKey=""; }
+  if(_emKey){
+    var inp=document.getElementById("em-key-input");
+    if(inp) inp.value=_emKey.substring(0,12)+"...";
+    var lbl=document.getElementById("em-key-lbl");
+    if(lbl){ lbl.className="emma-key-ok"; lbl.textContent="\u2713 Key saved"; }
+  }
+}
+function emSaveKey(){
+  var inp=document.getElementById("em-key-input");
+  var val=inp?inp.value.trim():"";
+  if(!val||val.indexOf("...")>=0){ if(inp)inp.focus(); return; }
+  _emKey=val;
+  try{ localStorage.setItem("emma_api_key",_emKey); }catch(e){}
+  if(inp) inp.value=_emKey.substring(0,12)+"...";
+  var lbl=document.getElementById("em-key-lbl");
+  if(lbl){ lbl.className="emma-key-ok"; lbl.textContent="\u2713 Key saved"; }
+  emAddMsg("emma","API key saved. Emma will now respond from Chrome, Firefox, and GitHub Pages.\n\nYour key is stored only in this browser and sent only to Anthropic.");
+}
+function emClearKey(){
+  _emKey="";
+  try{ localStorage.removeItem("emma_api_key"); }catch(e){}
+  var inp=document.getElementById("em-key-input");
+  if(inp) inp.value="";
+  var lbl=document.getElementById("em-key-lbl");
+  if(lbl){ lbl.className="emma-key-label"; lbl.textContent="\uD83D\uDD11 API Key"; }
+}
+function emGetHeaders(){
+  var h={"Content-Type":"application/json"};
+  if(_emKey){
+    h["x-api-key"]=_emKey;
+    h["anthropic-version"]="2023-06-01";
+    h["anthropic-dangerous-direct-browser-access"]="true";
+  }
+  return h;
+}
 
+// ── System prompt ─────────────────────────────────────
+var EM_SYS="You are Emma, an expert AI Programme Manager embedded in Khushboo Pasari's Business Process Automation dashboard.\n\nGOVERNANCE (NON-NEGOTIABLE): You are the EXECUTOR. Khushboo is the DECISION MAKER. Never make decisions. Every response with a recommendation MUST end with: 'Shall I proceed? Please confirm before I take any action.'\n\nCAPABILITIES: Explain processes in plain English, suggest tooling (RPA/AI/no-code/CPQ/AP automation), apply PMBOK7/PRINCE2/Lean Six Sigma, draft stakeholder comms (always label DRAFT), identify impact and success criteria, analyse risks, generate tables and charts.\n\nWhen asked for a chart respond with a ```chart JSON block: {\"type\":\"bar\",\"title\":\"...\",\"labels\":[],\"values\":[]}. Always use markdown tables for data comparisons.\n\nWhen asked to EDIT or CHANGE a plan, propose the change and include on its own line:\n[CHANGE:{\"label\":\"Brief description\",\"content\":\"New content here\"}]\n\nWhen asked to export or generate a PDF reply with:\n[PDF:\"full\"] for full dashboard, [PDF:\"process\"] for process planner, [PDF:\"plan\"] for implementation plans.\n\nFORMAT: **bold**, bullet lists, numbered steps, pipe tables. Be concise and practical.\n\nABOUT KHUSHBOO: Senior Programme Manager, Manchester UK. Lean Six Sigma Greenbelt, PMI member, MSc distinction (Rank #1 Royal Holloway). Expert in Amazon ops, UKAEA, cross-functional delivery. Targeting Business Process Analyst/Senior Advisor roles.";
+
+// ── Context builder (correct EMPROC field names) ──────
 function emBuildCtx(){
-  if(emCtxId<0)return "Dashboard: 24 enterprise processes, 7 functions. Potential saving: £1.7M p.a.";
-  var p=EMPROC[String(emCtxId)]; if(!p)return "No process context.";
+  if(emCtxId<0) return "Dashboard: 24 enterprise processes, 7 functions. Potential saving: \u00a31.7M p.a.";
+  var p=EMPROC[String(emCtxId)];
+  if(!p) return "No process selected.";
   var tStr=p.type==="m"?"Fully Manual":p.type==="s"?"Semi-Automated":"Automated";
   var rStr=p.roi==="h"?"High":p.roi==="med"?"Medium":"Low";
-  var saving=parseFloat(p.saving)||0,cost=parseFloat(p.cost)||1;
+  var saving=parseFloat(p.saving)||0, cost=parseFloat(p.cost)||1;
   var lines=[
     "PROCESS: "+p.name+" | "+p.fn,
     "Status: "+tStr+" | ROI: "+rStr+" | Complexity: "+p.complexity+" | "+p.category,
-    "Automation: "+p.pct+"% now to "+p.tpct+"% target | Saving: £"+saving+"k p.a. | Cost: £"+cost+"k | Payback: "+Math.round(cost/saving*12)+" months",
-    "Effort: "+p.effort+" | Team: "+p.teamSize+" | Budget: £"+p.budget,
+    "Automation: "+p.pct+"% now to "+p.tpct+"% target | Saving: \u00a3"+saving+"k p.a. | Cost: \u00a3"+cost+"k | Payback: "+Math.round(cost/saving*12)+" months",
+    "Effort: "+p.effort+" | Team: "+p.teamSize+" | Budget: \u00a3"+p.budget,
     "Summary: "+p.summary
   ];
-  if(p.phases&&p.phases.length)lines.push("Phases: "+p.phases.map(function(ph){return ph.label+":"+ph.name+"("+ph.dur+")";}).join(", "));
-  if(p.stakeholders&&p.stakeholders.length)lines.push("Stakeholders: "+p.stakeholders.map(function(s){return s.role;}).join(", "));
-  if(p.kpis&&p.kpis.length)lines.push("KPIs: "+p.kpis.map(function(k){return k.m+"("+k.b+" to "+k.t+")";}).join("; "));
-  if(p.risks&&p.risks.length)lines.push("Risks: "+p.risks.map(function(r){return "["+r.l+"] "+String(r.d||"").substring(0,60);}).join("; "));
-  if(p.tools&&p.tools.length)lines.push("Tools: "+p.tools.join(", "));
+  if(p.phases&&p.phases.length) lines.push("Phases: "+p.phases.map(function(ph){return ph.label+":"+ph.name+"("+ph.dur+")";}).join(", "));
+  if(p.stakeholders&&p.stakeholders.length) lines.push("Stakeholders: "+p.stakeholders.map(function(s){return s.role;}).join(", "));
+  if(p.kpis&&p.kpis.length) lines.push("KPIs: "+p.kpis.map(function(k){return k.m+"("+k.b+" to "+k.t+")";}).join("; "));
+  if(p.risks&&p.risks.length) lines.push("Risks: "+p.risks.map(function(r){return "["+r.l+"] "+String(r.d||"").substring(0,60);}).join("; "));
+  if(p.tools&&p.tools.length) lines.push("Tools: "+p.tools.join(", "));
   return lines.join("\n");
 }
 
+// ── Panel open/close ──────────────────────────────────
 function emmaToggle(){
   emOpen=!emOpen;
   var panel=document.getElementById("emma-panel");
-  if(emOpen){panel.classList.add("open");if(emMsgs.length===0)emWelcome();setTimeout(function(){var i=document.getElementById("emma-input");if(i)i.focus();},80);}
-  else{panel.classList.remove("open");if(emIsRec)emStopRec();}
+  if(emOpen){
+    panel.classList.add("open");
+    if(emMsgs.length===0) emWelcome();
+    setTimeout(function(){var i=document.getElementById("emma-input");if(i)i.focus();},80);
+  } else {
+    panel.classList.remove("open");
+    if(emIsRec) emStopRec();
+  }
 }
-function emClear(){emMsgs=[];document.getElementById("emma-msgs").innerHTML="";emWelcome();}
-
+function emClear(){
+  emMsgs=[];
+  var m=document.getElementById("emma-msgs");
+  if(m) m.innerHTML="";
+  emWelcome();
+}
 function emUpdateCtx(id,name){
   emCtxId=id;
-  var t=document.getElementById("em-ctx-txt"),d=document.getElementById("em-ctx-dot");
-  if(t)t.textContent=id>=0?"Context: "+name:"No process selected";
-  if(d)d.classList.toggle("active",id>=0);
+  var t=document.getElementById("em-ctx-txt"), d=document.getElementById("em-ctx-dot");
+  if(t) t.textContent=id>=0?"Context: "+name:"No process selected";
+  if(d) d.classList.toggle("active",id>=0);
 }
-
 function emWelcome(){
-  emAddMsg("emma","Hi Khushboo! I'm Emma, your AI PM Co-pilot.\n\nSelect a process card, then ask me to:\n- Explain the process or phases in plain English\n- Draft stakeholder comms (labelled DRAFT)\n- Apply PMBOK 7 or PRINCE2 frameworks\n- Build a comparison table or chart\n- Identify impact and success criteria\n\nUse the mic button to speak to me. Toggle the speaker icon to hear my responses.\n\nI surface analysis — you make every decision. I always ask for your approval.");
+  emAddMsg("emma","Hi Khushboo! I'm Emma, your AI PM Co-pilot.\n\nSelect a process card, then ask me to:\n- **Explain** the process or phases\n- **Draft** stakeholder communications\n- Apply **PMBOK 7 or PRINCE2** frameworks\n- Build a **table or chart** comparing options\n- Identify **impact and success criteria**\n- **Edit** the process or implementation plan\n- **Export to PDF** (just ask!)\n\nI surface analysis — you make every decision. I always ask for your approval.");
 }
 
+// ── Quick prompts ─────────────────────────────────────
 function eqClick(btn){
-  var text=btn.dataset.prompt; if(!text)return;
-  var inp=document.getElementById("emma-input"); if(!inp)return;
+  var text=btn.dataset.prompt; if(!text) return;
+  var inp=document.getElementById("emma-input"); if(!inp) return;
   inp.value=text; emResizeTA(inp); emSend();
 }
 function eqOther(){
-  var inp=document.getElementById("emma-input"); if(!inp)return;
-  inp.value=""; inp.placeholder="Ask Emma anything about this process..."; inp.focus();
+  var inp=document.getElementById("emma-input"); if(!inp) return;
+  inp.value=""; inp.placeholder="Ask Emma anything..."; inp.focus();
 }
 
+// ── Send message ──────────────────────────────────────
 async function emSend(){
-  var inp=document.getElementById("emma-input"); if(!inp)return;
-  var text=inp.value.trim(); if(!text)return;
+  var inp=document.getElementById("emma-input"); if(!inp) return;
+  var text=inp.value.trim(); if(!text) return;
   inp.value=""; inp.style.height="36px";
-  var sb=document.getElementById("emma-send"); if(sb)sb.disabled=true;
+  var sb=document.getElementById("emma-send");
+  if(sb) sb.disabled=true;
+
   emAddMsg("user",text);
   emMsgs.push({role:"user",content:text});
-  var ctx=emBuildCtx();
-  var hist=emMsgs.slice(-12);
-  var messages=[];
-  if(hist.length>0){
-    messages=hist.slice(0,-1);
-    var last=hist[hist.length-1];
-    messages.push({role:last.role,content:ctx+"\n\nUser question: "+last.content});
+
+  var ctx="";
+  try{ ctx=emBuildCtx(); }catch(e){ ctx="Dashboard: 24 BPA processes."; }
+
+  var hist=emMsgs.slice(-10);
+  var messages;
+  if(hist.length===1){
+    messages=[{role:"user",content:"[Context]\n"+ctx+"\n\n[Question]\n"+text}];
   } else {
-    messages=[{role:"user",content:ctx+"\n\nUser question: "+text}];
+    messages=hist.slice(0,-1).map(function(m){return{role:m.role,content:m.content};});
+    var last=hist[hist.length-1];
+    messages.push({role:last.role,content:"[Context]\n"+ctx+"\n\n[Question]\n"+last.content});
   }
+
   emShowLoading();
   try{
     var resp=await fetch("https://api.anthropic.com/v1/messages",{
       method:"POST",
       headers:emGetHeaders(),
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:900,system:EM_SYS,messages:messages})
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1200,system:EM_SYS,messages:messages})
     });
-    var data=await resp.json(); emHideLoading();
+    var data=await resp.json();
+    emHideLoading();
     var reply="";
-    if(data.content&&data.content[0]&&data.content[0].text)reply=data.content[0].text;
-    else if(data.error)reply="API error: "+data.error.message;
-    else reply="No response received. Please try again.";
+    if(data.content&&data.content[0]&&data.content[0].text){
+      reply=data.content[0].text;
+    } else if(data.error){
+      reply="**API Error:** "+data.error.type+" \u2014 "+data.error.message;
+    } else {
+      reply="No response received. Please try again.";
+    }
     emMsgs.push({role:"assistant",content:reply});
-    if(typeof emProcessReply==="function")reply=emProcessReply(reply);
+    reply=emProcessReply(reply);
     emAddMsg("emma",reply);
     if(emVoice&&window.speechSynthesis){
       var plain=reply.replace(/```[\s\S]*?```/g,"").replace(/[*_#`|]/g,"").replace(/\n+/g," ").trim().substring(0,600);
-      var u=new SpeechSynthesisUtterance(plain); u.rate=1.05; u.lang="en-GB";
+      var u=new SpeechSynthesisUtterance(plain);
+      u.rate=1.05; u.lang="en-GB";
       var vs=speechSynthesis.getVoices();
       var pv=vs.find(function(v){return v.lang.startsWith("en-GB");})||vs.find(function(v){return v.lang.startsWith("en");});
-      if(pv)u.voice=pv; speechSynthesis.speak(u);
+      if(pv) u.voice=pv;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(u);
     }
-  }catch(e){emHideLoading();var noKey=!_emKey&&(e.message.indexOf('fetch')>=0||e.message.indexOf('Failed')>=0||e.message.indexOf('Network')>=0);if(noKey){emAddMsg('emma','Connection error: Failed to fetch.\n\nEmma needs an Anthropic API key to work in Chrome or on GitHub Pages.\n\nTo fix:\n1. Go to console.anthropic.com and create an API key\n2. Paste it in the API Key field at the top of Emma\n3. Click Save\n\nYour key is stored only in your browser and sent only to Anthropic.');}else{emAddMsg('emma','Connection error: '+e.message);}}
-  if(sb)sb.disabled=false;
-}
-
-function emAddMsg(role,text){
-  var msgs=document.getElementById("emma-msgs"); if(!msgs)return;
-  var div=document.createElement("div"); div.className="emsg emsg-"+role;
-  if(role==="emma")div.innerHTML=emMD(text); else{div.style.whiteSpace="pre-wrap";div.textContent=text;}
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight; return div;
-}
-
-function emMD(txt){
-  var charts=[];
-  txt=txt.replace(/```chart([\s\S]*?)```/g,function(m,json){var idx=charts.length;try{charts.push(JSON.parse(json.trim()));}catch(e){charts.push(null);}return "%%C"+idx+"%%";});
-  txt=txt.replace(/(\|.+\|\n)+/g,function(block){var rows=block.trim().split("\n").filter(Boolean);var h="<table>";rows.forEach(function(row,i){if(/^[\s\-|]+$/.test(row))return;var cells=row.split("|").slice(1,-1);var tag=i===0?"th":"td";h+="<tr>"+cells.map(function(c){return "<"+tag+">"+c.trim()+"</"+tag+">";}).join("")+"</tr>";});return h+"</table>";});
-  txt=txt.replace(/```[\s\S]*?```/g,function(m){return "<pre>"+m.replace(/```\w*/g,"").trim()+"</pre>";});
-  txt=txt.replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>");
-  txt=txt.replace(/(Shall I proceed[^.!?]*[.!?]|Please confirm[^.!?]*[.!?]|Your approval is needed[^.!?]*[.!?])/g,"<div class='apbox'>&#9654; $1</div>");
-  txt=txt.replace(/^---+$/gm,"<hr>");
-  txt=txt.replace(/^### (.+)$/gm,"<strong style='display:block;margin-top:8px'>$1</strong>");
-  txt=txt.replace(/^## (.+)$/gm,"<strong style='display:block;font-size:13px;margin-top:10px'>$1</strong>");
-  txt=txt.replace(/^\d+\. (.+)$/gm,"<li>$1</li>");
-  txt=txt.replace(/((?:<li>[^<]+<\/li>\s*){2,})/g,function(m){return m.includes("</ol>")?m:"<ol>"+m+"</ol>";});
-  txt=txt.replace(/^[*-] (.+)$/gm,"<li>$1</li>");
-  txt=txt.replace(/((?:<li>[^<]+<\/li>\s*){2,})/g,function(m){return m.includes("<ol>")||m.includes("</ol>")?m:"<ul>"+m+"</ul>";});
-  txt=txt.replace(/\n\n/g,"</p><p style='margin-top:6px'>"); txt=txt.replace(/\n/g,"<br>"); txt="<p>"+txt+"</p>";
-  charts.forEach(function(cfg,idx){var ph="%%C"+idx+"%%";if(!cfg){txt=txt.replace(ph,"");return;}txt=txt.replace(ph,emChart(cfg));});
-  return txt;
-}
-
-function emChart(cfg){
-  var type=cfg.type||"bar",labels=cfg.labels||[],vals=cfg.values||[],title=cfg.title||"";
-  var cols=["#e8a84c","#185fa5","#2e7d32","#a33030","#5a3ab5","#b06010","#888888"];
-  var W=340,H=190,PL=44,PB=52,PT=28,PR=10,CW=W-PL-PR,CH=H-PT-PB;
-  var mx=Math.max.apply(null,vals.concat([1]));
-  var s="<div class='echart'><svg width='100%' viewBox='0 0 "+W+" "+H+"'>";
-  if(title)s+="<text x='"+W/2+"' y='18' text-anchor='middle' font-size='11' font-weight='600' fill='#1a1917'>"+title+"</text>";
-  if(type==="bar"){
-    var bw=Math.min(CW/labels.length*0.6,36),gap=CW/labels.length;
-    for(var g=0;g<=4;g++){var gy=PT+CH-(g/4)*CH;s+="<line x1='"+PL+"' y1='"+gy+"' x2='"+(PL+CW)+"' y2='"+gy+"' stroke='rgba(0,0,0,0.06)' stroke-width='0.5'/><text x='"+(PL-4)+"' y='"+(gy+3)+"' text-anchor='end' font-size='9' fill='#aaa'>"+Math.round(mx*g/4)+"</text>";}
-    labels.forEach(function(lbl,i){var bh=mx>0?(vals[i]/mx)*CH:0,bx=PL+i*gap+(gap-bw)/2,by=PT+CH-bh,col=cols[i%cols.length];s+="<rect x='"+bx+"' y='"+by+"' width='"+bw+"' height='"+bh+"' rx='3' fill='"+col+"' opacity='0.8'/><text x='"+(bx+bw/2)+"' y='"+(by-3)+"' text-anchor='middle' font-size='9' fill='#555'>"+vals[i]+"</text><text x='"+(bx+bw/2)+"' y='"+(PT+CH+14)+"' text-anchor='middle' font-size='9' fill='#777'>"+(lbl.length>9?lbl.substring(0,9)+"...":lbl)+"</text>";});
-  } else if(type==="pie"||type==="doughnut"){
-    var cx=W/2,cy=PT+CH/2+5,r=Math.min(CW,CH)/2-8,ir=type==="doughnut"?r*0.52:0,tot=vals.reduce(function(a,b){return a+b;},0),st=-Math.PI/2;
-    labels.forEach(function(lbl,i){var ang=(vals[i]/tot)*2*Math.PI,x1=cx+r*Math.cos(st),y1=cy+r*Math.sin(st),x2=cx+r*Math.cos(st+ang),y2=cy+r*Math.sin(st+ang),lg=ang>Math.PI?1:0,col=cols[i%cols.length];s+="<path d='M"+cx+" "+cy+" L"+x1+" "+y1+" A"+r+" "+r+" 0 "+lg+" 1 "+x2+" "+y2+" Z' fill='"+col+"' opacity='0.85'/>";if(ir>0)s+="<circle cx='"+cx+"' cy='"+cy+"' r='"+ir+"' fill='white'/>";if(vals[i]/tot>0.06){var md=st+ang/2;s+="<text x='"+(cx+r*0.65*Math.cos(md))+"' y='"+(cy+r*0.65*Math.sin(md)+3)+"' text-anchor='middle' font-size='9' fill='white' font-weight='600'>"+Math.round(vals[i]/tot*100)+"%</text>";}var li=Math.floor(i/2),lx=(i%2===0?4:W/2+4),ly=H-PB+li*16+10;s+="<rect x='"+lx+"' y='"+(ly-8)+"' width='10' height='10' rx='2' fill='"+col+"'/><text x='"+(lx+13)+"' y='"+ly+"' font-size='9' fill='#555'>"+(lbl.length>14?lbl.substring(0,14)+"...":lbl)+"</text>";st+=ang;});
-  }
-  s+="<line x1='"+PL+"' y1='"+PT+"' x2='"+PL+"' y2='"+(PT+CH)+"' stroke='#ccc' stroke-width='0.8'/><line x1='"+PL+"' y1='"+(PT+CH)+"' x2='"+(PL+CW)+"' y2='"+(PT+CH)+"' stroke='#ccc' stroke-width='0.8'/>";
-  return s+"</svg></div>";
-}
-
-function emShowLoading(){var msgs=document.getElementById("emma-msgs");if(!msgs)return;var d=document.createElement("div");d.className="em-loading";d.id="em-load";d.innerHTML="<span>Emma is thinking</span><div class='edot'><span></span><span></span><span></span></div>";msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
-function emHideLoading(){var e=document.getElementById("em-load");if(e)e.remove();}
-
-function emToggleVoice(){emVoice=!emVoice;var btn=document.getElementById("em-voice-btn"),ban=document.getElementById("em-vbanner");if(btn)btn.classList.toggle("voice-on",emVoice);if(ban)ban.classList.toggle("on",emVoice);if(!emVoice&&window.speechSynthesis)speechSynthesis.cancel();}
-
-function emToggleMic(){if(emIsRec)emStopRec();else emStartRec();}
-function emStartRec(){
-  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){
-    emAddMsg("emma","Voice input requires Chrome or Edge. The Claude.ai sandbox blocks microphone access.\n\nTo use voice: **download the dashboard file** and open it in Chrome or Edge — then the mic will work perfectly.");
-    return;
-  }
-  emRec=new SR();emRec.continuous=false;emRec.interimResults=true;emRec.lang="en-GB";
-  emRec.onstart=function(){emIsRec=true;var b=document.getElementById("emma-mic");if(b){b.classList.add("rec");b.textContent="Stop";}var t=document.getElementById("emma-toggle");if(t)t.classList.add("listening");};
-  emRec.onresult=function(e){var f="",t="";for(var i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)f+=e.results[i][0].transcript;else t+=e.results[i][0].transcript;}var inp=document.getElementById("emma-input");if(inp){inp.value=f||t;emResizeTA(inp);}};
-  emRec.onend=function(){emIsRec=false;var b=document.getElementById("emma-mic");if(b){b.classList.remove("rec");b.textContent="Mic";}var t=document.getElementById("emma-toggle");if(t)t.classList.remove("listening");var v=(document.getElementById("emma-input")||{}).value||"";if(v.trim())emSend();};
-  emRec.onerror=function(e){
-    emIsRec=false;var b=document.getElementById("emma-mic");if(b){b.classList.remove("rec");b.textContent="Mic";}
-    if(e.error==="not-allowed"||e.error==="permission-denied"){
-      emAddMsg("emma","Microphone access is blocked in the Claude.ai preview sandbox.\n\n**To use voice with Emma:**\n1. Download the dashboard file\n2. Open it in Chrome or Edge\n3. Allow microphone when prompted\n\nAll other Emma features work here in the sandbox.");
-    } else if(e.error!=="no-speech"){
-      emAddMsg("emma","Mic error: "+e.error);
+  }catch(e){
+    emHideLoading();
+    var noKey=!_emKey&&(e.message.indexOf("fetch")>=0||e.message.indexOf("Failed")>=0||e.message.indexOf("Network")>=0);
+    if(noKey){
+      emAddMsg("emma","**Connection error: Failed to fetch**\n\nEmma needs an Anthropic API key to work in Chrome or GitHub Pages.\n\nTo fix:\n1. Go to console.anthropic.com and create a free API key\n2. Paste it in the **API Key** field at the top of this panel\n3. Click **Save** \u2014 stored only in your browser\n\nInside Claude.ai, no key is needed.");
+    } else {
+      emAddMsg("emma","**Connection error:** "+e.message+"\n\nPlease check your network and try again.");
     }
-  };
-  try{emRec.start();}catch(err){
-    emAddMsg("emma","Could not start microphone: "+err.message+"\n\nDownload the file and open in Chrome for voice support.");
   }
+  if(sb) sb.disabled=false;
 }
-function emStopRec(){if(emRec){try{emRec.stop();}catch(e){}emRec=null;}emIsRec=false;}
 
-function emResizeTA(ta){ta.style.height="36px";ta.style.height=Math.min(ta.scrollHeight,88)+"px";}
-
-
-// ── Emma PDF Export ────────────────────────────────────────────────
 // ── Process reply for PDF/CHANGE commands ─────────────
 function emProcessReply(text){
+  // REPORT handler — injected before PDF handler in emProcessReply
+text=text.replace(/\[REPORT:([a-z]+)\]/g,function(m,rtype){
+  var labels={
+    leadership:"Leadership / ExCo Summary",
+    programme:"Programme Report (Sr. Managers)",
+    process:"Process Detail (Delivery Team)",
+    full:"Full Programme Archive"
+  };
+  var lbl=labels[rtype]||"BPA Report";
+  var btn="<button class='em-pdf-btn' onclick='emGenerateReport(\"";
+  btn+=rtype;
+  btn+="\")'>\u{1F4C4} Download: ";
+  btn+=lbl;
+  btn+="</button>";
+  return btn;
+});
   text=text.replace(/\[PDF:"?([^"\]]+)"?\]/g,function(m,scope){
     var label=scope==="full"?"Full Dashboard PDF":scope==="process"?"Process Planner PDF":scope==="plan"?"Implementation Plans PDF":"Export PDF";
     return "<button class='em-pdf-btn' onclick='emExportPDF(\""+scope+"\")'>\u{1F4C4} Download "+label+"</button>";
@@ -3955,126 +3974,634 @@ function emDiscardChange(){
 
 // ── PDF Export ────────────────────────────────────────
 
-function emExportPDF(scope){
-  var title=scope==="full"?"BPA Dashboard \u2014 Full Export":scope==="process"?"Process Planner":scope==="plan"?"Implementation Plans":"BPA Export";
-  var bodyHTML="";
-  if(scope==="full"||scope==="process"){var el=document.getElementById("p0");if(el)bodyHTML+=el.innerHTML;}
-  if(scope==="full"||scope==="plan"){var el2=document.getElementById("p1");if(el2)bodyHTML+=el2.innerHTML;}
-  var win=window.open("","_blank","width=960,height=700");
-  if(!win){emAddMsg("emma","Please allow pop-ups for this page, then try again.");return;}
-  var styles=[
-    "body{font-family:system-ui,sans-serif;color:#1a1917;padding:24px 32px;max-width:960px;margin:0 auto;font-size:12.5px;line-height:1.6}",
-    ".hdr-bar{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:12px;margin-bottom:18px;border-bottom:2px solid #1a1917}",
-    ".hdr-badge{font-size:8px;letter-spacing:.09em;text-transform:uppercase;background:#181816;color:#e8a84c;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:4px}",
-    ".hdr-title{font-size:16px;font-weight:600}.hdr-sub{font-size:11px;color:#888}",
-    ".stats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px}",
-    ".sc{background:#f5f4f0;padding:9px 11px;border-radius:4px;border:0.5px solid #e0ddd5}",
-    ".sc-l{font-size:8px;text-transform:uppercase;letter-spacing:.04em;color:#9a9890;margin-bottom:2px}",
-    ".sc-v{font-size:15px;font-weight:700}.sc-s{font-size:10px;color:#888;margin-top:1px}",
-    ".pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px}",
-    ".pc{background:#fff;border:0.5px solid #e0ddd5;border-radius:4px;padding:6px 8px}",
-    ".pc-name{font-size:10.5px;font-weight:500;margin-bottom:3px}",
-    ".fn-lbl{font-size:8px;font-weight:500;color:#9a9890;letter-spacing:.06em;text-transform:uppercase;grid-column:1/-1;padding:5px 0 1px}",
-    ".mk,.bdg{font-size:8px;padding:1px 5px;border-radius:5px;font-weight:500;display:inline-block;margin-right:2px}",
-    ".mk-m,.bdg-m{background:#fce8e8;color:#a33030}.mk-s,.bdg-s{background:#fff3e0;color:#b06010}.mk-a,.bdg-a{background:#e8f5e9;color:#2e7d32}",
-    ".mk-h,.bdg-h{background:#faece7;color:#993c1d}.mk-med,.bdg-med{background:#faeeda;color:#854f0b}.mk-l,.bdg-l{background:#eaf3de;color:#3b6d11}",
-    ".bdg-qw{background:#e8f5e9;color:#2e7d32}.bdg-str{background:#e6f1fb;color:#185fa5}",
-    ".detail,.plan-panel{background:#fafaf8;padding:14px;margin-bottom:14px;border-radius:5px;border:0.5px solid #e0ddd5;page-break-inside:avoid}",
-    ".d-bc{font-size:8px;color:#9a9890;margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em}",
-    ".d-sum,.body-text{font-size:11.5px;color:#5a5955;margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid #e0ddd5}",
-    ".g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}",
-    ".g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}",
-    ".card{background:#fff;padding:9px 11px;border-radius:4px;border:0.5px solid #e0ddd5;margin-bottom:7px}",
-    ".sh{font-size:8px;font-weight:500;color:#9a9890;letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px;padding-bottom:3px;border-bottom:0.5px solid #e0ddd5}",
-    ".ph-row{display:grid;grid-template-columns:66px 1fr;gap:7px;padding:5px 0;border-bottom:0.5px solid #f0efe9}",
-    ".ph-lbl{font-size:8.5px;padding:2px 5px;border-radius:3px;font-weight:500;text-align:center;line-height:1.3}",
-    ".ph1{background:#e6f1fb;color:#185fa5}.ph2{background:#f0edf9;color:#5a3ab5}.ph3{background:#fff3e0;color:#b06010}",
-    ".ph4{background:#fce8e8;color:#a33030}.ph5{background:#e8f5e9;color:#2e7d32}.ph6{background:#f0f0ee;color:#666}",
-    ".ph-name{font-size:11px;font-weight:500;margin-bottom:1px}.ph-ul{list-style:none;padding:0;margin:0}",
-    ".ph-ul li{font-size:10.5px;color:#5a5955;padding-left:9px;position:relative;margin-bottom:1px}",
-    ".srow{display:flex;gap:6px;margin-bottom:5px;align-items:flex-start}",
-    ".sav{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7.5px;font-weight:500;flex-shrink:0}",
-    ".sa-blue{background:#e6f1fb;color:#185fa5}.sa-purple{background:#f0edf9;color:#5a3ab5}",
-    ".sa-amber{background:#fff3e0;color:#b06010}.sa-red{background:#fce8e8;color:#a33030}",
-    ".sa-green{background:#e8f5e9;color:#2e7d32}.sa-gray{background:#f0f0ee;color:#666}",
-    ".tools{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}",
-    ".tool{padding:1px 7px;border-radius:8px;font-size:9.5px;background:#f0efe9;border:0.5px solid #d5d2cb;color:#5a5955}",
-    ".pre{font-size:10.5px;color:#5a5955;padding-left:10px;position:relative;margin-bottom:2px}",
-    ".risk-r{display:grid;grid-template-columns:44px 1fr;gap:6px;padding:6px;border-radius:4px;background:#f9f8f5;margin-bottom:4px}",
-    ".rl{font-size:8px;padding:2px 4px;border-radius:3px;font-weight:500;text-align:center}",
-    ".rl-h{background:#fce8e8;color:#a33030}.rl-m{background:#faeeda;color:#854f0b}.rl-l{background:#eaf3de;color:#3b6d11}",
-    ".rd{font-size:10.5px;font-weight:500;margin-bottom:1px}.rm{font-size:10px;color:#5a5955}",
-    ".kt{width:100%;border-collapse:collapse;font-size:10.5px}",
-    ".kt th{text-align:left;padding:4px 7px;font-size:8.5px;color:#9a9890;text-transform:uppercase;border-bottom:0.5px solid #e0ddd5;font-weight:400}",
-    ".kt td{padding:4px 7px;color:#5a5955;border-bottom:0.5px solid #e0ddd5;vertical-align:top}",
-    ".kt-m{color:#1a1917;font-weight:500}.kt-t{color:#2e7d32;font-size:9.5px}",
-    ".prog{height:3px;background:#e0ddd5;border-radius:2px;overflow:hidden;position:relative;margin-top:3px}",
-    ".prog-t{position:absolute;left:0;top:0;bottom:0;background:#e8f5e9;opacity:.45}",
-    ".prog-c{position:absolute;left:0;top:0;bottom:0;background:#2e7d32}",
-    "#emma-toggle,#emma-panel,.empty-msg,.em-loading,.apbox,.em-pdf-btn,.em-change-block,.emma-disc,button,.ps-wrap,#fn-bar{display:none!important}",
-    "svg{max-width:100%}@media print{body{padding:12px}.detail,.plan-panel{page-break-inside:avoid}}"
-  ];
-  var css=styles.join("");
-  var date=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
-  var head="<!DOCTYPE html><html><head><meta charset='UTF-8'><title>"+title+"</title><style>"+css+"</style></head><body>";
-  var hdrBar="<div class='hdr-bar'><div><div class='hdr-badge'>BPA Dashboard</div><div class='hdr-title'>Business Process Automation</div><div class='hdr-sub'>"+title+"</div></div><div style='text-align:right'><div style='font-size:11px;font-weight:600'>Khushboo Pasari</div><div style='font-size:9.5px;color:#888'>"+date+"</div></div></div>";
-  var footer="<div style='font-size:9px;color:#bbb;text-align:center;padding-top:14px;border-top:0.5px solid #e0ddd5;margin-top:16px'>Generated by Emma \u2014 AI PM Assistant | BPA Command Centre | Confidential</div>";
-  var tail="</body></html>";
-  win.document.write(head+hdrBar+bodyHTML+footer+tail);
-  win.document.close();
-  setTimeout(function(){try{win.print();}catch(e){}},700);
+function emAddMsg(role,text){
+  var msgs=document.getElementById("emma-msgs"); if(!msgs) return;
+  var div=document.createElement("div"); div.className="emsg emsg-"+role;
+  if(role==="emma") div.innerHTML=emMD(text);
+  else{ div.style.whiteSpace="pre-wrap"; div.textContent=text; }
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight; return div;
 }
-
-
-
-// ── Emma API Key Management ─────────────────────────────────────────
-var _emKey = "";
-function emInitKey(){
-  try{ _emKey = localStorage.getItem("emma_api_key") || ""; }catch(e){ _emKey = ""; }
-  if(_emKey){
-    var inp = document.getElementById("em-key-input");
-    if(inp) inp.value = _emKey.substring(0,12)+"...";
-    var lbl = document.getElementById("em-key-lbl");
-    if(lbl){ lbl.className="emma-key-ok"; lbl.textContent="\u2713 Key saved"; }
+function emMD(txt){
+  var charts=[];
+  txt=txt.replace(/```chart([\s\S]*?)```/g,function(m,json){
+    var idx=charts.length;
+    try{ charts.push(JSON.parse(json.trim())); }catch(e){ charts.push(null); }
+    return "%%C"+idx+"%%";
+  });
+  txt=txt.replace(/(\|.+\|\n)+/g,function(block){
+    var rows=block.trim().split("\n").filter(Boolean);
+    var h="<table>";
+    rows.forEach(function(row,i){
+      if(/^[\s\-|]+$/.test(row)) return;
+      var cells=row.split("|").slice(1,-1);
+      var tag=i===0?"th":"td";
+      h+="<tr>"+cells.map(function(c){return "<"+tag+">"+c.trim()+"</"+tag+">";}).join("")+"</tr>";
+    });
+    return h+"</table>";
+  });
+  txt=txt.replace(/```[\s\S]*?```/g,function(m){return "<pre>"+m.replace(/```\w*/g,"").trim()+"</pre>";});
+  txt=txt.replace(/\*\*([^*\n]+)\*\*/g,"<strong>$1</strong>");
+  txt=txt.replace(/(Shall I proceed[^.!?]*[.!?]|Please confirm[^.!?]*[.!?]|Your approval is needed[^.!?]*[.!?])/g,"<div class='apbox'>&#9654; $1</div>");
+  txt=txt.replace(/^---+$/gm,"<hr>");
+  txt=txt.replace(/^### (.+)$/gm,"<strong style='display:block;margin-top:8px'>$1</strong>");
+  txt=txt.replace(/^## (.+)$/gm,"<strong style='display:block;font-size:13px;margin-top:10px'>$1</strong>");
+  txt=txt.replace(/^\d+\. (.+)$/gm,"<li>$1</li>");
+  txt=txt.replace(/((?:<li>[^<]+<\/li>\s*){2,})/g,function(m){return m.includes("<ol>")?m:"<ol>"+m+"</ol>";});
+  txt=txt.replace(/^[-*] (.+)$/gm,"<li>$1</li>");
+  txt=txt.replace(/((?:<li>[^<]+<\/li>\s*){2,})/g,function(m){return m.includes("<ol>")?m:"<ul>"+m+"</ul>";});
+  txt=txt.replace(/\n\n/g,"</p><p style='margin-top:6px'>"); txt=txt.replace(/\n/g,"<br>"); txt="<p>"+txt+"</p>";
+  charts.forEach(function(cfg,idx){
+    var ph="%%C"+idx+"%%"; if(!cfg){txt=txt.replace(ph,"");return;}
+    txt=txt.replace(ph,emChart(cfg));
+  });
+  return txt;
+}
+function emChart(cfg){
+  var type=cfg.type||"bar",labels=cfg.labels||[],vals=cfg.values||[],title=cfg.title||"";
+  var cols=["#e8a84c","#185fa5","#2e7d32","#a33030","#5a3ab5","#b06010","#888888"];
+  var W=340,H=190,PL=44,PB=52,PT=28,PR=10,CW=W-PL-PR,CH=H-PT-PB;
+  var mx=Math.max.apply(null,vals.map(Number).concat([1]));
+  var s="<div class='echart'><svg width='100%' viewBox='0 0 "+W+" "+H+"'>";
+  if(title) s+="<text x='"+W/2+"' y='18' text-anchor='middle' font-size='11' font-weight='600' fill='#1a1917'>"+title+"</text>";
+  if(type==="bar"){
+    var bw=Math.min(CW/Math.max(labels.length,1)*0.6,36),gap=CW/Math.max(labels.length,1);
+    for(var g=0;g<=4;g++){var gy=PT+CH-(g/4)*CH;s+="<line x1='"+PL+"' y1='"+gy+"' x2='"+(PL+CW)+"' y2='"+gy+"' stroke='rgba(0,0,0,0.06)' stroke-width='0.5'/><text x='"+(PL-4)+"' y='"+(gy+3)+"' text-anchor='end' font-size='9' fill='#aaa'>"+Math.round(mx*g/4)+"</text>";}
+    labels.forEach(function(lbl,i){var v=Number(vals[i])||0,bh=mx>0?(v/mx)*CH:0,bx=PL+i*gap+(gap-bw)/2,by=PT+CH-bh,col=cols[i%cols.length];s+="<rect x='"+bx+"' y='"+by+"' width='"+bw+"' height='"+bh+"' rx='3' fill='"+col+"' opacity='0.8'/><text x='"+(bx+bw/2)+"' y='"+(by-3)+"' text-anchor='middle' font-size='9' fill='#555'>"+vals[i]+"</text><text x='"+(bx+bw/2)+"' y='"+(PT+CH+14)+"' text-anchor='middle' font-size='9' fill='#777'>"+(lbl.length>9?lbl.substring(0,9)+"\u2026":lbl)+"</text>";});
+  } else if(type==="pie"||type==="doughnut"){
+    var cx=W/2,cy=PT+CH/2+5,r=Math.min(CW,CH)/2-8,ir=type==="doughnut"?r*0.52:0,tot=vals.reduce(function(a,b){return a+Number(b);},0)||1,st=-Math.PI/2;
+    labels.forEach(function(lbl,i){var v=Number(vals[i])||0,ang=(v/tot)*2*Math.PI,x1=cx+r*Math.cos(st),y1=cy+r*Math.sin(st),x2=cx+r*Math.cos(st+ang),y2=cy+r*Math.sin(st+ang),lg=ang>Math.PI?1:0,col=cols[i%cols.length];s+="<path d='M"+cx+" "+cy+" L"+x1+" "+y1+" A"+r+" "+r+" 0 "+lg+" 1 "+x2+" "+y2+" Z' fill='"+col+"' opacity='0.85'/>";if(ir>0)s+="<circle cx='"+cx+"' cy='"+cy+"' r='"+ir+"' fill='white'/>";if(v/tot>0.06){var md=st+ang/2;s+="<text x='"+(cx+r*0.65*Math.cos(md))+"' y='"+(cy+r*0.65*Math.sin(md)+3)+"' text-anchor='middle' font-size='9' fill='white' font-weight='600'>"+Math.round(v/tot*100)+"%</text>";}var li=Math.floor(i/2),lx=(i%2===0?4:W/2+4),ly=H-PB+li*16+10;s+="<rect x='"+lx+"' y='"+(ly-8)+"' width='10' height='10' rx='2' fill='"+col+"'/><text x='"+(lx+13)+"' y='"+ly+"' font-size='9' fill='#555'>"+(lbl.length>14?lbl.substring(0,14)+"\u2026":lbl)+"</text>";st+=ang;});
   }
+  s+="<line x1='"+PL+"' y1='"+PT+"' x2='"+PL+"' y2='"+(PT+CH)+"' stroke='#ccc' stroke-width='0.8'/><line x1='"+PL+"' y1='"+(PT+CH)+"' x2='"+(PL+CW)+"' y2='"+(PT+CH)+"' stroke='#ccc' stroke-width='0.8'/>";
+  return s+"</svg></div>";
 }
-function emSaveKey(){
-  var inp = document.getElementById("em-key-input");
-  var val = inp ? inp.value.trim() : "";
-  if(!val || val.indexOf("...") >= 0){ if(inp) inp.focus(); return; }
-  _emKey = val;
-  try{ localStorage.setItem("emma_api_key", _emKey); }catch(e){}
-  if(inp) inp.value = _emKey.substring(0,12)+"...";
-  var lbl = document.getElementById("em-key-lbl");
-  if(lbl){ lbl.className="emma-key-ok"; lbl.textContent="\u2713 Key saved"; }
-  emAddMsg("emma","API key saved in your browser. Emma will now respond from any location including GitHub Pages.\n\nYour key goes directly to Anthropic only — never stored on any server.");
+function emShowLoading(){
+  var msgs=document.getElementById("emma-msgs"); if(!msgs) return;
+  var d=document.createElement("div"); d.className="em-loading"; d.id="em-load";
+  d.innerHTML="<span>Emma is thinking</span><div class='edot'><span></span><span></span><span></span></div>";
+  msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
 }
-function emClearKey(){
-  _emKey = "";
-  try{ localStorage.removeItem("emma_api_key"); }catch(e){}
-  var inp = document.getElementById("em-key-input");
-  if(inp) inp.value = "";
-  var lbl = document.getElementById("em-key-lbl");
-  if(lbl){ lbl.className="emma-key-label"; lbl.textContent="\u{1F511} API Key"; }
-}
-function emGetHeaders(){
-  var h = {"Content-Type":"application/json"};
-  if(_emKey){
-    h["x-api-key"] = _emKey;
-    h["anthropic-version"] = "2023-06-01";
-    h["anthropic-dangerous-direct-browser-access"] = "true";
-  }
-  return h;
+function emHideLoading(){ var e=document.getElementById("em-load"); if(e) e.remove(); }
+
+// ── Voice output ──────────────────────────────────────
+function emToggleVoice(){
+  emVoice=!emVoice;
+  var btn=document.getElementById("em-voice-btn"), ban=document.getElementById("em-vbanner");
+  if(btn) btn.classList.toggle("voice-on",emVoice);
+  if(ban) ban.classList.toggle("on",emVoice);
+  if(!emVoice&&window.speechSynthesis) speechSynthesis.cancel();
 }
 
-document.addEventListener("keydown",function(e){if(e.key==="Escape"&&emOpen)emmaToggle();});
-document.addEventListener("DOMContentLoaded",function(){emInitKey();
+// ── Voice input ───────────────────────────────────────
+function emToggleMic(){ if(emIsRec) emStopRec(); else emStartRec(); }
+function emStartRec(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){
+    emAddMsg("emma","Voice input requires Chrome or Edge. The Claude.ai sandbox blocks mic access.\n\n**To use voice:** download the file and open it in Chrome, then allow the mic when prompted.");
+    return;
+  }
+  emRec=new SR(); emRec.continuous=false; emRec.interimResults=true; emRec.lang="en-GB";
+  emRec.onstart=function(){
+    emIsRec=true;
+    var b=document.getElementById("emma-mic"); if(b){b.classList.add("rec");b.textContent="Stop";}
+    var t=document.getElementById("emma-toggle"); if(t) t.classList.add("listening");
+  };
+  emRec.onresult=function(e){
+    var f="",t="";
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal) f+=e.results[i][0].transcript;
+      else t+=e.results[i][0].transcript;
+    }
+    var inp=document.getElementById("emma-input");
+    if(inp){ inp.value=f||t; emResizeTA(inp); }
+  };
+  emRec.onend=function(){
+    emIsRec=false;
+    var b=document.getElementById("emma-mic"); if(b){b.classList.remove("rec");b.textContent="Mic";}
+    var t=document.getElementById("emma-toggle"); if(t) t.classList.remove("listening");
+    var v=(document.getElementById("emma-input")||{}).value||"";
+    if(v.trim()) emSend();
+  };
+  emRec.onerror=function(e){
+    emIsRec=false;
+    var b=document.getElementById("emma-mic"); if(b){b.classList.remove("rec");b.textContent="Mic";}
+    if(e.error==="not-allowed"||e.error==="permission-denied"){
+      emAddMsg("emma","Microphone blocked.\n\n**To use voice:**\n1. Download the dashboard file\n2. Open in Chrome and allow the mic\n\nAll other Emma features work here in Claude.ai.");
+    } else if(e.error!=="no-speech"){
+      emAddMsg("emma","Mic error: "+e.error);
+    }
+  };
+  try{ emRec.start(); }catch(err){ emAddMsg("emma","Could not start mic: "+err.message); }
+}
+function emStopRec(){
+  if(emRec){ try{ emRec.stop(); }catch(e){} emRec=null; }
+  emIsRec=false;
+}
+function emResizeTA(ta){ ta.style.height="36px"; ta.style.height=Math.min(ta.scrollHeight,88)+"px"; }
+
+
+function emShowReportMenu(){
+  var msgs=document.getElementById("emma-msgs"); if(!msgs) return;
+  var div=document.createElement("div"); div.className="emsg emsg-emma";
+  var h='<p style="margin-bottom:8px"><strong>Generate a Report</strong> &mdash; choose audience:</p>';
+  h+='<div style="display:flex;flex-direction:column;gap:6px">';
+  h+='<button class="em-pdf-btn" onclick="emGenerateReport(\'leadership\')">&#128198; Leadership / ExCo / Directors</button>';
+  h+='<button class="em-pdf-btn" onclick="emGenerateReport(\'programme\')">&#128202; Sr. Managers / Process Owners</button>';
+  h+='<button class="em-pdf-btn" onclick="emGenerateReport(\'process\')">&#128196; Delivery Team &mdash; selected process</button>';
+  h+='<button class="em-pdf-btn" onclick="emGenerateReport(\'full\')">&#128218; Full Programme Archive</button>';
+  h+='</div>';
+  div.innerHTML=h; msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+
+document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&emOpen) emmaToggle(); });
+document.addEventListener("DOMContentLoaded",function(){
+  emInitKey();
   var inp=document.getElementById("emma-input");
   if(inp){
-    inp.addEventListener("input",function(){emResizeTA(this);});
-    inp.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();emSend();}});
+    inp.addEventListener("input",function(){ emResizeTA(this); });
+    inp.addEventListener("keydown",function(e){ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); emSend(); } });
   }
 });
+
+// ═══════════════════════════════════════════════════════
+// EMMA REPORT ENGINE — Blob-based download, 3 tiers
+// ═══════════════════════════════════════════════════════
+
+// ── Core download utility (no window.open, no pop-ups) ──
+function emDownloadHTML(html, filename){
+  var blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href        = url;
+  a.download    = filename;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 2000);
+}
+
+// ── Shared CSS for all reports ──
+function emReportCSS(accentColor){
+  var ac = accentColor || '#1a3a5c';
+  return [
+    "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');",
+    "*{box-sizing:border-box;margin:0;padding:0}",
+    "body{font-family:'Inter',system-ui,sans-serif;color:#1a1917;background:#fff;font-size:13px;line-height:1.6}",
+    ".page{max-width:900px;margin:0 auto;padding:40px 48px}",
+    ".cover{background:"+ac+";color:#fff;padding:56px 48px 44px;margin-bottom:40px}",
+    ".cover-badge{font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:12px}",
+    ".cover-title{font-size:28px;font-weight:700;line-height:1.2;margin-bottom:8px}",
+    ".cover-sub{font-size:14px;opacity:.8;margin-bottom:24px}",
+    ".cover-meta{display:flex;gap:32px;font-size:11px;opacity:.7;border-top:1px solid rgba(255,255,255,.2);padding-top:16px;margin-top:16px}",
+    ".section{margin-bottom:36px}",
+    ".section-title{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:"+ac+";border-bottom:2px solid "+ac+";padding-bottom:6px;margin-bottom:16px}",
+    ".kv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}",
+    ".kv{background:#f8f7f4;padding:14px 16px;border-radius:6px;border-left:3px solid "+ac+"}",
+    ".kv-label{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:4px}",
+    ".kv-value{font-size:20px;font-weight:700;color:"+ac+"}",
+    ".kv-sub{font-size:10px;color:#999;margin-top:2px}",
+    ".bar-wrap{margin-bottom:12px}",
+    ".bar-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}",
+    ".bar-track{height:8px;background:#eee;border-radius:4px;overflow:hidden}",
+    ".bar-fill{height:100%;border-radius:4px;background:"+ac+";opacity:.85}",
+    ".pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:500;margin-right:4px}",
+    ".pill-h{background:#faece7;color:#993c1d}.pill-m{background:#faeeda;color:#854f0b}.pill-l{background:#eaf3de;color:#3b6d11}",
+    ".pill-man{background:#fce8e8;color:#a33030}.pill-semi{background:#fff3e0;color:#b06010}.pill-auto{background:#e8f5e9;color:#2e7d32}",
+    ".pill-qw{background:#e6f1fb;color:#185fa5}.pill-str{background:#f0edf9;color:#5a3ab5}",
+    "table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}",
+    "th{text-align:left;padding:8px 12px;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#888;border-bottom:1.5px solid #eee;font-weight:500}",
+    "td{padding:8px 12px;border-bottom:0.5px solid #f0eeec;vertical-align:top}",
+    "tr:last-child td{border-bottom:none}",
+    "tr:hover td{background:#fafaf8}",
+    ".td-name{font-weight:500;color:#1a1917}",
+    ".td-fn{font-size:10.5px;color:#888}",
+    ".risk-h{color:#a33030;font-weight:600}.risk-m{color:#b06010}.risk-l{color:#2e7d32}",
+    ".card{background:#f8f7f4;border-radius:8px;padding:16px 20px;margin-bottom:14px}",
+    ".card-title{font-weight:600;font-size:13px;margin-bottom:4px}",
+    ".card-sub{font-size:11px;color:#888;margin-bottom:10px}",
+    ".two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}",
+    ".three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}",
+    ".progress{height:6px;background:#e0ddd5;border-radius:3px;overflow:hidden;margin-top:6px}",
+    ".progress-fill{height:100%;background:"+ac+";border-radius:3px}",
+    ".progress-target{height:100%;background:"+ac+";opacity:.25;border-radius:3px}",
+    ".footer{margin-top:48px;padding-top:16px;border-top:1px solid #eee;display:flex;justify-content:space-between;font-size:9.5px;color:#bbb}",
+    "h2{font-size:15px;font-weight:600;margin-bottom:6px}",
+    "h3{font-size:13px;font-weight:600;margin-bottom:4px}",
+    "p{margin-bottom:8px;color:#444}",
+    "ul{padding-left:16px;margin-bottom:8px}",
+    "li{margin-bottom:3px;color:#444;font-size:12px}",
+    ".tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;background:#eee;color:#555;margin-right:4px;margin-bottom:4px}",
+    "@media print{body{font-size:11px}.page{padding:24px 32px}.cover{padding:36px 32px}}"
+  ].join('\n');
+}
+
+function emReportHead(title, accentColor){
+  return "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'>"
+    +"<title>"+title+"</title>"
+    +"<style>"+emReportCSS(accentColor)+"</style>"
+    +"</head><body><div class='page'>";
+}
+function emReportFoot(author){
+  var d = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  return "<div class='footer'><span>"+author+" &nbsp;|&nbsp; BPA Command Centre</span><span>Generated "+d+" by Emma &nbsp;|&nbsp; Confidential</span></div>"
+    +"</div></body></html>";
+}
+
+// ── Helpers ───────────────────────────────────────────
+function fmtK(n){ var v=parseFloat(n)||0; return v>=1000?'\u00a3'+(v/1000).toFixed(1)+'M':'\u00a3'+v+'k'; }
+function roiPill(r){ return r==='h'?'<span class="pill pill-h">High ROI</span>':r==='med'?'<span class="pill pill-m">Med ROI</span>':'<span class="pill pill-l">Low ROI</span>'; }
+function typePill(t){ return t==='m'?'<span class="pill pill-man">Manual</span>':t==='s'?'<span class="pill pill-semi">Semi</span>':'<span class="pill pill-auto">Auto</span>'; }
+function catPill(c){ return c==='Quick win'?'<span class="pill pill-qw">Quick win</span>':'<span class="pill pill-str">Strategic</span>'; }
+function pct(p,t){ return '<div class="progress"><div class="progress-fill" style="width:'+p+'%"></div></div>'; }
+function payback(c,s){ var sv=parseFloat(s)||1,cs=parseFloat(c)||0; return Math.round(cs/sv*12)+' months'; }
+
+// ── Get all processes sorted ──────────────────────────
+function emAllProcs(){
+  var result=[];
+  for(var k in EMPROC){ if(EMPROC.hasOwnProperty(k)) result.push(EMPROC[k]); }
+  result.sort(function(a,b){ 
+    var rv={h:0,med:1,l:2}; 
+    return (rv[a.roi]||2)-(rv[b.roi]||2); 
+  });
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════
+// REPORT A: LEADERSHIP / ExCo / DIRECTORS
+// High-level strategic overview, ROI, portfolio health
+// ═══════════════════════════════════════════════════════
+function emReportLeadership(){
+  var procs = emAllProcs();
+  var totalSaving = procs.reduce(function(a,p){return a+parseFloat(p.saving||0);},0);
+  var totalCost   = procs.reduce(function(a,p){return a+parseFloat(p.cost||0);},0);
+  var roi3yr      = Math.round(((totalSaving*3 - totalCost)/totalCost)*100);
+  var avgPct      = Math.round(procs.reduce(function(a,p){return a+parseFloat(p.pct||0);},0)/procs.length);
+  var avgTarget   = Math.round(procs.reduce(function(a,p){return a+parseFloat(p.tpct||0);},0)/procs.length);
+  var highROI     = procs.filter(function(p){return p.roi==='h';}).length;
+  var quickWins   = procs.filter(function(p){return p.category==='Quick win';}).length;
+  var manual      = procs.filter(function(p){return p.type==='m';}).length;
+
+  var html = emReportHead('BPA Leadership Summary','#1a3a5c');
+
+  // Cover
+  html += "<div class='cover'>"
+    +"<div class='cover-badge'>Business Process Automation &mdash; Executive Summary</div>"
+    +"<div class='cover-title'>BPA Programme Overview</div>"
+    +"<div class='cover-sub'>Strategic automation portfolio across 7 functions &mdash; leadership briefing</div>"
+    +"<div class='cover-meta'><span>Prepared by: Khushboo Pasari, Programme Manager</span><span>Scope: 24 enterprise processes</span><span>Audience: Leadership / ExCo / Board</span></div>"
+    +"</div>";
+
+  // KPIs
+  html += "<div class='section'><div class='section-title'>Programme Headlines</div>"
+    +"<div class='kv-grid'>"
+    +"<div class='kv'><div class='kv-label'>Annual Saving (Target)</div><div class='kv-value'>"+fmtK(totalSaving)+"</div><div class='kv-sub'>At full automation across portfolio</div></div>"
+    +"<div class='kv'><div class='kv-label'>Implementation Investment</div><div class='kv-value'>"+fmtK(totalCost)+"</div><div class='kv-sub'>One-time cost across all initiatives</div></div>"
+    +"<div class='kv'><div class='kv-label'>3-Year ROI</div><div class='kv-value'>"+roi3yr+"%</div><div class='kv-sub'>Net return over 3-year horizon</div></div>"
+    +"<div class='kv'><div class='kv-label'>Current Automation</div><div class='kv-value'>"+avgPct+"%</div><div class='kv-sub'>Portfolio average &mdash; target "+avgTarget+"%</div></div>"
+    +"</div></div>";
+
+  // Portfolio health
+  html += "<div class='section'><div class='section-title'>Portfolio Composition</div><div class='two-col'>";
+
+  // By ROI
+  var fnGroups = {};
+  procs.forEach(function(p){ fnGroups[p.fn]=(fnGroups[p.fn]||0)+parseFloat(p.saving||0); });
+  html += "<div>";
+  html += "<h3 style='margin-bottom:12px'>Annual Saving by Function</h3>";
+  var fnSorted = Object.keys(fnGroups).sort(function(a,b){return fnGroups[b]-fnGroups[a];});
+  var maxFn = fnGroups[fnSorted[0]]||1;
+  fnSorted.forEach(function(fn){
+    var shortFn = fn.replace('Management','Mgmt').replace('& Procurement','').replace('& Billing','');
+    html += "<div class='bar-wrap'><div class='bar-label'><span>"+shortFn+"</span><span>"+fmtK(fnGroups[fn])+"</span></div>"
+      +"<div class='bar-track'><div class='bar-fill' style='width:"+Math.round(fnGroups[fn]/maxFn*100)+"%'></div></div></div>";
+  });
+  html += "</div>";
+
+  // Automation state
+  html += "<div><h3 style='margin-bottom:12px'>Process Automation Status</h3>"
+    +"<div style='margin-bottom:14px'>"
+    +"<div class='bar-wrap'><div class='bar-label'><span>Fully Manual ("+manual+")</span><span>"+Math.round(manual/procs.length*100)+"%</span></div><div class='bar-track'><div class='bar-fill' style='width:"+Math.round(manual/procs.length*100)+"%'></div></div></div>"
+    +"<div class='bar-wrap'><div class='bar-label'><span>Semi-Automated ("+(procs.length-manual-procs.filter(function(p){return p.type==='a';}).length)+")</span><span>"+Math.round((procs.length-manual-procs.filter(function(p){return p.type==='a';}).length)/procs.length*100)+"%</span></div><div class='bar-track'><div class='bar-fill' style='width:"+Math.round((procs.length-manual-procs.filter(function(p){return p.type==='a';}).length)/procs.length*100)+"%'></div></div></div>"
+    +"</div>"
+    +"<h3 style='margin-bottom:12px'>Priority Breakdown</h3>"
+    +"<div class='bar-wrap'><div class='bar-label'><span>High ROI Processes</span><span>"+highROI+" of "+procs.length+"</span></div><div class='bar-track'><div class='bar-fill' style='width:"+Math.round(highROI/procs.length*100)+"%'></div></div></div>"
+    +"<div class='bar-wrap'><div class='bar-label'><span>Quick Wins (fast ROI)</span><span>"+quickWins+" of "+procs.length+"</span></div><div class='bar-track'><div class='bar-fill' style='width:"+Math.round(quickWins/procs.length*100)+"%'></div></div></div>"
+    +"</div>";
+  html += "</div></div>";
+
+  // Top processes by saving
+  html += "<div class='section'><div class='section-title'>Top 8 Value Opportunities</div>"
+    +"<table><thead><tr><th>Process</th><th>Function</th><th>ROI Band</th><th>Annual Saving</th><th>Investment</th><th>Payback</th></tr></thead><tbody>";
+  procs.slice(0,8).forEach(function(p){
+    html += "<tr><td class='td-name'>"+p.name+"</td><td class='td-fn'>"+p.fn+"</td><td>"+roiPill(p.roi)+"</td>"
+      +"<td><strong>"+fmtK(p.saving)+"</strong></td><td>"+fmtK(p.cost)+"</td><td>"+payback(p.cost,p.saving)+"</td></tr>";
+  });
+  html += "</tbody></table></div>";
+
+  // Strategic risks
+  html += "<div class='section'><div class='section-title'>Key Programme Risks</div>"
+    +"<div class='two-col'>"
+    +"<div class='card'><div class='card-title risk-h'>&#9650; High Priority</div><ul>"
+    +"<li>Change resistance without structured programme comms</li>"
+    +"<li>Integration complexity across legacy ERP/CRM systems</li>"
+    +"<li>Data quality issues delaying AI-powered automation</li>"
+    +"</ul></div>"
+    +"<div class='card'><div class='card-title risk-m'>&#9654; Medium Priority</div><ul>"
+    +"<li>Vendor/tooling dependency and licence cost escalation</li>"
+    +"<li>Skill gaps in automation-ready team members</li>"
+    +"<li>Regulatory compliance for automated financial processes</li>"
+    +"</ul></div>"
+    +"</div></div>";
+
+  // Recommended next steps
+  html += "<div class='section'><div class='section-title'>Recommended Actions for Leadership</div>"
+    +"<div class='three-col'>"
+    +"<div class='card'><div class='card-title'>1. Approve Quick Wins</div><div class='card-sub'>Immediate</div><p>Greenlight "+quickWins+" quick win processes &mdash; collectively "+fmtK(procs.filter(function(p){return p.category==='Quick win';}).reduce(function(a,p){return a+parseFloat(p.saving||0);},0))+" annual saving with short payback.</p></div>"
+    +"<div class='card'><div class='card-title'>2. Governance Sign-off</div><div class='card-sub'>Within 30 days</div><p>Confirm programme governance structure, budget allocation, and sponsorship across all 7 business functions.</p></div>"
+    +"<div class='card'><div class='card-title'>3. Change Management</div><div class='card-sub'>Ongoing</div><p>Commission stakeholder engagement plan and comms programme aligned to each function&rsquo;s process change timeline.</p></div>"
+    +"</div></div>";
+
+  html += emReportFoot('Khushboo Pasari &mdash; Programme Manager');
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════
+// REPORT B: SR. MANAGERS / PROCESS OWNERS
+// Programme-level: all processes, status, KPIs, roadmap
+// ═══════════════════════════════════════════════════════
+function emReportProgramme(){
+  var procs = emAllProcs();
+  var totalSaving = procs.reduce(function(a,p){return a+parseFloat(p.saving||0);},0);
+  var totalCost   = procs.reduce(function(a,p){return a+parseFloat(p.cost||0);},0);
+
+  var html = emReportHead('BPA Programme Report','#2d5986');
+
+  html += "<div class='cover'>"
+    +"<div class='cover-badge'>Business Process Automation &mdash; Programme Status Report</div>"
+    +"<div class='cover-title'>BPA Programme Dashboard</div>"
+    +"<div class='cover-sub'>Detailed status across all 24 processes &mdash; for senior managers and process owners</div>"
+    +"<div class='cover-meta'><span>Khushboo Pasari, Programme Manager</span><span>24 processes / 7 functions</span><span>Audience: Sr. Managers &amp; Process Owners</span></div>"
+    +"</div>";
+
+  // Summary stats
+  var auto=procs.filter(function(p){return p.type==='a';}).length;
+  var semi=procs.filter(function(p){return p.type==='s';}).length;
+  var man=procs.filter(function(p){return p.type==='m';}).length;
+  html += "<div class='section'><div class='section-title'>Programme Snapshot</div>"
+    +"<div class='kv-grid'>"
+    +"<div class='kv'><div class='kv-label'>Total Processes</div><div class='kv-value'>"+procs.length+"</div><div class='kv-sub'>Across 7 business functions</div></div>"
+    +"<div class='kv'><div class='kv-label'>Portfolio Saving</div><div class='kv-value'>"+fmtK(totalSaving)+"</div><div class='kv-sub'>Annual at full automation</div></div>"
+    +"<div class='kv'><div class='kv-label'>Total Investment</div><div class='kv-value'>"+fmtK(totalCost)+"</div><div class='kv-sub'>Implementation cost</div></div>"
+    +"<div class='kv'><div class='kv-label'>Automation State</div><div class='kv-value'>"+man+"/"+semi+"/"+auto+"</div><div class='kv-sub'>Manual / Semi / Automated</div></div>"
+    +"</div></div>";
+
+  // Group by function
+  var functions = {};
+  procs.forEach(function(p){ if(!functions[p.fn]) functions[p.fn]=[]; functions[p.fn].push(p); });
+
+  html += "<div class='section'><div class='section-title'>Process Status by Function</div>";
+
+  Object.keys(functions).forEach(function(fn){
+    var fps = functions[fn];
+    var fnSaving = fps.reduce(function(a,p){return a+parseFloat(p.saving||0);},0);
+    html += "<div class='card'>"
+      +"<div class='card-title'>"+fn+"</div>"
+      +"<div class='card-sub'>"+fps.length+" processes &nbsp;&bull;&nbsp; "+fmtK(fnSaving)+" potential annual saving</div>"
+      +"<table><thead><tr><th>Process</th><th>Type</th><th>ROI</th><th>Category</th><th>Current %</th><th>Target %</th><th>Saving</th><th>Cost</th></tr></thead><tbody>";
+    fps.forEach(function(p){
+      html += "<tr>"
+        +"<td class='td-name'>"+p.name+"</td>"
+        +"<td>"+typePill(p.type)+"</td>"
+        +"<td>"+roiPill(p.roi)+"</td>"
+        +"<td>"+catPill(p.category)+"</td>"
+        +"<td>"+p.pct+"%</td>"
+        +"<td>"+p.tpct+"%</td>"
+        +"<td>"+fmtK(p.saving)+"</td>"
+        +"<td>"+fmtK(p.cost)+"</td>"
+        +"</tr>";
+    });
+    html += "</tbody></table></div>";
+  });
+  html += "</div>";
+
+  // Implementation roadmap
+  html += "<div class='section'><div class='section-title'>Implementation Roadmap Summary</div>"
+    +"<table><thead><tr><th>#</th><th>Process</th><th>Effort</th><th>Team</th><th>Budget</th><th>KPIs</th><th>Top Risk</th></tr></thead><tbody>";
+  procs.forEach(function(p,i){
+    var topKPI = (p.kpis&&p.kpis[0]) ? p.kpis[0].m+': '+p.kpis[0].b+' \u2192 '+p.kpis[0].t : '-';
+    var topRisk= (p.risks&&p.risks[0]) ? p.risks[0].d.substring(0,40) : '-';
+    html += "<tr><td style='color:#999;font-size:10px'>"+(i+1)+"</td>"
+      +"<td class='td-name'>"+p.name+"</td>"
+      +"<td>"+p.effort+"</td>"
+      +"<td>"+p.teamSize+"</td>"
+      +"<td>\u00a3"+p.budget+"</td>"
+      +"<td style='font-size:11px;color:#555'>"+topKPI+"</td>"
+      +"<td style='font-size:11px;color:#a33030'>"+topRisk+"</td>"
+      +"</tr>";
+  });
+  html += "</tbody></table></div>";
+
+  html += emReportFoot('Khushboo Pasari &mdash; Programme Manager');
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════
+// REPORT C: INDIVIDUAL PROCESS — Delivery Teams
+// Deep-dive: phases, tasks, stakeholders, KPIs, risks
+// ═══════════════════════════════════════════════════════
+function emReportProcess(procId){
+  var p = EMPROC[String(procId)];
+  if(!p) return null;
+  var saving=parseFloat(p.saving||0), cost=parseFloat(p.cost||0);
+
+  var html = emReportHead('Process Plan: '+p.name,'#1e5631');
+
+  html += "<div class='cover' style='background:#1e5631'>"
+    +"<div class='cover-badge'>Business Process Automation &mdash; Process Implementation Plan</div>"
+    +"<div class='cover-title'>"+p.name+"</div>"
+    +"<div class='cover-sub'>"+p.fn+"</div>"
+    +"<div class='cover-meta'>"
+    +"<span>Effort: "+p.effort+"</span>"
+    +"<span>Team: "+p.teamSize+" people</span>"
+    +"<span>Budget: \u00a3"+p.budget+"</span>"
+    +"<span>Audience: Delivery Team</span>"
+    +"</div>"
+    +"</div>";
+
+  // Key metrics
+  html += "<div class='section'><div class='section-title'>Process Overview</div>"
+    +"<div class='kv-grid'>"
+    +"<div class='kv'><div class='kv-label'>Annual Saving</div><div class='kv-value'>"+fmtK(saving)+"</div><div class='kv-sub'>At "+p.tpct+"% automation</div></div>"
+    +"<div class='kv'><div class='kv-label'>Implementation Cost</div><div class='kv-value'>"+fmtK(cost)+"</div><div class='kv-sub'>One-time</div></div>"
+    +"<div class='kv'><div class='kv-label'>Payback Period</div><div class='kv-value'>"+payback(cost,saving)+"</div><div class='kv-sub'>Months to breakeven</div></div>"
+    +"<div class='kv'><div class='kv-label'>Automation Target</div><div class='kv-value'>"+p.pct+"% \u2192 "+p.tpct+"%</div><div class='kv-sub'>Current to target</div></div>"
+    +"</div>"
+    +"<p style='color:#555;margin-bottom:8px'>"+p.summary+"</p>"
+    +"<div>"+typePill(p.type)+roiPill(p.roi)+catPill(p.category)+"<span class='pill' style='background:#f0f0ee;color:#666'>"+p.complexity+" complexity</span></div>"
+    +"</div>";
+
+  // Phases
+  if(p.phases&&p.phases.length){
+    var phColors={ph1:'#185fa5',ph2:'#5a3ab5',ph3:'#b06010',ph4:'#a33030',ph5:'#2e7d32',ph6:'#666'};
+    var phBG={ph1:'#e6f1fb',ph2:'#f0edf9',ph3:'#fff3e0',ph4:'#fce8e8',ph5:'#e8f5e9',ph6:'#f0f0ee'};
+    html += "<div class='section'><div class='section-title'>Implementation Phases &amp; Tasks</div>";
+    p.phases.forEach(function(ph){
+      var col=phColors[ph.cls||'ph6']||'#666';
+      var bg=phBG[ph.cls||'ph6']||'#f0f0ee';
+      html += "<div class='card' style='border-left:4px solid "+col+";background:"+bg+"20'>"
+        +"<div style='display:flex;align-items:flex-start;gap:12px'>"
+        +"<div style='min-width:52px;background:"+col+";color:#fff;border-radius:4px;padding:4px 8px;font-size:9px;font-weight:600;text-align:center'>"+ph.label+"<br><span style='font-weight:400;opacity:.8'>"+ph.dur+"</span></div>"
+        +"<div style='flex:1'><div class='card-title'>"+ph.name+"</div>"
+        +"<ul style='margin-top:6px'>";
+      (ph.tasks||[]).forEach(function(t){ html+="<li>"+t+"</li>"; });
+      html += "</ul></div></div></div>";
+    });
+    html += "</div>";
+  }
+
+  // Two-col: stakeholders + prerequisites
+  html += "<div class='section'><div class='section-title'>Stakeholders &amp; Prerequisites</div><div class='two-col'>";
+  if(p.stakeholders&&p.stakeholders.length){
+    html += "<div><h3 style='margin-bottom:10px'>Stakeholders</h3>";
+    p.stakeholders.forEach(function(s){
+      html += "<div class='card' style='padding:10px 14px;margin-bottom:8px'>"
+        +"<div class='card-title' style='font-size:12px'>"+s.role+"</div>"
+        +"<div style='font-size:11px;color:#888'>"+s.resp+"</div>"
+        +"</div>";
+    });
+    html += "</div>";
+  }
+  if(p.prereqs&&p.prereqs.length){
+    html += "<div><h3 style='margin-bottom:10px'>Prerequisites</h3>";
+    p.prereqs.forEach(function(r){ html+="<div style='padding:6px 0;border-bottom:0.5px solid #eee;font-size:12px;color:#444'>&bull; "+r+"</div>"; });
+    if(p.tools&&p.tools.length){
+      html += "<h3 style='margin-top:16px;margin-bottom:10px'>Tooling</h3><div style='display:flex;flex-wrap:wrap;gap:6px'>";
+      p.tools.forEach(function(t){ html+="<span class='tag'>"+t+"</span>"; });
+      html += "</div>";
+    }
+    html += "</div>";
+  }
+  html += "</div></div>";
+
+  // KPIs
+  if(p.kpis&&p.kpis.length){
+    html += "<div class='section'><div class='section-title'>Success KPIs</div>"
+      +"<table><thead><tr><th>Metric</th><th>Baseline</th><th>Target</th><th>How Measured</th></tr></thead><tbody>";
+    p.kpis.forEach(function(k){
+      html += "<tr><td class='td-name'>"+k.m+"</td><td style='color:#888'>"+k.b+"</td><td style='color:#2e7d32;font-weight:600'>"+k.t+"</td><td style='color:#666;font-size:11px'>"+(k.how||'TBD')+"</td></tr>";
+    });
+    html += "</tbody></table></div>";
+  }
+
+  // Risks
+  if(p.risks&&p.risks.length){
+    html += "<div class='section'><div class='section-title'>Risks &amp; Mitigations</div>";
+    p.risks.forEach(function(r){
+      var col=r.l==='High'?'#a33030':r.l==='Med'?'#b06010':'#2e7d32';
+      html += "<div class='card' style='display:grid;grid-template-columns:60px 1fr;gap:12px;align-items:start'>"
+        +"<div style='text-align:center;padding:4px 6px;border-radius:4px;background:"+(r.l==='High'?'#fce8e8':r.l==='Med'?'#fff3e0':'#e8f5e9')+";color:"+col+";font-size:10px;font-weight:600'>"+r.l+"</div>"
+        +"<div><div style='font-weight:500;margin-bottom:3px'>"+r.d+"</div>"
+        +"<div style='font-size:11px;color:#888'>Mitigation: "+r.mit+"</div></div>"
+        +"</div>";
+    });
+    html += "</div>";
+  }
+
+  html += emReportFoot('Khushboo Pasari &mdash; Programme Manager / '+p.fn);
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════
+// REPORT D: FULL PROGRAMME — All processes detailed
+// ═══════════════════════════════════════════════════════
+function emReportFull(){
+  var procs = emAllProcs();
+  var totalSaving = procs.reduce(function(a,p){return a+parseFloat(p.saving||0);},0);
+  var totalCost   = procs.reduce(function(a,p){return a+parseFloat(p.cost||0);},0);
+
+  var html = emReportHead('BPA Full Programme Report','#1a1917');
+  html += "<div class='cover' style='background:linear-gradient(135deg,#181816,#2a2925)'>"
+    +"<div class='cover-badge'>Business Process Automation &mdash; Complete Programme Report</div>"
+    +"<div class='cover-title'>BPA Command Centre<br>Full Programme Report</div>"
+    +"<div class='cover-sub'>All 24 processes &mdash; complete portfolio, plans, KPIs, and risks</div>"
+    +"<div class='cover-meta'><span>Khushboo Pasari, Programme Manager</span><span>24 processes / 7 functions</span><span>"+fmtK(totalSaving)+" p.a. potential</span></div>"
+    +"</div>";
+
+  // Leadership summary first
+  var highROI=procs.filter(function(p){return p.roi==='h';}).length;
+  var qw=procs.filter(function(p){return p.category==='Quick win';}).length;
+  html += "<div class='section'><div class='section-title'>Executive Summary</div>"
+    +"<div class='kv-grid'>"
+    +"<div class='kv'><div class='kv-label'>Annual Saving</div><div class='kv-value'>"+fmtK(totalSaving)+"</div></div>"
+    +"<div class='kv'><div class='kv-label'>Investment</div><div class='kv-value'>"+fmtK(totalCost)+"</div></div>"
+    +"<div class='kv'><div class='kv-label'>3-Year ROI</div><div class='kv-value'>"+Math.round(((totalSaving*3-totalCost)/totalCost)*100)+"%</div></div>"
+    +"<div class='kv'><div class='kv-label'>High ROI / Quick Wins</div><div class='kv-value'>"+highROI+" / "+qw+"</div></div>"
+    +"</div></div>";
+
+  // Every process
+  procs.forEach(function(p){
+    var saving=parseFloat(p.saving||0), cost=parseFloat(p.cost||0);
+    html += "<div class='section' style='page-break-inside:avoid;border-top:2px solid #f0eeec;padding-top:20px'>"
+      +"<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px'>"
+      +"<div><h2>"+p.name+"</h2><div style='font-size:11px;color:#888;margin-top:2px'>"+p.fn+"</div></div>"
+      +"<div style='text-align:right;font-size:11px'>"+typePill(p.type)+roiPill(p.roi)+"<br>"
+      +"<span style='color:#2e7d32;font-weight:600'>"+fmtK(saving)+"</span><span style='color:#888'> p.a. | cost: </span><span>"+fmtK(cost)+"</span></div>"
+      +"</div>"
+      +"<p style='margin-bottom:10px'>"+p.summary+"</p>";
+
+    // Mini phases
+    if(p.phases&&p.phases.length){
+      html += "<div style='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px'>";
+      p.phases.forEach(function(ph){
+        html += "<div style='font-size:10px;padding:3px 8px;background:#f0eeec;border-radius:4px;color:#555'>"+ph.label+": "+ph.name+" ("+ph.dur+")</div>";
+      });
+      html += "</div>";
+    }
+
+    // KPIs + risks side by side
+    html += "<div class='two-col' style='margin-top:4px'>";
+    if(p.kpis&&p.kpis.length){
+      html += "<div><div style='font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#888;margin-bottom:6px'>KPIs</div>";
+      p.kpis.slice(0,3).forEach(function(k){ html+="<div style='font-size:11px;padding:3px 0;border-bottom:0.5px solid #f0eeec'><strong>"+k.m+"</strong>: "+k.b+" \u2192 <span style='color:#2e7d32'>"+k.t+"</span></div>"; });
+      html += "</div>";
+    }
+    if(p.risks&&p.risks.length){
+      html += "<div><div style='font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#888;margin-bottom:6px'>Risks</div>";
+      p.risks.slice(0,2).forEach(function(r){ html+="<div style='font-size:11px;padding:3px 0;border-bottom:0.5px solid #f0eeec'><span style='"+(r.l==='High'?'color:#a33030;font-weight:600':r.l==='Med'?'color:#b06010':'color:#2e7d32')+"'>["+r.l+"]</span> "+r.d.substring(0,70)+"</div>"; });
+      html += "</div>";
+    }
+    html += "</div></div>";
+  });
+
+  html += emReportFoot('Khushboo Pasari &mdash; Programme Manager');
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════
+// MAIN DISPATCH — called by Emma or buttons
+// ═══════════════════════════════════════════════════════
+function emGenerateReport(type, procId){
+  var html, filename;
+  var d = new Date().toISOString().slice(0,10);
+  if(type==='leadership'){
+    html=emReportLeadership(); filename='BPA-Leadership-Summary-'+d+'.html';
+  } else if(type==='programme'){
+    html=emReportProgramme(); filename='BPA-Programme-Report-'+d+'.html';
+  } else if(type==='process'){
+    var pid = procId!==undefined ? procId : emCtxId;
+    html=emReportProcess(pid);
+    if(!html){ emAddMsg('emma','No process selected. Click a process card first, then ask me to generate the report.'); return; }
+    var p=EMPROC[String(pid)];
+    filename='BPA-Process-'+((p&&p.name)||'Report').replace(/[^a-zA-Z0-9]/g,'-')+'-'+d+'.html';
+  } else if(type==='full'){
+    html=emReportFull(); filename='BPA-Full-Programme-'+d+'.html';
+  } else {
+    emAddMsg('emma','Unknown report type. Use: leadership, programme, process, or full.');
+    return;
+  }
+  emDownloadHTML(html, filename);
+  emAddMsg('emma','Your **'+filename+'** is downloading now.\n\nThe report is a self-contained HTML file &mdash; open it in any browser and use File \u2192 Print \u2192 Save as PDF to get a PDF version. No pop-ups or special software needed.');
+}
+
 
 </script>
 </body>
