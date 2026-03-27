@@ -3625,6 +3625,12 @@ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--
     </div>
   </div>
   <div class="emma-vbanner" id="em-vbanner">&#127897;&#65039; Voice on &mdash; Emma will speak her answers</div>
+  <div class="emma-key-bar" id="em-key-bar">
+    <span class="emma-key-label" id="em-key-lbl">&#128273; API Key</span>
+    <input class="emma-key-input" id="em-key-input" type="password" placeholder="sk-ant-... (needed outside Claude.ai)">
+    <button class="emma-key-save" onclick="emSaveKey()">Save</button>
+    <button class="emma-key-clear" onclick="emClearKey()" title="Remove">&#10005;</button>
+  </div>
   <div class="emma-ctx">
     <div class="ectx-dot" id="em-ctx-dot"></div>
     <span class="ectx-txt" id="em-ctx-txt">No process selected &mdash; select a card for context</span>
@@ -3801,7 +3807,7 @@ async function emSend(){
   try{
     var resp=await fetch("https://api.anthropic.com/v1/messages",{
       method:"POST",
-      headers:{"Content-Type":"application/json"},
+      headers:emGetHeaders(),
       body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:900,system:EM_SYS,messages:messages})
     });
     var data=await resp.json(); emHideLoading();
@@ -3819,7 +3825,7 @@ async function emSend(){
       var pv=vs.find(function(v){return v.lang.startsWith("en-GB");})||vs.find(function(v){return v.lang.startsWith("en");});
       if(pv)u.voice=pv; speechSynthesis.speak(u);
     }
-  }catch(e){emHideLoading();emAddMsg("emma","Connection error: "+e.message);}
+  }catch(e){emHideLoading();var noKey=!_emKey&&(e.message.indexOf('fetch')>=0||e.message.indexOf('Failed')>=0||e.message.indexOf('Network')>=0);if(noKey){emAddMsg('emma','Connection error: Failed to fetch.\n\nEmma needs an Anthropic API key to work in Chrome or on GitHub Pages.\n\nTo fix:\n1. Go to console.anthropic.com and create an API key\n2. Paste it in the API Key field at the top of Emma\n3. Click Save\n\nYour key is stored only in your browser and sent only to Anthropic.');}else{emAddMsg('emma','Connection error: '+e.message);}}
   if(sb)sb.disabled=false;
 }
 
@@ -3902,6 +3908,7 @@ function emResizeTA(ta){ta.style.height="36px";ta.style.height=Math.min(ta.scrol
 
 
 // ── Emma PDF Export ────────────────────────────────────────────────
+// ── Process reply for PDF/CHANGE commands ─────────────
 function emProcessReply(text){
   text=text.replace(/\[PDF:"?([^"\]]+)"?\]/g,function(m,scope){
     var label=scope==="full"?"Full Dashboard PDF":scope==="process"?"Process Planner PDF":scope==="plan"?"Implementation Plans PDF":"Export PDF";
@@ -3911,30 +3918,42 @@ function emProcessReply(text){
     try{
       var ch=JSON.parse(json);
       window._emPendingChange=ch;
-      return "<div class='em-change-block'><div class='em-change-title'>\u270E Proposed Change</div><div class='em-change-what'><strong>"+ch.label+"</strong></div><div class='em-change-content'>"+String(ch.content||"").substring(0,300)+"</div><div class='em-change-actions'><button class='em-apply-btn' onclick='emApplyChange()'>\u2713 Apply</button> <button class='em-discard-btn' onclick='emDiscardChange()'>\u2715 Discard</button></div></div>";
-    }catch(e){return m;}
+      return "<div class='em-change-block'>"
+        +"<div class='em-change-title'>\u270E Proposed Change</div>"
+        +"<div class='em-change-what'><strong>"+ch.label+"</strong></div>"
+        +"<div class='em-change-content'>"+String(ch.content||"").substring(0,300)+"</div>"
+        +"<div class='em-change-actions'>"
+        +"<button class='em-apply-btn' onclick='emApplyChange()'>\u2713 Apply</button>"
+        +" <button class='em-discard-btn' onclick='emDiscardChange()'>\u2715 Discard</button>"
+        +"</div></div>";
+    }catch(ex){ return m; }
   });
   return text;
 }
-
 function emApplyChange(){
-  var ch=window._emPendingChange; if(!ch)return;
+  var ch=window._emPendingChange; if(!ch) return;
   var done=false;
   document.querySelectorAll(".d-sum,.body-text").forEach(function(el){
-    if(!done&&el.textContent.length>20){el.textContent=ch.content;done=true;}
+    if(!done&&el.textContent.length>20){ el.textContent=ch.content; done=true; }
   });
   document.querySelectorAll(".em-apply-btn").forEach(function(b){b.disabled=true;b.textContent="Applied";});
   document.querySelectorAll(".em-discard-btn").forEach(function(b){b.disabled=true;});
   var msgs=document.getElementById("emma-msgs");
-  if(msgs){var div=document.createElement("div");div.className="emsg emsg-emma";div.innerHTML=done?"<strong style='color:#2e7d32'>\u2713 Change applied</strong> to the dashboard.":"<strong style='color:#b06010'>\u26A0 Could not auto-locate</strong> the element. Copy the proposed text and paste it manually into the relevant section.";msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+  if(msgs){
+    var div=document.createElement("div"); div.className="emsg emsg-emma";
+    div.innerHTML=done?"<strong style='color:#2e7d32'>\u2713 Change applied</strong> to the dashboard."
+      :"<strong style='color:#b06010'>\u26A0 Could not auto-locate the element.</strong> Copy the text above and paste it into the relevant section manually.";
+    msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+  }
   window._emPendingChange=null;
 }
-
 function emDiscardChange(){
   window._emPendingChange=null;
   document.querySelectorAll(".em-change-block").forEach(function(el){el.style.opacity="0.5";});
   document.querySelectorAll(".em-apply-btn,.em-discard-btn").forEach(function(b){b.disabled=true;});
 }
+
+// ── PDF Export ────────────────────────────────────────
 
 function emExportPDF(scope){
   var title=scope==="full"?"BPA Dashboard \u2014 Full Export":scope==="process"?"Process Planner":scope==="plan"?"Implementation Plans":"BPA Export";
@@ -3943,71 +3962,113 @@ function emExportPDF(scope){
   if(scope==="full"||scope==="plan"){var el2=document.getElementById("p1");if(el2)bodyHTML+=el2.innerHTML;}
   var win=window.open("","_blank","width=960,height=700");
   if(!win){emAddMsg("emma","Please allow pop-ups for this page, then try again.");return;}
-  var css="body{font-family:system-ui,sans-serif;color:#1a1917;padding:24px 32px;max-width:960px;margin:0 auto;font-size:12.5px;line-height:1.6}"
-    +".hdr-bar{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:12px;margin-bottom:18px;border-bottom:2px solid #1a1917}"
-    +".hdr-badge{font-size:8px;letter-spacing:.09em;text-transform:uppercase;background:#181816;color:#e8a84c;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:4px}"
-    +".hdr-title{font-size:16px;font-weight:600}.hdr-sub{font-size:11px;color:#888}"
-    +".stats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px}"
-    +".sc{background:#f5f4f0;padding:9px 11px;border-radius:4px;border:0.5px solid #e0ddd5}"
-    +".sc-l{font-size:8px;text-transform:uppercase;letter-spacing:.04em;color:#9a9890;margin-bottom:2px}"
-    +".sc-v{font-size:15px;font-weight:700}.sc-s{font-size:10px;color:#888;margin-top:1px}"
-    +".pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px}"
-    +".pc{background:#fff;border:0.5px solid #e0ddd5;border-radius:4px;padding:6px 8px}"
-    +".pc-name{font-size:10.5px;font-weight:500;margin-bottom:3px}"
-    +".fn-lbl{font-size:8px;font-weight:500;color:#9a9890;letter-spacing:.06em;text-transform:uppercase;grid-column:1/-1;padding:5px 0 1px}"
-    +".mk,.bdg{font-size:8px;padding:1px 5px;border-radius:5px;font-weight:500;display:inline-block;margin-right:2px}"
-    +".mk-m,.bdg-m{background:#fce8e8;color:#a33030}.mk-s,.bdg-s{background:#fff3e0;color:#b06010}.mk-a,.bdg-a{background:#e8f5e9;color:#2e7d32}"
-    +".mk-h,.bdg-h{background:#faece7;color:#993c1d}.mk-med,.bdg-med{background:#faeeda;color:#854f0b}.mk-l,.bdg-l{background:#eaf3de;color:#3b6d11}"
-    +".bdg-qw{background:#e8f5e9;color:#2e7d32}.bdg-str{background:#e6f1fb;color:#185fa5}"
-    +".detail,.plan-panel{background:#fafaf8;padding:14px;margin-bottom:14px;border-radius:5px;border:0.5px solid #e0ddd5;page-break-inside:avoid}"
-    +".d-bc{font-size:8px;color:#9a9890;margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em}"
-    +".d-sum,.body-text{font-size:11.5px;color:#5a5955;margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid #e0ddd5}"
-    +".g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}"
-    +".g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}"
-    +".card{background:#fff;padding:9px 11px;border-radius:4px;border:0.5px solid #e0ddd5;margin-bottom:7px}"
-    +".sh{font-size:8px;font-weight:500;color:#9a9890;letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px;padding-bottom:3px;border-bottom:0.5px solid #e0ddd5}"
-    +".ph-row{display:grid;grid-template-columns:66px 1fr;gap:7px;padding:5px 0;border-bottom:0.5px solid #f0efe9}"
-    +".ph-lbl{font-size:8.5px;padding:2px 5px;border-radius:3px;font-weight:500;text-align:center;line-height:1.3}"
-    +".ph1{background:#e6f1fb;color:#185fa5}.ph2{background:#f0edf9;color:#5a3ab5}.ph3{background:#fff3e0;color:#b06010}"
-    +".ph4{background:#fce8e8;color:#a33030}.ph5{background:#e8f5e9;color:#2e7d32}.ph6{background:#f0f0ee;color:#666}"
-    +".ph-name{font-size:11px;font-weight:500;margin-bottom:1px}.ph-ul{list-style:none;padding:0;margin:0}"
-    +".ph-ul li{font-size:10.5px;color:#5a5955;padding-left:9px;position:relative;margin-bottom:1px}"
-    +".ph-ul li::before{content:'\\2192';position:absolute;left:0;color:#bbb;font-size:9px}"
-    +".srow{display:flex;gap:6px;margin-bottom:5px;align-items:flex-start}"
-    +".sav{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7.5px;font-weight:500;flex-shrink:0}"
-    +".sa-blue{background:#e6f1fb;color:#185fa5}.sa-purple{background:#f0edf9;color:#5a3ab5}"
-    +".sa-amber{background:#fff3e0;color:#b06010}.sa-red{background:#fce8e8;color:#a33030}"
-    +".sa-green{background:#e8f5e9;color:#2e7d32}.sa-gray{background:#f0f0ee;color:#666}"
-    +".tools{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}"
-    +".tool{padding:1px 7px;border-radius:8px;font-size:9.5px;background:#f0efe9;border:0.5px solid #d5d2cb;color:#5a5955}"
-    +".pre{font-size:10.5px;color:#5a5955;padding-left:10px;position:relative;margin-bottom:2px}"
-    +".pre::before{content:'\\25C6';position:absolute;left:0;font-size:6px;color:#e8a84c;top:4px}"
-    +".risk-r{display:grid;grid-template-columns:44px 1fr;gap:6px;padding:6px;border-radius:4px;background:#f9f8f5;margin-bottom:4px}"
-    +".rl{font-size:8px;padding:2px 4px;border-radius:3px;font-weight:500;text-align:center}"
-    +".rl-h{background:#fce8e8;color:#a33030}.rl-m{background:#faeeda;color:#854f0b}.rl-l{background:#eaf3de;color:#3b6d11}"
-    +".rd{font-size:10.5px;font-weight:500;margin-bottom:1px}.rm{font-size:10px;color:#5a5955}"
-    +".kt{width:100%;border-collapse:collapse;font-size:10.5px}"
-    +".kt th{text-align:left;padding:4px 7px;font-size:8.5px;color:#9a9890;text-transform:uppercase;border-bottom:0.5px solid #e0ddd5;font-weight:400}"
-    +".kt td{padding:4px 7px;color:#5a5955;border-bottom:0.5px solid #e0ddd5;vertical-align:top}"
-    +".kt-m{color:#1a1917;font-weight:500}.kt-t{color:#2e7d32;font-size:9.5px}"
-    +".prog{height:3px;background:#e0ddd5;border-radius:2px;overflow:hidden;position:relative;margin-top:3px}"
-    +".prog-t{position:absolute;left:0;top:0;bottom:0;background:#e8f5e9;opacity:.45}"
-    +".prog-c{position:absolute;left:0;top:0;bottom:0;background:#2e7d32}"
-    +"#emma-toggle,#emma-panel,.empty-msg,.em-loading,.apbox,.em-pdf-btn,.em-change-block,.emma-disc,button,.ps-wrap{display:none!important}"
-    +"svg{max-width:100%}@media print{body{padding:12px}.detail,.plan-panel{page-break-inside:avoid}}";
-  win.document.write("<!DOCTYPE html><html><head><meta charset='UTF-8'><title>"+title+"</title><style>"+css+"</style></head><body>"
-    +"<div class='hdr-bar'><div><div class='hdr-badge'>BPA Dashboard</div><div class='hdr-title'>Business Process Automation</div><div class='hdr-sub'>"+title+"</div></div>"
-    +"<div style='text-align:right'><div style='font-size:11px;font-weight:600'>Khushboo Pasari</div><div style='font-size:9.5px;color:#888'>"+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})+"</div></div></div>"
-    +bodyHTML
-    +"<div style='font-size:9px;color:#bbb;text-align:center;padding-top:14px;border-top:0.5px solid #e0ddd5;margin-top:16px'>Generated by Emma \u2014 AI PM Assistant &nbsp;|&nbsp; BPA Command Centre &nbsp;|&nbsp; Confidential</div>"
-    +"</body></html>");
+  var styles=[
+    "body{font-family:system-ui,sans-serif;color:#1a1917;padding:24px 32px;max-width:960px;margin:0 auto;font-size:12.5px;line-height:1.6}",
+    ".hdr-bar{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:12px;margin-bottom:18px;border-bottom:2px solid #1a1917}",
+    ".hdr-badge{font-size:8px;letter-spacing:.09em;text-transform:uppercase;background:#181816;color:#e8a84c;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:4px}",
+    ".hdr-title{font-size:16px;font-weight:600}.hdr-sub{font-size:11px;color:#888}",
+    ".stats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px}",
+    ".sc{background:#f5f4f0;padding:9px 11px;border-radius:4px;border:0.5px solid #e0ddd5}",
+    ".sc-l{font-size:8px;text-transform:uppercase;letter-spacing:.04em;color:#9a9890;margin-bottom:2px}",
+    ".sc-v{font-size:15px;font-weight:700}.sc-s{font-size:10px;color:#888;margin-top:1px}",
+    ".pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px}",
+    ".pc{background:#fff;border:0.5px solid #e0ddd5;border-radius:4px;padding:6px 8px}",
+    ".pc-name{font-size:10.5px;font-weight:500;margin-bottom:3px}",
+    ".fn-lbl{font-size:8px;font-weight:500;color:#9a9890;letter-spacing:.06em;text-transform:uppercase;grid-column:1/-1;padding:5px 0 1px}",
+    ".mk,.bdg{font-size:8px;padding:1px 5px;border-radius:5px;font-weight:500;display:inline-block;margin-right:2px}",
+    ".mk-m,.bdg-m{background:#fce8e8;color:#a33030}.mk-s,.bdg-s{background:#fff3e0;color:#b06010}.mk-a,.bdg-a{background:#e8f5e9;color:#2e7d32}",
+    ".mk-h,.bdg-h{background:#faece7;color:#993c1d}.mk-med,.bdg-med{background:#faeeda;color:#854f0b}.mk-l,.bdg-l{background:#eaf3de;color:#3b6d11}",
+    ".bdg-qw{background:#e8f5e9;color:#2e7d32}.bdg-str{background:#e6f1fb;color:#185fa5}",
+    ".detail,.plan-panel{background:#fafaf8;padding:14px;margin-bottom:14px;border-radius:5px;border:0.5px solid #e0ddd5;page-break-inside:avoid}",
+    ".d-bc{font-size:8px;color:#9a9890;margin-bottom:2px;text-transform:uppercase;letter-spacing:.04em}",
+    ".d-sum,.body-text{font-size:11.5px;color:#5a5955;margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid #e0ddd5}",
+    ".g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}",
+    ".g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}",
+    ".card{background:#fff;padding:9px 11px;border-radius:4px;border:0.5px solid #e0ddd5;margin-bottom:7px}",
+    ".sh{font-size:8px;font-weight:500;color:#9a9890;letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px;padding-bottom:3px;border-bottom:0.5px solid #e0ddd5}",
+    ".ph-row{display:grid;grid-template-columns:66px 1fr;gap:7px;padding:5px 0;border-bottom:0.5px solid #f0efe9}",
+    ".ph-lbl{font-size:8.5px;padding:2px 5px;border-radius:3px;font-weight:500;text-align:center;line-height:1.3}",
+    ".ph1{background:#e6f1fb;color:#185fa5}.ph2{background:#f0edf9;color:#5a3ab5}.ph3{background:#fff3e0;color:#b06010}",
+    ".ph4{background:#fce8e8;color:#a33030}.ph5{background:#e8f5e9;color:#2e7d32}.ph6{background:#f0f0ee;color:#666}",
+    ".ph-name{font-size:11px;font-weight:500;margin-bottom:1px}.ph-ul{list-style:none;padding:0;margin:0}",
+    ".ph-ul li{font-size:10.5px;color:#5a5955;padding-left:9px;position:relative;margin-bottom:1px}",
+    ".srow{display:flex;gap:6px;margin-bottom:5px;align-items:flex-start}",
+    ".sav{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7.5px;font-weight:500;flex-shrink:0}",
+    ".sa-blue{background:#e6f1fb;color:#185fa5}.sa-purple{background:#f0edf9;color:#5a3ab5}",
+    ".sa-amber{background:#fff3e0;color:#b06010}.sa-red{background:#fce8e8;color:#a33030}",
+    ".sa-green{background:#e8f5e9;color:#2e7d32}.sa-gray{background:#f0f0ee;color:#666}",
+    ".tools{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}",
+    ".tool{padding:1px 7px;border-radius:8px;font-size:9.5px;background:#f0efe9;border:0.5px solid #d5d2cb;color:#5a5955}",
+    ".pre{font-size:10.5px;color:#5a5955;padding-left:10px;position:relative;margin-bottom:2px}",
+    ".risk-r{display:grid;grid-template-columns:44px 1fr;gap:6px;padding:6px;border-radius:4px;background:#f9f8f5;margin-bottom:4px}",
+    ".rl{font-size:8px;padding:2px 4px;border-radius:3px;font-weight:500;text-align:center}",
+    ".rl-h{background:#fce8e8;color:#a33030}.rl-m{background:#faeeda;color:#854f0b}.rl-l{background:#eaf3de;color:#3b6d11}",
+    ".rd{font-size:10.5px;font-weight:500;margin-bottom:1px}.rm{font-size:10px;color:#5a5955}",
+    ".kt{width:100%;border-collapse:collapse;font-size:10.5px}",
+    ".kt th{text-align:left;padding:4px 7px;font-size:8.5px;color:#9a9890;text-transform:uppercase;border-bottom:0.5px solid #e0ddd5;font-weight:400}",
+    ".kt td{padding:4px 7px;color:#5a5955;border-bottom:0.5px solid #e0ddd5;vertical-align:top}",
+    ".kt-m{color:#1a1917;font-weight:500}.kt-t{color:#2e7d32;font-size:9.5px}",
+    ".prog{height:3px;background:#e0ddd5;border-radius:2px;overflow:hidden;position:relative;margin-top:3px}",
+    ".prog-t{position:absolute;left:0;top:0;bottom:0;background:#e8f5e9;opacity:.45}",
+    ".prog-c{position:absolute;left:0;top:0;bottom:0;background:#2e7d32}",
+    "#emma-toggle,#emma-panel,.empty-msg,.em-loading,.apbox,.em-pdf-btn,.em-change-block,.emma-disc,button,.ps-wrap,#fn-bar{display:none!important}",
+    "svg{max-width:100%}@media print{body{padding:12px}.detail,.plan-panel{page-break-inside:avoid}}"
+  ];
+  var css=styles.join("");
+  var date=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  var head="<!DOCTYPE html><html><head><meta charset='UTF-8'><title>"+title+"</title><style>"+css+"</style></head><body>";
+  var hdrBar="<div class='hdr-bar'><div><div class='hdr-badge'>BPA Dashboard</div><div class='hdr-title'>Business Process Automation</div><div class='hdr-sub'>"+title+"</div></div><div style='text-align:right'><div style='font-size:11px;font-weight:600'>Khushboo Pasari</div><div style='font-size:9.5px;color:#888'>"+date+"</div></div></div>";
+  var footer="<div style='font-size:9px;color:#bbb;text-align:center;padding-top:14px;border-top:0.5px solid #e0ddd5;margin-top:16px'>Generated by Emma \u2014 AI PM Assistant | BPA Command Centre | Confidential</div>";
+  var tail="</body></html>";
+  win.document.write(head+hdrBar+bodyHTML+footer+tail);
   win.document.close();
   setTimeout(function(){try{win.print();}catch(e){}},700);
 }
 
 
+
+// ── Emma API Key Management ─────────────────────────────────────────
+var _emKey = "";
+function emInitKey(){
+  try{ _emKey = localStorage.getItem("emma_api_key") || ""; }catch(e){ _emKey = ""; }
+  if(_emKey){
+    var inp = document.getElementById("em-key-input");
+    if(inp) inp.value = _emKey.substring(0,12)+"...";
+    var lbl = document.getElementById("em-key-lbl");
+    if(lbl){ lbl.className="emma-key-ok"; lbl.textContent="\u2713 Key saved"; }
+  }
+}
+function emSaveKey(){
+  var inp = document.getElementById("em-key-input");
+  var val = inp ? inp.value.trim() : "";
+  if(!val || val.indexOf("...") >= 0){ if(inp) inp.focus(); return; }
+  _emKey = val;
+  try{ localStorage.setItem("emma_api_key", _emKey); }catch(e){}
+  if(inp) inp.value = _emKey.substring(0,12)+"...";
+  var lbl = document.getElementById("em-key-lbl");
+  if(lbl){ lbl.className="emma-key-ok"; lbl.textContent="\u2713 Key saved"; }
+  emAddMsg("emma","API key saved in your browser. Emma will now respond from any location including GitHub Pages.\n\nYour key goes directly to Anthropic only — never stored on any server.");
+}
+function emClearKey(){
+  _emKey = "";
+  try{ localStorage.removeItem("emma_api_key"); }catch(e){}
+  var inp = document.getElementById("em-key-input");
+  if(inp) inp.value = "";
+  var lbl = document.getElementById("em-key-lbl");
+  if(lbl){ lbl.className="emma-key-label"; lbl.textContent="\u{1F511} API Key"; }
+}
+function emGetHeaders(){
+  var h = {"Content-Type":"application/json"};
+  if(_emKey){
+    h["x-api-key"] = _emKey;
+    h["anthropic-version"] = "2023-06-01";
+    h["anthropic-dangerous-direct-browser-access"] = "true";
+  }
+  return h;
+}
+
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&emOpen)emmaToggle();});
-document.addEventListener("DOMContentLoaded",function(){
+document.addEventListener("DOMContentLoaded",function(){emInitKey();
   var inp=document.getElementById("emma-input");
   if(inp){
     inp.addEventListener("input",function(){emResizeTA(this);});
