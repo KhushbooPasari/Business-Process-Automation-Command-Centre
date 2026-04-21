@@ -4,9 +4,11 @@
   const scoreBadge = document.querySelector(".score-badge");
   const programmeTitle = document.querySelector("#programmeTitle");
   const metricCards = document.querySelector("#metricCards");
+  const logicPanel = document.querySelector("#logicPanel");
   const blueprint = document.querySelector("#blueprint");
   const questions = document.querySelector("#questions");
   const maturity = document.querySelector("#maturity");
+  const implementation = document.querySelector("#implementation");
   const pipeline = document.querySelector("#pipeline");
   const architecture = document.querySelector("#architecture");
   const backlog = document.querySelector("#backlog");
@@ -16,6 +18,7 @@
   const visualTitle = document.querySelector("#visualTitle");
   const visualBody = document.querySelector("#visualBody");
   const canvas = document.querySelector("#processCanvas");
+  const heroCanvas = document.querySelector("#heroCanvas");
   const toast = document.querySelector("#toast");
 
   const playbooks = {
@@ -85,7 +88,205 @@
     }
   };
 
-  const colours = ["#007c78", "#f3b23c", "#f46d5f", "#6c58b5", "#357f54", "#b14a65", "#005f5d"];
+  const functionProfiles = {
+    "Finance and Accounting": {
+      processName: "Invoice intake, approval and posting",
+      notes: "Invoices arrive by email, shared inboxes and supplier portals. Teams manually extract fields, chase approvals, validate purchase orders and post records into ERP. Exceptions are handled in spreadsheets.",
+      monthlyLabel: "Monthly invoices or finance records",
+      monthlyHint: "Invoices, journal entries, payment requests, reconciliations or finance cases handled each month.",
+      handleLabel: "Minutes per finance record",
+      handleHint: "Manual time to capture, validate, approve, post and close one record.",
+      teamLabel: "Finance operators impacted",
+      teamHint: "AP, AR, close, controls and finance operations users touching the process.",
+      valueLabel: "Annual spend, cash or revenue influenced",
+      valueHint: "Spend, working capital, revenue, cash collected or risk-adjusted finance exposure touched by this flow.",
+      monthlyVolume: 4200,
+      avgHandleTime: 18,
+      teamSize: 18,
+      hourlyCost: 38,
+      errorRate: 7,
+      exceptionRate: 16,
+      annualRevenueInfluenced: 18500000,
+      systems: ["ERP", "Email", "Spreadsheets", "Documents", "BI"],
+      painPoints: ["Manual data entry", "Approval delays", "Poor audit trail"],
+      channels: ["Email", "Portal", "Forms", "Manual handoff"],
+      defaultGoal: "Cost reduction"
+    },
+    "Human Resources": {
+      processName: "Employee onboarding, changes and HR case resolution",
+      notes: "Employee requests arrive through HR inboxes, forms and manager messages. HR teams validate eligibility, collect documents, update HRIS records, coordinate payroll and respond to status queries manually.",
+      monthlyLabel: "Monthly employee requests or cases",
+      monthlyHint: "Onboarding cases, employee changes, policy requests, letters, payroll queries or HR tickets.",
+      handleLabel: "Minutes per employee case",
+      handleHint: "Manual HR effort to validate, coordinate, update systems and close one case.",
+      teamLabel: "HR users impacted",
+      teamHint: "HR operations, payroll, people partners and shared services users touching the workflow.",
+      valueLabel: "Annual payroll or employee-service value influenced",
+      valueHint: "Payroll value, service cost, attrition exposure or employee experience value influenced by the process.",
+      monthlyVolume: 950,
+      avgHandleTime: 28,
+      teamSize: 14,
+      hourlyCost: 42,
+      errorRate: 5,
+      exceptionRate: 22,
+      annualRevenueInfluenced: 9200000,
+      systems: ["HRIS", "Email", "Documents", "Spreadsheets", "BI"],
+      painPoints: ["Approval delays", "Duplicate work", "Poor audit trail", "Customer friction"],
+      channels: ["Email", "Forms", "Portal", "Manual handoff"],
+      defaultGoal: "Customer experience"
+    },
+    "Procurement": {
+      processName: "Supplier onboarding, requisition approval and PO changes",
+      notes: "Procurement intake comes through email, ERP requests and supplier forms. Teams validate suppliers, chase missing documents, route approvals, manage policy exceptions and update procurement systems.",
+      monthlyLabel: "Monthly requisitions or supplier requests",
+      monthlyHint: "Purchase requests, supplier onboarding cases, PO changes, contract intakes or sourcing requests.",
+      handleLabel: "Minutes per procurement request",
+      handleHint: "Manual time to validate data, route approvals, check policy and update source-to-pay systems.",
+      teamLabel: "Procurement users impacted",
+      teamHint: "Buyers, category managers, supplier managers, procurement operations and finance approvers.",
+      valueLabel: "Annual spend influenced",
+      valueHint: "Addressable spend, supplier risk exposure or contract value affected by the process.",
+      monthlyVolume: 1800,
+      avgHandleTime: 24,
+      teamSize: 16,
+      hourlyCost: 44,
+      errorRate: 6,
+      exceptionRate: 19,
+      annualRevenueInfluenced: 32000000,
+      systems: ["ERP", "Email", "Documents", "Spreadsheets", "BI"],
+      painPoints: ["Approval delays", "Manual data entry", "Poor audit trail", "Backlog spikes"],
+      channels: ["Portal", "Email", "Forms", "Manual handoff"],
+      defaultGoal: "Cost reduction"
+    },
+    "Customer Operations": {
+      processName: "Customer case triage, fulfilment and escalation handling",
+      notes: "Customer requests arrive through CRM, support inboxes, portals and calls. Agents classify issues, search policies, update records, request approvals and escalate cases that lack clear ownership.",
+      monthlyLabel: "Monthly customer cases or contacts",
+      monthlyHint: "Service cases, claims, complaints, support conversations, refund requests or order enquiries.",
+      handleLabel: "Minutes per customer case",
+      handleHint: "Manual time to triage, resolve, escalate, update records and communicate back to the customer.",
+      teamLabel: "Service users impacted",
+      teamHint: "Agents, case managers, quality leads, workforce planners and escalation owners.",
+      valueLabel: "Annual revenue or retention value influenced",
+      valueHint: "Revenue, churn exposure, refund value, claims cost or service-value pool touched by the workflow.",
+      monthlyVolume: 12500,
+      avgHandleTime: 11,
+      teamSize: 55,
+      hourlyCost: 32,
+      errorRate: 4,
+      exceptionRate: 18,
+      annualRevenueInfluenced: 42000000,
+      systems: ["CRM", "Email", "Documents", "BI"],
+      painPoints: ["Backlog spikes", "Customer friction", "Duplicate work", "Manual data entry"],
+      channels: ["Portal", "Email", "Chat", "Phone", "API"],
+      defaultGoal: "Customer experience"
+    },
+    "IT and Service Management": {
+      processName: "IT ticket triage, access requests and incident enrichment",
+      notes: "Requests come through ITSM, email and chat. Service desk teams categorise tickets, collect missing context, trigger approvals, provision access and enrich incidents before routing to resolver groups.",
+      monthlyLabel: "Monthly tickets or service requests",
+      monthlyHint: "Incidents, access requests, service catalogue items, asset updates or change tasks.",
+      handleLabel: "Minutes per IT request",
+      handleHint: "Manual service-desk and resolver effort before fulfilment or escalation.",
+      teamLabel: "IT users impacted",
+      teamHint: "Service desk, resolver groups, platform owners, identity teams and change managers.",
+      valueLabel: "Annual IT service value or downtime exposure",
+      valueHint: "Service cost, downtime exposure, productivity impact or engineering capacity touched by the process.",
+      monthlyVolume: 6500,
+      avgHandleTime: 14,
+      teamSize: 32,
+      hourlyCost: 48,
+      errorRate: 5,
+      exceptionRate: 21,
+      annualRevenueInfluenced: 15000000,
+      systems: ["ITSM", "Email", "Documents", "BI"],
+      painPoints: ["Backlog spikes", "Approval delays", "Duplicate work", "Poor audit trail"],
+      channels: ["Portal", "Email", "Chat", "API"],
+      defaultGoal: "Cycle time reduction"
+    },
+    "Supply Chain": {
+      processName: "Order exception, shipment follow-up and inventory reconciliation",
+      notes: "Operational exceptions surface through ERP, warehouse systems, emails and supplier updates. Teams manually reconcile status, chase carriers, adjust inventory and inform commercial teams.",
+      monthlyLabel: "Monthly orders, shipments or exceptions",
+      monthlyHint: "Orders, fulfilment exceptions, shipment updates, inventory adjustments or supplier follow-ups.",
+      handleLabel: "Minutes per supply-chain exception",
+      handleHint: "Manual time to investigate, reconcile, coordinate and update systems.",
+      teamLabel: "Operations users impacted",
+      teamHint: "Planners, warehouse operations, logistics, customer operations and finance users.",
+      valueLabel: "Annual inventory, order or logistics value influenced",
+      valueHint: "Order value, inventory exposure, expedite cost, penalties or service-level value touched by the process.",
+      monthlyVolume: 7200,
+      avgHandleTime: 16,
+      teamSize: 38,
+      hourlyCost: 36,
+      errorRate: 5,
+      exceptionRate: 24,
+      annualRevenueInfluenced: 55000000,
+      systems: ["ERP", "Email", "Spreadsheets", "BI"],
+      painPoints: ["Backlog spikes", "Duplicate work", "Manual data entry", "Customer friction"],
+      channels: ["API", "Email", "Portal", "Manual handoff"],
+      defaultGoal: "Cycle time reduction"
+    },
+    "Sales Operations": {
+      processName: "Lead routing, quote approval and CRM hygiene",
+      notes: "Sales operations teams route leads, check account data, chase quote approvals, update CRM fields and coordinate handoffs to legal, finance and delivery using a mix of CRM tasks and spreadsheets.",
+      monthlyLabel: "Monthly leads, quotes or CRM updates",
+      monthlyHint: "Leads, opportunities, quote requests, contract handoffs, campaign responses or CRM hygiene tasks.",
+      handleLabel: "Minutes per revenue-ops task",
+      handleHint: "Manual time to validate, route, approve, update and hand off one sales operations item.",
+      teamLabel: "Revenue users impacted",
+      teamHint: "Sales operations, sellers, SDRs, finance approvers, legal and marketing operations.",
+      valueLabel: "Annual pipeline or revenue influenced",
+      valueHint: "Pipeline, booked revenue, quote value, conversion opportunity or sales productivity value affected.",
+      monthlyVolume: 3800,
+      avgHandleTime: 13,
+      teamSize: 28,
+      hourlyCost: 45,
+      errorRate: 6,
+      exceptionRate: 17,
+      annualRevenueInfluenced: 68000000,
+      systems: ["CRM", "Email", "Documents", "Spreadsheets", "BI"],
+      painPoints: ["Approval delays", "Duplicate work", "Manual data entry", "Customer friction"],
+      channels: ["Portal", "Email", "Forms", "API"],
+      defaultGoal: "Revenue acceleration"
+    },
+    "Legal and Compliance": {
+      processName: "Policy attestation, contract intake and control evidence collection",
+      notes: "Requests and evidence arrive through email, document repositories and ticketing tools. Teams classify obligations, request missing material, perform checks, route reviews and maintain audit evidence manually.",
+      monthlyLabel: "Monthly reviews, attestations or evidence items",
+      monthlyHint: "Contract intakes, policy attestations, control tests, compliance reviews or evidence requests.",
+      handleLabel: "Minutes per compliance item",
+      handleHint: "Manual time to classify, review, approve, evidence and close one risk or legal item.",
+      teamLabel: "Risk, legal or compliance users impacted",
+      teamHint: "Legal operations, compliance, risk, control owners, auditors and business reviewers.",
+      valueLabel: "Annual risk exposure or contract value influenced",
+      valueHint: "Contract value, regulatory exposure, control cost or risk-adjusted business value touched by the workflow.",
+      monthlyVolume: 700,
+      avgHandleTime: 42,
+      teamSize: 12,
+      hourlyCost: 62,
+      errorRate: 4,
+      exceptionRate: 27,
+      annualRevenueInfluenced: 25000000,
+      systems: ["Email", "Documents", "Spreadsheets", "ITSM", "BI"],
+      painPoints: ["Poor audit trail", "Approval delays", "Manual data entry", "Duplicate work"],
+      channels: ["Email", "Forms", "Portal", "Shared drive"],
+      defaultGoal: "Risk and compliance control"
+    }
+  };
+
+  const industryProfiles = {
+    "Financial Services": { compliance: 5, aiTrust: 5, dataResidency: true, valueSuffix: " Include conduct, regulatory and customer-impact exposure.", tools: "Core banking, CRM, workflow, DMS, BI" },
+    Healthcare: { compliance: 5, aiTrust: 5, dataResidency: true, valueSuffix: " Include patient safety, clinical administration and privacy impact.", tools: "EHR, PAS, CRM, document management, BI" },
+    Manufacturing: { compliance: 3, aiTrust: 3, dataResidency: false, valueSuffix: " Include inventory, production, quality and supplier performance impact.", tools: "ERP, MES, WMS, supplier portals, BI" },
+    "Retail and Consumer": { compliance: 3, aiTrust: 3, dataResidency: false, valueSuffix: " Include order value, returns, customer service and store operations impact.", tools: "Commerce, POS, CRM, OMS, WMS, BI" },
+    Technology: { compliance: 3, aiTrust: 4, dataResidency: true, valueSuffix: " Include ARR, support operations, product workflows and engineering capacity.", tools: "CRM, ITSM, product analytics, data warehouse, BI" },
+    "Energy and Utilities": { compliance: 5, aiTrust: 5, dataResidency: true, valueSuffix: " Include asset, field service, outage, safety and regulatory exposure.", tools: "ERP, EAM, GIS, field-service platforms, BI" },
+    "Professional Services": { compliance: 3, aiTrust: 4, dataResidency: true, valueSuffix: " Include billable capacity, client delivery, margin and knowledge-work leverage.", tools: "PSA, CRM, DMS, project systems, BI" },
+    "Public Sector": { compliance: 5, aiTrust: 5, dataResidency: true, valueSuffix: " Include citizen service, statutory obligations, grant or case-management exposure.", tools: "Case management, ERP, DMS, forms, BI" }
+  };
+
+  const colours = ["#4f46e5", "#2563eb", "#0891b2", "#059669", "#f59e0b", "#ec4899", "#6d64ff"];
 
   const defaultForm = new Map(Array.from(new FormData(form).entries()));
   const defaultCheckedValues = Array.from(form.querySelectorAll('input[type="checkbox"]')).reduce((acc, input) => {
@@ -96,6 +297,7 @@
 
   let latestModel = null;
   let canvasFrame = 0;
+  let heroFrame = 0;
   let toastTimer = null;
 
   function clamp(value, min, max) {
@@ -137,6 +339,62 @@
 
   function checkedValues(name) {
     return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map((input) => input.value);
+  }
+
+  function setFieldValue(id, value) {
+    const field = document.querySelector(`#${id}`);
+    if (field && value !== undefined) field.value = value;
+  }
+
+  function setText(id, value) {
+    const node = document.querySelector(`#${id}`);
+    if (node && value !== undefined) node.textContent = value;
+  }
+
+  function setCheckboxGroup(name, values) {
+    const selected = new Set(values || []);
+    document.querySelectorAll(`input[name="${name}"]`).forEach((input) => {
+      input.checked = selected.has(input.value);
+    });
+  }
+
+  function applyFunctionContext(writeValues) {
+    const functionName = document.querySelector("#businessFunction").value;
+    const industryName = document.querySelector("#industry").value;
+    const profile = functionProfiles[functionName] || functionProfiles["Finance and Accounting"];
+    const industry = industryProfiles[industryName] || industryProfiles["Financial Services"];
+
+    setText("monthlyVolumeLabel", profile.monthlyLabel);
+    setText("monthlyVolumeHint", `${profile.monthlyHint} No fixed range is enforced.`);
+    setText("avgHandleTimeLabel", profile.handleLabel);
+    setText("avgHandleTimeHint", profile.handleHint);
+    setText("teamSizeLabel", profile.teamLabel);
+    setText("teamSizeHint", profile.teamHint);
+    setText("annualRevenueInfluencedLabel", profile.valueLabel);
+    setText("annualRevenueInfluencedHint", `${profile.valueHint}${industry.valueSuffix || ""}`);
+
+    if (!writeValues) return;
+
+    setFieldValue("processName", profile.processName);
+    setFieldValue("processNotes", `${profile.notes} ${industry.valueSuffix || ""}`.trim());
+    setFieldValue("monthlyVolume", profile.monthlyVolume);
+    setFieldValue("avgHandleTime", profile.avgHandleTime);
+    setFieldValue("teamSize", profile.teamSize);
+    setFieldValue("hourlyCost", profile.hourlyCost);
+    setFieldValue("errorRate", profile.errorRate);
+    setFieldValue("exceptionRate", profile.exceptionRate);
+    setFieldValue("annualRevenueInfluenced", profile.annualRevenueInfluenced);
+    setFieldValue("strategicGoal", profile.defaultGoal);
+    setFieldValue("currentTools", industry.tools || "");
+    setFieldValue("complianceIntensity", industry.compliance || 3);
+    setFieldValue("aiTrust", industry.aiTrust || 3);
+    setCheckboxGroup("systems", profile.systems);
+    setCheckboxGroup("painPoints", profile.painPoints);
+    setCheckboxGroup("channels", profile.channels);
+
+    const constraintDefaults = ["Cyber review", "Legacy systems", "Budget ceiling", "Model governance"];
+    if (industry.dataResidency) constraintDefaults.unshift("Data residency");
+    setCheckboxGroup("constraints", constraintDefaults);
   }
 
   function getState() {
@@ -249,6 +507,18 @@
     const readiness = buildReadiness(state);
     const tools = recommendTools(state, playbook, complexity);
     const projectPortfolio = buildProjectPortfolio(state, playbook, coverage, complexity);
+    const implementationPlan = buildImplementationPlan(state, playbook, projectPortfolio, tools, horizonWeeks, timeToValue, complexity);
+    const recommendationLogic = buildRecommendationLogic(state, {
+      coverage,
+      suitability,
+      fit,
+      complexity,
+      annualBenefit,
+      paybackMonths,
+      timeToValue,
+      budgetGap,
+      readiness
+    });
 
     return {
       state,
@@ -282,6 +552,8 @@
       questionBank: buildQuestionBank(state, playbook),
       architecture: buildArchitecture(state, tools),
       projectPortfolio,
+      implementationPlan,
+      recommendationLogic,
       raci: buildRaci(state),
       nextSteps: buildNextSteps(state, projectPortfolio, budgetGap)
     };
@@ -447,6 +719,182 @@
       ["Change, training and adoption", changeBudget, "#357f54"],
       ["Run, support and optimisation", runBudget, "#b14a65"]
     ].map(([name, value, colour]) => ({ name, value, colour, pct: value / total }));
+  }
+
+  function buildRecommendationLogic(state, metrics) {
+    const strongestReadiness = metrics.readiness.slice().sort((a, b) => b.score - a.score)[0];
+    const weakestReadiness = metrics.readiness.slice().sort((a, b) => a.score - b.score)[0];
+    const profile = functionProfiles[state.businessFunction] || functionProfiles["Finance and Accounting"];
+    const volumeSignal = state.monthlyVolume >= profile.monthlyVolume * 1.2
+      ? "high volume"
+      : state.monthlyVolume <= profile.monthlyVolume * 0.45 ? "low-to-medium volume" : "typical volume";
+    const exceptionSignal = state.exceptionRate >= 0.2
+      ? "a material exception load"
+      : state.exceptionRate >= 0.1 ? "moderate exceptions" : "a clean-enough happy path";
+    const systemSignal = state.systemFragmentation >= 4
+      ? "fragmented systems, so orchestration and integration governance matter more than simple bot scripts"
+      : "manageable systems, so the first release can move faster";
+    const controlSignal = state.complianceIntensity >= 4 || state.aiTrust >= 4
+      ? "strong control and explainability requirements, so the recommendation keeps humans in the loop for sensitive decisions"
+      : "lighter control intensity, so the roadmap can prioritise speed and adoption";
+
+    return [
+      {
+        title: "Value trigger",
+        score: `${money(metrics.annualBenefit)}/yr`,
+        body: `The model saw ${volumeSignal}, ${state.avgHandleTime} minutes of manual effort per item and ${exceptionSignal}. That combination supports automation because repeatable work is large enough to release capacity and improve cycle time.`
+      },
+      {
+        title: "Feasibility trigger",
+        score: `${metrics.fit}/100 fit`,
+        body: `The fit score blends process standardisation, data quality, documentation, integration maturity, sponsorship and change readiness. ${strongestReadiness.name} is the strongest readiness domain; ${weakestReadiness.name} is the area to strengthen before scaling.`
+      },
+      {
+        title: "Architecture trigger",
+        score: `${pct(metrics.coverage)} coverage`,
+        body: `Because the workflow uses ${state.systems.join(", ") || "multiple enterprise systems"} and ${state.channels.join(", ") || "mixed intake channels"}, the recommendation favours process intelligence, workflow orchestration, controlled automation execution and a KPI layer.`
+      },
+      {
+        title: "Governance trigger",
+        score: `${metrics.timeToValue}w TTV`,
+        body: `${systemSignal}. There are also ${state.constraints.length} selected constraints. ${controlSignal}.`
+      },
+      {
+        title: "Funding trigger",
+        score: metrics.budgetGap > 0 ? `${money(metrics.budgetGap)} gap` : "within cap",
+        body: `The budget stance, complexity, tooling needs, affected users and support model create a mid-case investment profile. The roadmap therefore starts with a scoped MVP before funding broader waves.`
+      }
+    ];
+  }
+
+  function buildImplementationPlan(state, playbook, portfolio, tools, horizonWeeks, timeToValue, complexity) {
+    const complexityTone = complexity > 0.95 ? "high-control" : complexity > 0.72 ? "balanced" : "fast-track";
+    const waveOneProjects = portfolio.filter((item) => item.priority === "Priority 1").slice(0, 3);
+    const waveTwoProjects = portfolio.filter((item) => item.priority !== "Priority 1").slice(0, 4);
+    const toolNames = Array.from(new Set(tools.flatMap((group) => group.tools))).slice(0, 8);
+
+    const phases = [
+      {
+        name: "0. Mobilise and align",
+        window: "Week 0-1",
+        objective: "Turn the opportunity into an owned, funded and governed programme.",
+        activities: [
+          "Confirm executive sponsor, benefit owner, process owner, product owner and delivery lead.",
+          "Agree the business-function scope, industry constraints, risk appetite and initial value hypothesis.",
+          "Create the programme charter, decision cadence, RAID log, design authority and benefits baseline approach.",
+          `Lock MVP success criteria around ${state.strategicGoal.toLowerCase()}, user adoption, control evidence and measurable time-to-value.`
+        ],
+        deliverables: ["Programme charter", "Decision log", "Benefit hypothesis", "Stakeholder map", "Initial RAID"],
+        gate: "Sponsor signs off MVP scope, decision rights, data access path and funding guardrails.",
+        owners: ["Executive sponsor", "Process owner", "Automation CoE lead", "Finance PMO"]
+      },
+      {
+        name: "1. Discover and baseline",
+        window: "Week 1-3",
+        objective: "Understand how the process actually runs across channels, systems and teams.",
+        activities: [
+          "Run workshops using the generated discovery question bank and interview frontline users, supervisors and control owners.",
+          `Collect samples from ${state.channels.join(", ") || "all intake channels"} and map variants, handoffs, decisions, queues and exception reasons.`,
+          "Pull event logs where available and reconcile them with SME process walkthroughs.",
+          "Measure current volume, manual effort, error rate, exception ageing, SLA breaches, backlog and customer or employee impact."
+        ],
+        deliverables: ["Current-state map", "Baseline metrics pack", "Variant heatmap", "Data inventory", "Pain-point evidence"],
+        gate: "Baseline accepted by business and finance owners; automation candidates scored by value and feasibility.",
+        owners: ["Process analyst", "Business SMEs", "Data analyst", "Operations lead"]
+      },
+      {
+        name: "2. Diagnose and prioritise",
+        window: "Week 3-5",
+        objective: "Create a value-ranked automation backlog with clear build patterns.",
+        activities: [
+          "Score each candidate by annual value, cycle-time impact, control risk, implementation effort and dependency load.",
+          "Split opportunities into eliminate, standardise, workflow, API, RPA, AI extraction, decision assist and analytics patterns.",
+          "Identify the first automation slice that can prove value without hiding unresolved policy or data problems.",
+          `Select wave-one projects: ${waveOneProjects.map((item) => item.name).join(", ") || portfolio.slice(0, 2).map((item) => item.name).join(", ")}.`
+        ],
+        deliverables: ["Opportunity matrix", "Prioritised backlog", "MVP scope", "Dependency map", "Value tracking model"],
+        gate: "Sponsor approves MVP backlog and confirms what will be deferred to later waves.",
+        owners: ["Product owner", "CoE lead", "Finance partner", "Enterprise architect"]
+      },
+      {
+        name: "3. Design target state",
+        window: "Week 5-8",
+        objective: "Define the future operating model, architecture, controls and adoption model.",
+        activities: [
+          "Design the target process with happy path, exception path, approval path, audit path and failure recovery path.",
+          `Choose platform components from ${toolNames.join(", ")} based on existing tools, integration maturity and enterprise constraints.`,
+          "Define data fields, confidence thresholds, human-in-loop rules, access model, logging and control evidence.",
+          `Agree the ${state.operatingModel} operating model, support model, RACI and governance cadence.`
+        ],
+        deliverables: ["Future-state blueprint", "Solution architecture", "Control design", "RACI", "Adoption and training plan"],
+        gate: "Architecture, cyber, data, risk and business owners approve build readiness.",
+        owners: ["Enterprise architect", "Workflow lead", "Risk owner", "Change lead"]
+      },
+      {
+        name: "4. Build MVP",
+        window: `Week 8-${Math.max(12, timeToValue)}`,
+        objective: "Build a measurable release that automates the high-value path and exposes exceptions.",
+        activities: [
+          "Configure digital intake, validation rules, routing, approvals, notifications and exception queues.",
+          "Build API integrations first; use RPA for legacy screens only where APIs are unavailable or uneconomic.",
+          "Add AI extraction, classification or summarisation only within confidence thresholds and with review controls.",
+          "Instrument every automation with event logs, benefit measures, error monitoring, handoff reasons and adoption telemetry."
+        ],
+        deliverables: ["MVP workflow", "Automations and integrations", "Exception workbench", "KPI dashboard", "Runbook"],
+        gate: "MVP meets functional, security, control, performance and data-quality acceptance criteria.",
+        owners: ["Automation engineers", "Workflow developer", "Integration lead", "QA lead"]
+      },
+      {
+        name: "5. Validate and pilot",
+        window: `Week ${Math.max(12, timeToValue)}-${Math.max(16, timeToValue + 4)}`,
+        objective: "Prove the solution in controlled production before scaling.",
+        activities: [
+          "Run UAT with real examples, edge cases, exception types and role-based access scenarios.",
+          "Pilot with a bounded user group, queue, region, supplier group, customer segment or transaction type.",
+          "Track automation coverage, cycle time, exception rate, manual overrides, quality, adoption and support tickets daily.",
+          "Tune rules, thresholds, queues and training based on pilot evidence."
+        ],
+        deliverables: ["UAT sign-off", "Pilot report", "Control evidence pack", "Adoption heatmap", "Hypercare backlog"],
+        gate: "Pilot achieves minimum KPI thresholds and no unresolved critical control or adoption issues remain.",
+        owners: ["Business owner", "QA lead", "Control owner", "Hypercare manager"]
+      },
+      {
+        name: "6. Scale and industrialise",
+        window: `Week ${Math.max(16, timeToValue + 4)}-${horizonWeeks}`,
+        objective: "Scale the automation safely and convert the MVP into an enterprise capability.",
+        activities: [
+          `Roll out wave-two projects: ${waveTwoProjects.map((item) => item.name).join(", ") || "additional backlog items selected by value gates"}.`,
+          "Create reusable components, naming standards, design patterns, monitoring standards and support SLAs.",
+          "Review realised benefits monthly with finance and retire manual controls made redundant by reliable automation evidence.",
+          "Feed new opportunities into the CoE backlog and use dashboard data to optimise the process continuously."
+        ],
+        deliverables: ["Scale rollout plan", "CoE standards", "Reusable component library", "Benefits realisation pack", "Optimisation backlog"],
+        gate: "Programme moves from project mode to governed run-and-improve cadence.",
+        owners: ["CoE lead", "Platform owner", "Business operations lead", "Finance PMO"]
+      }
+    ];
+
+    const resources = [
+      ["Executive sponsor", "0.05 FTE", "Decision rights, funding, dependency escalation"],
+      ["Product/process owner", "0.4 FTE", "Backlog, scope, acceptance and operating-model decisions"],
+      ["Business SMEs", "0.3-0.8 FTE", "Workshops, UAT, rule validation and adoption coaching"],
+      ["Process/data analyst", "0.5 FTE", "Baseline, process mining, benefit tracking and dashboard logic"],
+      ["Solution architect", "0.3 FTE", "Architecture, integration pattern, controls and non-functional design"],
+      ["Automation developers", "1-3 FTE", "Workflow, RPA/API, IDP, testing and production hardening"],
+      ["Risk/security/data owners", "0.2 FTE", "Control sign-off, data handling, cyber review and release approval"],
+      ["Change and training lead", "0.3 FTE", "Training, communications, champions and adoption measurement"]
+    ];
+
+    const workstreams = [
+      ["Process and policy", "Standardise inputs, decision rules, approvals, exception codes and handoff ownership."],
+      ["Data and intelligence", "Event-log access, document samples, master data checks, confidence scoring and KPI definitions."],
+      ["Technology delivery", "Workflow, integration, automation execution, monitoring, environments and release management."],
+      ["Controls and governance", "Audit evidence, access, segregation of duties, human-in-loop decisions and model governance."],
+      ["People and adoption", "Role impact, training, change champions, communications, adoption dashboards and hypercare."],
+      ["Benefits realisation", "Baseline sign-off, savings methodology, benefit owner, finance validation and monthly reporting."]
+    ];
+
+    return { complexityTone, phases, resources, workstreams };
   }
 
   function buildReadiness(state) {
@@ -630,9 +1078,11 @@
     visualTitle.textContent = `${state.ambition} ${state.businessFunction.toLowerCase()} automation`;
     visualBody.textContent = `${state.processName} should start with a measured MVP, then scale through reusable orchestration, exception handling and KPI governance. The plan targets ${pct(model.coverage)} automation coverage with a ${model.fit}/100 fit score.`;
 
+    renderLogic(model);
     renderBlueprint(model);
     renderQuestions(model);
     renderMaturity(model);
+    renderImplementation(model);
     renderPipeline(model);
     renderArchitecture(model);
     renderBacklog(model);
@@ -650,6 +1100,16 @@
         <p>${escapeHtml(note)}</p>
       </article>
     `;
+  }
+
+  function renderLogic(model) {
+    logicPanel.innerHTML = model.recommendationLogic.map((item) => `
+      <article class="logic-card">
+        <span>${escapeHtml(item.title)}</span>
+        <strong>${escapeHtml(item.score)}</strong>
+        <p>${escapeHtml(item.body)}</p>
+      </article>
+    `).join("");
   }
 
   function renderBlueprint(model) {
@@ -763,6 +1223,81 @@
     `;
   }
 
+  function renderImplementation(model) {
+    const plan = model.implementationPlan;
+    implementation.innerHTML = `
+      <article class="implementation-card full">
+        <div class="plan-head">
+          <div>
+            <p class="eyebrow">Detailed implementation plan</p>
+            <h3>${escapeHtml(model.state.processName)}</h3>
+            <p>This is a ${escapeHtml(plan.complexityTone)} delivery plan shaped by the selected business function, industry, systems, constraints, readiness, budget posture and automation ambition.</p>
+          </div>
+          <div class="plan-summary">
+            <span>${model.horizonWeeks} weeks</span>
+            <strong>${escapeHtml(model.state.operatingModel)}</strong>
+            <small>${escapeHtml(model.state.industry)}</small>
+          </div>
+        </div>
+      </article>
+      <article class="implementation-card full">
+        <h3>Phase-by-phase delivery plan</h3>
+        <div class="phase-stack">
+          ${plan.phases.map((phase) => `
+            <section class="phase-card">
+              <div class="phase-title">
+                <div>
+                  <span class="phase-window">${escapeHtml(phase.window)}</span>
+                  <h4>${escapeHtml(phase.name)}</h4>
+                </div>
+                <strong>${escapeHtml(phase.objective)}</strong>
+              </div>
+              <div class="phase-columns">
+                <div>
+                  <h5>Activities</h5>
+                  <ul>${phase.activities.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+                </div>
+                <div>
+                  <h5>Deliverables</h5>
+                  <div class="tag-row">${phase.deliverables.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")}</div>
+                  <h5>Gate</h5>
+                  <p>${escapeHtml(phase.gate)}</p>
+                  <h5>Owners</h5>
+                  <div class="tool-row">${phase.owners.map((item) => `<span class="tool-pill">${escapeHtml(item)}</span>`).join("")}</div>
+                </div>
+              </div>
+            </section>
+          `).join("")}
+        </div>
+      </article>
+      <article class="implementation-card">
+        <h3>Programme workstreams</h3>
+        <ul class="architecture-list">
+          ${plan.workstreams.map((item) => `<li><strong>${escapeHtml(item[0])}:</strong> ${escapeHtml(item[1])}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="implementation-card">
+        <h3>Resource model</h3>
+        <table class="raci-table">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Capacity</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${plan.resources.map((row) => `
+              <tr>
+                ${row.map((cell) => `<td>${escapeHtml(cell)}</td>`).join("")}
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </article>
+    `;
+  }
+
   function renderArchitecture(model) {
     architecture.innerHTML = `
       <article class="architecture-card full">
@@ -858,10 +1393,26 @@
     `).join("");
 
     roadmap.innerHTML = `
-      <div class="gantt" aria-label="Implementation Gantt chart">
-        <div class="gantt-axis"><span>Phase</span>${axis}</div>
-        ${rows}
-      </div>
+      <article class="implementation-card full">
+        <h3>Roadmap and decision gates</h3>
+        <p>The roadmap is intentionally gated: each phase must create evidence before the next spend or rollout decision. This prevents automating unstable processes and keeps the implementation tied to measurable business value.</p>
+        <div class="gantt" aria-label="Implementation Gantt chart">
+          <div class="gantt-axis"><span>Phase</span>${axis}</div>
+          ${rows}
+        </div>
+      </article>
+      <article class="implementation-card full">
+        <h3>Milestones and release gates</h3>
+        <div class="roadmap-grid">
+          ${model.implementationPlan.phases.map((phase) => `
+            <div class="roadmap-card">
+              <span>${escapeHtml(phase.window)}</span>
+              <strong>${escapeHtml(phase.name)}</strong>
+              <p>${escapeHtml(phase.gate)}</p>
+            </div>
+          `).join("")}
+        </div>
+      </article>
     `;
   }
 
@@ -1026,7 +1577,7 @@
         ctx.lineWidth = 4;
         ctx.stroke();
         ctx.fillStyle = "#14211f";
-        ctx.font = "800 12px Inter, system-ui, sans-serif";
+        ctx.font = "800 12px Plus Jakarta Sans, system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.fillText(point.label, point.x, point.y + point.size + 22);
       });
@@ -1038,15 +1589,78 @@
       ctx.strokeStyle = "rgba(20,33,31,0.18)";
       ctx.stroke();
       ctx.fillStyle = "#14211f";
-      ctx.font = "900 24px Inter, system-ui, sans-serif";
+      ctx.font = "900 24px Plus Jakarta Sans, system-ui, sans-serif";
       ctx.textAlign = "center";
       ctx.fillText(String(model.fit), cx, cy + 6);
-      ctx.font = "800 10px Inter, system-ui, sans-serif";
+      ctx.font = "800 10px JetBrains Mono, monospace";
       ctx.fillStyle = "#60706b";
       ctx.fillText("FIT", cx, cy + 23);
 
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         canvasFrame = requestAnimationFrame(frame);
+      }
+    }
+
+    frame();
+  }
+
+  function drawHeroCanvas() {
+    if (!heroCanvas) return;
+    cancelAnimationFrame(heroFrame);
+
+    const ctx = heroCanvas.getContext("2d");
+    const dpr = window.devicePixelRatio || 1;
+    const rect = heroCanvas.getBoundingClientRect();
+    const width = Math.max(320, rect.width || 1200);
+    const height = Math.max(280, rect.height || 520);
+    heroCanvas.width = width * dpr;
+    heroCanvas.height = height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const nodes = Array.from({ length: 42 }, (_, index) => ({
+      x: (index * 97) % width,
+      y: (index * 53) % height,
+      r: 1.5 + (index % 5) * 0.55,
+      speed: 0.18 + (index % 6) * 0.035,
+      colour: colours[index % colours.length]
+    }));
+    let tick = 0;
+
+    function frame() {
+      tick += 0.012;
+      ctx.clearRect(0, 0, width, height);
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, "rgba(79,70,229,0.18)");
+      gradient.addColorStop(0.45, "rgba(37,99,235,0.12)");
+      gradient.addColorStop(1, "rgba(5,150,105,0.14)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      nodes.forEach((node, index) => {
+        const x = (node.x + Math.sin(tick * (index % 5 + 1)) * 24 + tick * 20 * node.speed) % width;
+        const y = node.y + Math.cos(tick * (index % 7 + 1)) * 18;
+        ctx.beginPath();
+        ctx.arc(x, y, node.r, 0, Math.PI * 2);
+        ctx.fillStyle = `${node.colour}bb`;
+        ctx.fill();
+
+        for (let other = index + 1; other < nodes.length; other += 7) {
+          const ox = (nodes[other].x + tick * 18 * nodes[other].speed) % width;
+          const oy = nodes[other].y + Math.sin(tick * (other % 5 + 1)) * 16;
+          const distance = Math.hypot(x - ox, y - oy);
+          if (distance < 160) {
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(ox, oy);
+            ctx.strokeStyle = `rgba(196,181,253,${0.12 * (1 - distance / 160)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      });
+
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        heroFrame = requestAnimationFrame(frame);
       }
     }
 
@@ -1071,6 +1685,12 @@
       `Budget range: ${money(model.budgetLow)} to ${money(model.budgetHigh)}`,
       `Budget cap status: ${model.budgetGap > 0 ? `${money(model.budgetGap)} above cap` : "within stated cap"}`,
       `Payback: ${model.paybackMonths.toFixed(1)} months`,
+      "",
+      "Why this recommendation was made:",
+      ...model.recommendationLogic.map((item) => `- ${item.title}: ${item.body}`),
+      "",
+      "Implementation plan:",
+      ...model.implementationPlan.phases.map((phase) => `- ${phase.name} (${phase.window}): ${phase.objective} Gate: ${phase.gate}`),
       "",
       "Priority project portfolio:",
       ...model.projectPortfolio.slice(0, 6).map((item) => `- ${item.id} ${item.name} (${item.wave}, ${item.priority}): ${item.description}`),
@@ -1108,6 +1728,16 @@
     render(buildModel(getState()));
   }
 
+  document.querySelector("#businessFunction").addEventListener("change", () => {
+    applyFunctionContext(true);
+    update();
+  });
+
+  document.querySelector("#industry").addEventListener("change", () => {
+    applyFunctionContext(true);
+    update();
+  });
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     update();
@@ -1129,6 +1759,7 @@
         field.value = defaultForm.get(field.name);
       }
     });
+    applyFunctionContext(false);
     update();
     showToast("Defaults restored.");
   });
@@ -1168,7 +1799,12 @@
     });
   });
 
-  window.addEventListener("resize", () => drawProcessConstellation(latestModel));
+  window.addEventListener("resize", () => {
+    drawProcessConstellation(latestModel);
+    drawHeroCanvas();
+  });
 
+  applyFunctionContext(false);
+  drawHeroCanvas();
   update();
 }());
