@@ -9,7 +9,8 @@ Open `index.html` in a browser.
 ## What it does
 
 - Asks for the current process profile, volumes, costs, systems, intake channels, operating model, maturity, constraints, readiness, AI governance needs and delivery ambition.
-- Recommends an automation programme, discovery question bank, readiness maturity scorecard, implementation pipeline, target architecture, enterprise tooling shortlist, automation project portfolio, business case, budget, Gantt roadmap, RACI, stakeholders, risks, mitigations and KPIs.
+- Dynamically changes process labels, defaults and examples by business function and industry.
+- Recommends an automation programme, discovery question bank, recommendation logic, readiness maturity scorecard, detailed implementation plan, implementation pipeline, target architecture, enterprise tooling shortlist, automation project portfolio, business case, budget, Gantt roadmap, RACI, stakeholders, risks, mitigations and KPIs.
 - Supports copy, print and text export for the executive brief.
 
 ## Files
