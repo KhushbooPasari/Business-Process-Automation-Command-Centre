@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="AI Disco BPA Command Centre for business process automation discovery, planning, ROI and implementation roadmaps.">
     <title>AI Disco BPA Command Centre</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -39,10 +42,25 @@
 
     <main id="top">
       <section class="hero-band" aria-labelledby="page-title">
+        <canvas id="heroCanvas" width="1200" height="520" aria-hidden="true"></canvas>
         <div class="hero-copy">
-          <p class="eyebrow">Business process systems and automation planning</p>
+          <p class="hero-pill"><span class="hero-pill-dot"></span> Business process automation command engine</p>
           <h1 id="page-title">AI Disco BPA Command Centre</h1>
           <p class="lede">A decision cockpit that turns process intake into an automation implementation plan, roadmap, business case, Gantt chart, stakeholder map, risk controls and success KPIs.</p>
+          <div class="hero-stats" aria-label="Platform capabilities">
+            <div class="stat">
+              <span class="stat-num">9</span>
+              <span class="stat-label">planning views</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">8</span>
+              <span class="stat-label">business functions</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">360</span>
+              <span class="stat-label">automation lens</span>
+            </div>
+          </div>
         </div>
         <div class="hero-status" aria-label="Command centre status">
           <span class="status-dot"></span>
@@ -111,34 +129,39 @@
 
             <div class="field-grid">
               <div class="field-group">
-                <label for="monthlyVolume">Monthly transactions</label>
-                <input id="monthlyVolume" name="monthlyVolume" type="number" min="1" max="1000000" step="50" value="4200">
+                <label for="monthlyVolume" id="monthlyVolumeLabel">Monthly transactions</label>
+                <input id="monthlyVolume" name="monthlyVolume" type="number" min="0" step="1" value="4200" inputmode="numeric">
+                <span class="field-hint" id="monthlyVolumeHint">Invoices, requests, cases or records handled each month.</span>
               </div>
               <div class="field-group">
-                <label for="avgHandleTime">Minutes per transaction</label>
-                <input id="avgHandleTime" name="avgHandleTime" type="number" min="1" max="480" step="1" value="18">
+                <label for="avgHandleTime" id="avgHandleTimeLabel">Minutes per transaction</label>
+                <input id="avgHandleTime" name="avgHandleTime" type="number" min="0" step="1" value="18" inputmode="numeric">
+                <span class="field-hint" id="avgHandleTimeHint">Average manual effort for one unit of work.</span>
               </div>
               <div class="field-group">
-                <label for="teamSize">Team size</label>
-                <input id="teamSize" name="teamSize" type="number" min="1" max="10000" step="1" value="18">
+                <label for="teamSize" id="teamSizeLabel">Team size</label>
+                <input id="teamSize" name="teamSize" type="number" min="0" step="1" value="18" inputmode="numeric">
+                <span class="field-hint" id="teamSizeHint">People directly touching this workflow.</span>
               </div>
               <div class="field-group">
                 <label for="hourlyCost">Blended hourly cost</label>
-                <input id="hourlyCost" name="hourlyCost" type="number" min="5" max="500" step="1" value="38">
+                <input id="hourlyCost" name="hourlyCost" type="number" min="0" step="1" value="38" inputmode="numeric">
+                <span class="field-hint">Fully loaded cost per operational hour.</span>
               </div>
               <div class="field-group">
                 <label for="errorRate">Error or rework rate (%)</label>
-                <input id="errorRate" name="errorRate" type="number" min="0" max="80" step="0.5" value="7">
+                <input id="errorRate" name="errorRate" type="number" min="0" step="0.1" value="7" inputmode="decimal">
               </div>
               <div class="field-group">
                 <label for="exceptionRate">Exception rate (%)</label>
-                <input id="exceptionRate" name="exceptionRate" type="number" min="0" max="90" step="0.5" value="16">
+                <input id="exceptionRate" name="exceptionRate" type="number" min="0" step="0.1" value="16" inputmode="decimal">
               </div>
             </div>
 
             <div class="field-group">
-              <label for="annualRevenueInfluenced">Annual revenue or spend influenced</label>
-              <input id="annualRevenueInfluenced" name="annualRevenueInfluenced" type="number" min="0" max="1000000000" step="10000" value="18500000">
+              <label for="annualRevenueInfluenced" id="annualRevenueInfluencedLabel">Annual revenue or spend influenced</label>
+              <input id="annualRevenueInfluenced" name="annualRevenueInfluenced" type="number" min="0" step="1" value="18500000" inputmode="numeric">
+              <span class="field-hint" id="annualRevenueInfluencedHint">Revenue, spend, payroll, risk exposure or service value touched by the process.</span>
             </div>
 
             <fieldset class="choice-field">
@@ -262,11 +285,11 @@
               </div>
               <div class="field-group">
                 <label for="targetUsers">Users impacted</label>
-                <input id="targetUsers" name="targetUsers" type="number" min="1" max="100000" step="5" value="75">
+                <input id="targetUsers" name="targetUsers" type="number" min="0" step="1" value="75" inputmode="numeric">
               </div>
               <div class="field-group">
                 <label for="budgetCap">Budget cap</label>
-                <input id="budgetCap" name="budgetCap" type="number" min="0" max="10000000" step="10000" value="350000">
+                <input id="budgetCap" name="budgetCap" type="number" min="0" step="1" value="350000" inputmode="numeric">
               </div>
             </div>
 
@@ -371,14 +394,23 @@
             </div>
           </div>
 
+          <section class="logic-panel" aria-labelledby="logic-title">
+            <div>
+              <p class="eyebrow">Recommendation logic</p>
+              <h3 id="logic-title">Why this recommendation was made</h3>
+            </div>
+            <div id="logicPanel" class="logic-grid"></div>
+          </section>
+
           <div class="tabs" role="tablist" aria-label="Recommendation views">
             <button role="tab" aria-selected="true" aria-controls="blueprintPanel" id="blueprintTab" data-tab="blueprintPanel">Blueprint</button>
             <button role="tab" aria-selected="false" aria-controls="questionsPanel" id="questionsTab" data-tab="questionsPanel">Questions</button>
             <button role="tab" aria-selected="false" aria-controls="maturityPanel" id="maturityTab" data-tab="maturityPanel">Maturity</button>
+            <button role="tab" aria-selected="false" aria-controls="implementationPanel" id="implementationTab" data-tab="implementationPanel">Implementation</button>
             <button role="tab" aria-selected="false" aria-controls="pipelinePanel" id="pipelineTab" data-tab="pipelinePanel">Pipeline</button>
             <button role="tab" aria-selected="false" aria-controls="architecturePanel" id="architectureTab" data-tab="architecturePanel">Architecture</button>
             <button role="tab" aria-selected="false" aria-controls="backlogPanel" id="backlogTab" data-tab="backlogPanel">Portfolio</button>
-            <button role="tab" aria-selected="false" aria-controls="ganttPanel" id="ganttTab" data-tab="ganttPanel">Gantt</button>
+            <button role="tab" aria-selected="false" aria-controls="ganttPanel" id="ganttTab" data-tab="ganttPanel">Roadmap</button>
             <button role="tab" aria-selected="false" aria-controls="businessCasePanel" id="businessCaseTab" data-tab="businessCasePanel">Business case</button>
             <button role="tab" aria-selected="false" aria-controls="governancePanel" id="governanceTab" data-tab="governancePanel">Governance</button>
           </div>
@@ -392,6 +424,9 @@
             </section>
             <section class="tab-panel" id="maturityPanel" role="tabpanel" aria-labelledby="maturityTab">
               <div id="maturity" class="maturity-grid"></div>
+            </section>
+            <section class="tab-panel" id="implementationPanel" role="tabpanel" aria-labelledby="implementationTab">
+              <div id="implementation" class="implementation-view"></div>
             </section>
             <section class="tab-panel" id="pipelinePanel" role="tabpanel" aria-labelledby="pipelineTab">
               <div id="pipeline" class="pipeline-list"></div>
